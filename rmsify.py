@@ -30,7 +30,8 @@ import sys
 FILENAME = 'Pillbox Survival.xs'
 rmsFunc = ''
 rmsMain = 'main.c'
-files = ['zshared.c', 'voids.c', 'globals.c', 'nottud.c', 'intsstrings.c', 'databases.c', 'gamefunctions.c', 'choice.c', 'text.c', 'setup.c', 'techstat.c', 'tutorial.c', 'ysearch.c']
+files = ['zshared.c', 'voids.c', 'globals.c', 'nottud.c', 'intsstrings.c', 'databases.c', 'gamefunctions.c', 'perlin.c', 'choice.c', 'text.c', 
+'setup.c', 'techstat.c', 'projectiles.c','tutorial.c', 'ysearch.c']
 
 #########################################
 ####### CODE BELOW (DO NOT TOUCH) #######

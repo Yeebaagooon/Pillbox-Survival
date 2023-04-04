@@ -18,6 +18,8 @@ active
 highFrequency
 {
 	float dist = 0;
+	int p = 0;
+	int missileclass = 0;
 	vector pos = vector(0,0,0);
 	vector prev = vector(0,0,0);
 	bool ProjDead = false;
@@ -25,16 +27,19 @@ highFrequency
 		ProjDead = false;
 		xDatabaseNext(dMissiles);
 		//Kronny SPeed = 30.0/1000 = 0.03
-		dist = 0.03*(xGetInt(dMissiles, xMissilePrevTime)-xGetInt(dMissiles, xMissileStartTime));
+		p = xGetInt(dMissiles, xOwner);
+		xSetPointer(dPlayerData, p);
+		missileclass = xGetInt(dPlayerData, xCurrentMissile);
+		xSetPointer(dProjectiles, missileclass);
+		dist = 0.001*xGetFloat(dProjectiles, xProjSpeed)*(xGetInt(dMissiles, xMissilePrevTime)-xGetInt(dMissiles, xMissileStartTime));
 		prev = xGetVector(dMissiles, xMissilePos)+xGetVector(dMissiles, xMissileDir)*dist;
-		dist = 0.03*(trTimeMS()-xGetInt(dMissiles, xMissilePrevTime))+1;
+		dist = 0.001*xGetFloat(dProjectiles, xProjSpeed)*(trTimeMS()-xGetInt(dMissiles, xMissilePrevTime))+1;
 		for(b = xGetDatabaseCount(dEnemies); > 0){
 			xDatabaseNext(dEnemies);
 			if(rayCollision(prev, xGetVector(dMissiles, xMissileDir), dist, 1)){
 				xUnitSelect(dEnemies, xUnitID);
-				trDamageUnitPercent(100);
-				debugLog("hit");
-				//DOnt do the two below for multi hit projectiles
+				trDamageUnit(xGetInt(dProjectiles, xProjDamage));
+				//Dont do the two below for multi hit projectiles
 				ProjDead = true;
 				break; //if only hitting one enemy
 			}
@@ -60,21 +65,24 @@ rule MissileChange
 active
 highFrequency
 {
+	int owner = 0;
+	int missileclass = 0;
 	for(a = xGetDatabaseCount(dIncomingMissiles); > 0){
 		xDatabaseNext(dIncomingMissiles);
+		owner = xGetInt(dIncomingMissiles, xOwner);
+		xSetPointer(dPlayerData, owner);
+		missileclass = xGetInt(dPlayerData, xCurrentMissile);
+		xSetPointer(dProjectiles, missileclass);
 		xUnitSelect(dIncomingMissiles, xUnitID);
 		trDamageUnitPercent(-100);
 		xUnitSelect(dIncomingMissiles, xUnitID);
-		trSetSelectedScale(0,0,0);
+		trSetSelectedScale(xGetFloat(dProjectiles, xProjSize),xGetFloat(dProjectiles, xProjSize),xGetFloat(dProjectiles, xProjSize));
 		xUnitSelect(dIncomingMissiles, xUnitID);
-		trUnitOverrideAnimation(2,0,false,false,-1);
-		//2 is default idle
+		trUnitOverrideAnimation(xGetInt(dProjectiles, xProjAnim),0,false,false,-1);
 		xUnitSelect(dIncomingMissiles, xUnitID);
-		trUnitOverrideAnimation(2,0,false,false,-1);
+		trUnitSetAnimationPath(xGetString(dProjectiles, xProjAnimPath));
 		xUnitSelect(dIncomingMissiles, xUnitID);
-		trUnitSetAnimationPath("0,0,0,0,0,0");
-		xUnitSelect(dIncomingMissiles, xUnitID);
-		trMutateSelected(kbGetProtoUnitID("Hero Birth"));
+		trMutateSelected(kbGetProtoUnitID(xGetString(dProjectiles, xProjProto)));
 		xAddDatabaseBlock(dMissiles, true);
 		xSetInt(dMissiles, xUnitID, xGetInt(dIncomingMissiles, xUnitID));
 		xSetInt(dMissiles, xOwner, xGetInt(dIncomingMissiles, xOwner));
@@ -82,6 +90,7 @@ highFrequency
 		xSetVector(dMissiles, xMissileDir, xGetVector(dIncomingMissiles, xMissileDir));
 		xSetInt(dMissiles, xMissileStartTime, trTimeMS());
 		xSetInt(dMissiles, xMissilePrevTime, trTimeMS());
+		xSetInt(dMissiles, xMissileClass, missileclass);
 	}
 	xClearDatabase(dIncomingMissiles);
 }

@@ -149,7 +149,6 @@ inactive
 		UnitCreate(p, "Cinematic Block", p*3, 3, 0);
 		trQuestVarSet("P"+p+"No", temp);
 	}
-	trChatSend(0, "ok");
 }
 
 //[TIMEOUT]

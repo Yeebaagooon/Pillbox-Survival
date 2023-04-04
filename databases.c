@@ -12,6 +12,7 @@ int spyActive = 4;
 int spyAnim = 5;
 
 //PROJECTILE DB
+int xCurrentMissile = 0;
 int xUnitName = 0;
 int xInTower = 0;
 
@@ -21,6 +22,7 @@ int xTowerPos = 0;
 int xOwner = 0;
 
 int dEnemies = 0;
+int xStationary = 0;
 
 int dMissiles = 0;
 int xMissilePos = 0;
@@ -30,6 +32,7 @@ int xMissileDmg = 0;
 int xMissileTime = 0;
 int xMissileStartTime = 0;
 int xMissilePrevTime = 0;
+int xMissileClass = 0;
 
 int dIncomingMissiles = 0;
 int xMissileDest = 0;
@@ -42,6 +45,24 @@ int SpyDone = 0;
 int xIMissileDmg = 0;
 int xIMissileTime = 0;
 
+//PROJ PROPERTIES
+int dProjectiles = 0;
+int xProjClass = 0;
+int xProjProto = 0;
+int xProjDamage = 0;
+int xProjAnim = 0;
+int xProjAnimPath = 0;
+int xProjFireRate = 0;
+int xProjCount = 0;
+int xProjAngle = 0;
+int xProjSpeed = 0;
+int xProjSize = 0;
+int xProjSpecial = 0;
+int xProjSound = 0;
+int xProjName = 0;
+int xProjDesc = 0;
+int xPointer = 0;
+
 
 rule setup_first_databases
 active
@@ -53,6 +74,7 @@ highFrequency
 	xUnitPos = xInitAddVector(dPlayerData, "pos", vector(0,0,0));
 	xTarget = xInitAddInt(dPlayerData, "target id", -1);
 	xInTower = xInitAddBool(dPlayerData, "In tower", false);
+	xCurrentMissile = xInitAddInt(dPlayerData, "current missile", 0);
 	xsDisableSelf();
 	for(p=1; <= cNumberNonGaiaPlayers) {
 		xAddDatabaseBlock(dPlayerData, true);
@@ -65,6 +87,7 @@ highFrequency
 	
 	dEnemies = xInitDatabase("enemy db");
 	xUnitID = xInitAddInt(dEnemies, "unit id", -1);
+	xStationary = xInitAddBool(dEnemies, "no movement", false);
 	
 	dMissiles = xInitDatabase("Missiles DB");
 	xUnitID = xInitAddInt(dMissiles, "missile unit id", -1);
@@ -73,12 +96,30 @@ highFrequency
 	xMissileDir = xInitAddVector(dMissiles, "direction", vector(0,0,0));
 	xMissileStartTime = xInitAddInt(dMissiles, "start time", -1);
 	xMissilePrevTime = xInitAddInt(dMissiles, "start time", -1);
+	xMissileClass = xInitAddInt(dMissiles, "class pointer", 0);
 	
 	dIncomingMissiles = xInitDatabase("Incoming DB");
 	xUnitID = xInitAddInt(dIncomingMissiles, "missile unit id", -1);
 	xOwner = xInitAddInt(dIncomingMissiles, "missile owner", -1);
 	xMissilePos = xInitAddVector(dIncomingMissiles, "position", vector(0,0,0));
 	xMissileDir = xInitAddVector(dIncomingMissiles, "direction", vector(0,0,0));
+	
+	dProjectiles = xInitDatabase("ProjPropers");
+	xProjClass = xInitAddInt(dProjectiles, "class", 0);
+	xProjProto = xInitAddString(dProjectiles, "proto", "Pharaoh Of Osiris XP");
+	xProjDamage = xInitAddInt(dProjectiles, "dmg", 0);
+	xProjAnim = xInitAddInt(dProjectiles, "anim", 0);
+	xProjAnimPath = xInitAddString(dProjectiles, "animpath", "0,0,0,0,0,0");
+	xProjFireRate = xInitAddInt(dProjectiles, "rate", 0);
+	xProjCount = xInitAddInt(dProjectiles, "count", 0);
+	xProjAngle = xInitAddInt(dProjectiles, "angle", 0);
+	xProjSpeed = xInitAddFloat(dProjectiles, "speed", 0.0);
+	xProjSize = xInitAddFloat(dProjectiles, "size", 0.0);
+	xProjSpecial = xInitAddInt(dProjectiles, "special", 0);
+	xProjSound = xInitAddString(dProjectiles, "desc", "cantdothat.wav");
+	xProjName = xInitAddString(dProjectiles, "desc", "Error");
+	xProjDesc = xInitAddString(dProjectiles, "desc", "Error");
+	xPointer = xInitAddInt(dProjectiles, "pointer", 0);
 }
 
 

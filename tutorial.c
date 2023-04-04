@@ -1,3 +1,12 @@
+int SpawnEnemy(string pname="", int x = 0, int z = 0, bool stationary = false){
+	int temp = trGetNextUnitScenarioNameNumber();
+	UnitCreate(cNumberNonGaiaPlayers, "Militia", 25,10,0);
+	xAddDatabaseBlock(dEnemies, true);
+	xSetInt(dEnemies, xUnitID, temp);
+	xSetBool(dEnemies, xStationary, stationary);
+	return(temp);
+}
+
 rule PaintTerrain
 highFrequency
 inactive
@@ -15,6 +24,15 @@ inactive
 	xSetPointer(dPlayerData, 1);
 	xSetInt(dPlayerData, xUnitID, temp);
 	xsEnableRule("ConvertContained");
+	int myPerlin = generatePerlinNoise(100, 5);
+	float height = 0;
+	for(x=0; <= 100) {
+		for(y=0; <= 100) {
+			height = getPerlinNoise(myPerlin, x, y) * 4.0; // you may need to tweak this modifier
+			trChangeTerrainHeight(x, y, x, y, height, false);
+		}
+	}
+	smooth(10);
 }
 
 rule ConvertContained
@@ -39,10 +57,8 @@ inactive
 						//garrison inside
 						xUnitSelect(dPlayerData, xUnitID);
 						trImmediateUnitGarrison(""+xGetInt(dTowers, xUnitID));
-						temp = trGetNextUnitScenarioNameNumber();
-						UnitCreate(cNumberNonGaiaPlayers, "Militia", 25,10,0);
-						xAddDatabaseBlock(dEnemies, true);
-						xSetInt(dEnemies, xUnitID, temp);
+						//temporary spawn enemy to test projectile
+						SpawnEnemy("Militia", 10, 18);
 					}
 				}
 			}
@@ -86,6 +102,7 @@ active
 	int targetid = -1;
 	int towerid = -1;
 	int shotby = 0;
+	int missileclass = 0;
 	//cycle through all towers and find ones under player control
 	for(c = xGetDatabaseCount(dTowers); > 0){
 		xDatabaseNext(dTowers);
@@ -103,9 +120,16 @@ active
 						targetpos = kbGetBlockPosition(""+targetid);
 						startpos = xGetVector(dTowers, xTowerPos);
 						dir = xsVectorNormalize(xsVectorSetY(targetpos-startpos, 0));
-						FireMissile(dir, xGetPointer(dTowers), shotby);
-						trQuestVarSet("tempshoot", trTimeMS()+300);
-						debugLog("Shoot");
+						xSetPointer(dPlayerData, shotby);
+						missileclass = xGetInt(dPlayerData, xMissileClass);
+						xSetPointer(dProjectiles, missileclass);
+						if(xGetInt(dProjectiles, xProjCount) == 1){
+							FireMissile(dir, xGetPointer(dTowers), shotby);
+						}
+						else{
+							debugLog("Multiple projs");
+						}
+						trQuestVarSet("tempshoot", trTimeMS()+xGetInt(dProjectiles, xProjFireRate));
 					}
 				}
 			}
