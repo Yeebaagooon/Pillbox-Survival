@@ -40,6 +40,7 @@ runImmediately
 	trArmyDispatch("0,0", "Cinematic Block", 1, 0, 0, 0, 0, false);
 	for(p = 1; <= cNumberNonGaiaPlayers){
 		deployLocHeading(0, p*2, "Victory Marker", p, 180);
+		trSetCivAndCulture(p, 10, 3); //oranos
 	}
 	trSetFogAndBlackmap(false, false);
 	%
@@ -56,7 +57,7 @@ highFrequency
 {
 	trPlayerKillAllGodPowers(0);
 	for(p = 1; <= cNumberNonGaiaPlayers){
-		trSetCivAndCulture(p, 3, 1);
+		//	trSetCivAndCulture(p, 3, 1);
 		trPlayerGrantResources(p, "Food", -10000.0);
 		trPlayerGrantResources(p, "Wood", -10000.0);
 		trPlayerGrantResources(p, "Gold", -10000.0);
@@ -110,6 +111,7 @@ highFrequency
 		trPlayerSetDiplomacy(cNumberNonGaiaPlayers, p, "Enemy");
 		trPlayerSetDiplomacy(p, cNumberNonGaiaPlayers, "Enemy");
 	}
+	trPlayerSetDiplomacy(0, cNumberNonGaiaPlayers, "Enemy");
 	trTechSetStatus(0, 304, 4);
 }
 

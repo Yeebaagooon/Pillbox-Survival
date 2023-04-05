@@ -26,6 +26,12 @@ void ProjSetFireRate(int num = 1000){
 
 void ProjSetCount(int num = 1){
 	xSetInt(dProjectiles, xProjCount, num);
+	if(num == 1){
+		xSetFloat(dProjectiles, xProjBaseCos, 0.0);
+		xSetFloat(dProjectiles, xProjBaseSin, 0.0);
+		xSetFloat(dProjectiles, xProjMoveCos, 0.0);
+		xSetFloat(dProjectiles, xProjMoveSin, 0.0);
+	}
 }
 
 void ProjSetAngle(int num = 0){
@@ -56,8 +62,30 @@ void ProjSetDesc(string texts = ""){
 	xSetString(dProjectiles, xProjDesc, texts);
 }
 
+void ProjSetAmmoCost(int num = 1){
+	xSetInt(dProjectiles, xProjAmmoCost, num);
+}
+
+void ProjSetBaseCosSin(float num = 0.0, float other = 0.0){
+	xSetFloat(dProjectiles, xProjBaseCos, num);
+	xSetFloat(dProjectiles, xProjBaseSin, other);
+}
+
+void ProjSetMoveCosSin(float num = 0.0, float other = 0.0){
+	xSetFloat(dProjectiles, xProjMoveCos, num);
+	xSetFloat(dProjectiles, xProjMoveSin, other);
+}
+
+void ProjAllowPassThrough(){
+	xSetBool(dProjectiles, xProjPassthrough, true);
+}
+
+void ProjDeathEffect(){
+	xSetBool(dProjectiles, xProjDeathSpecial, true);
+}
+
 rule SetupProjTypes
-active
+inactive
 highFrequency
 {
 	//--BUILD MISSILE --- 0
@@ -65,28 +93,76 @@ highFrequency
 	index = xAddDatabaseBlock(dProjectiles, true);
 	xSetInt(dProjectiles, xPointer, index);
 	ProjSetClass(0);
-	ProjSetName("Standard issue missile");
-	ProjSetDesc("");
+	ProjSetName("Standard bullet");
+	ProjSetDesc("Default projectile");
 	ProjSetProto("Spear");
 	ProjSetAnim(2);
 	ProjSetAnimPath("0,0,0,0,0,0");
 	ProjSetSize(0.4);
-	ProjSetDamage(5);
+	ProjSetDamage(10);
+	ProjSetAmmoCost(1);
 	ProjSetFireRate(1000);
 	ProjSetCount(1);
 	ProjSetAngle(0);
 	ProjSetSpeed(30.0);
 	ProjSetSpecial(0);
 	ProjSetSound("pigout.wav");
+	//ProjAllowPassThrough();
+	//ProjDeathEffect();
+	
+	//--BUILD MISSILE --- 1
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(1);
+	ProjSetName("Standard bullet FF800");
+	ProjSetDesc("Shoots standard bullets at a faster rate");
+	ProjSetProto("Spear");
+	ProjSetAnim(2);
+	ProjSetAnimPath("0,0,0,0,0,0");
+	ProjSetSize(0.4);
+	ProjSetDamage(10);
+	ProjSetAmmoCost(1);
+	ProjSetFireRate(800);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("pigout.wav");
+	//ProjAllowPassThrough();
+	//ProjDeathEffect();
+	
+	
+	//--BUILD MISSILE --- 2
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(2);
+	ProjSetName("Standard missle C3A5");
+	ProjSetDesc("Shoots 3 standard bullets at once with 5 degrees offset");
+	ProjSetProto("Spear");
+	ProjSetAnim(2);
+	ProjSetAnimPath("0,0,0,0,0,0");
+	ProjSetSize(0.4);
+	ProjSetDamage(5);
+	ProjSetAmmoCost(3);
+	ProjSetFireRate(1000);
+	ProjSetCount(3);
+	ProjSetAngle(5);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("pigout.wav");
+	ProjSetBaseCosSin(0.996195, 0.087156); //the initial +cos/sin (+5)
+	ProjSetMoveCosSin(0.996195, -0.087156); //the incremental -cos/sin (-5 for +5,0,-5)
+	//ProjAllowPassThrough();
+	//ProjDeathEffect();
+	
 	
 	//SET INDEX FOR ALL PLAYERS TO DEFAULT MISSILE
 	for(p = 1; < cNumberNonGaiaPlayers){
 		xSetPointer(dPlayerData, p);
 		xSetInt(dPlayerData, xMissileClass, index);
+		xSetInt(dPlayerData, xAmmo, 100);
 	}
 	//END
-	
-	//--BUILD MISSILE --- 1
 	xsDisableSelf();
 }
 

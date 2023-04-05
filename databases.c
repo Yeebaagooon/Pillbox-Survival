@@ -15,6 +15,8 @@ int spyAnim = 5;
 int xCurrentMissile = 0;
 int xUnitName = 0;
 int xInTower = 0;
+int xAmmo = 0;
+int xLastShotTime = 0;
 
 int dTowers = 0;
 int xUnitPos = 0;
@@ -62,6 +64,13 @@ int xProjSound = 0;
 int xProjName = 0;
 int xProjDesc = 0;
 int xPointer = 0;
+int xProjAmmoCost = 0;
+int xProjBaseCos = 0;
+int xProjBaseSin = 0;
+int xProjMoveCos = 0;
+int xProjMoveSin = 0;
+int xProjPassthrough = 0;
+int xProjDeathSpecial = 0;
 
 
 rule setup_first_databases
@@ -75,7 +84,10 @@ highFrequency
 	xTarget = xInitAddInt(dPlayerData, "target id", -1);
 	xInTower = xInitAddBool(dPlayerData, "In tower", false);
 	xCurrentMissile = xInitAddInt(dPlayerData, "current missile", 0);
+	xAmmo = xInitAddInt(dPlayerData, "ammo count", 0);
+	xLastShotTime = xInitAddInt(dPlayerData, "shoot time", 0);
 	xsDisableSelf();
+	xsEnableRule("SetupProjTypes");
 	for(p=1; <= cNumberNonGaiaPlayers) {
 		xAddDatabaseBlock(dPlayerData, true);
 	}
@@ -113,13 +125,20 @@ highFrequency
 	xProjFireRate = xInitAddInt(dProjectiles, "rate", 0);
 	xProjCount = xInitAddInt(dProjectiles, "count", 0);
 	xProjAngle = xInitAddInt(dProjectiles, "angle", 0);
-	xProjSpeed = xInitAddFloat(dProjectiles, "speed", 0.0);
+	xProjSpeed = xInitAddFloat(dProjectiles, "speed", 30.0);
 	xProjSize = xInitAddFloat(dProjectiles, "size", 0.0);
 	xProjSpecial = xInitAddInt(dProjectiles, "special", 0);
 	xProjSound = xInitAddString(dProjectiles, "desc", "cantdothat.wav");
 	xProjName = xInitAddString(dProjectiles, "desc", "Error");
 	xProjDesc = xInitAddString(dProjectiles, "desc", "Error");
 	xPointer = xInitAddInt(dProjectiles, "pointer", 0);
+	xProjAmmoCost = xInitAddInt(dProjectiles, "ammo cost", 1);
+	xProjBaseCos = xInitAddFloat(dProjectiles, "circle stuff", 0.0);
+	xProjBaseSin = xInitAddFloat(dProjectiles, "circle stuff", 0.0);
+	xProjMoveCos = xInitAddFloat(dProjectiles, "circle stuff", 0.0);
+	xProjMoveSin = xInitAddFloat(dProjectiles, "circle stuff", 0.0);
+	xProjPassthrough = xInitAddBool(dProjectiles, "passthrough", false);
+	xProjDeathSpecial = xInitAddBool(dProjectiles, "death effect", false);
 }
 
 

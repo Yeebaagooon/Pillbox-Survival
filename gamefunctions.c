@@ -23,6 +23,7 @@ highFrequency
 	vector pos = vector(0,0,0);
 	vector prev = vector(0,0,0);
 	bool ProjDead = false;
+	bool ProjChange = false;
 	for(a = xsMin(xGetDatabaseCount(dMissiles), cNumberNonGaiaPlayers); > 0){
 		ProjDead = false;
 		xDatabaseNext(dMissiles);
@@ -39,20 +40,46 @@ highFrequency
 			if(rayCollision(prev, xGetVector(dMissiles, xMissileDir), dist, 1)){
 				xUnitSelect(dEnemies, xUnitID);
 				trDamageUnit(xGetInt(dProjectiles, xProjDamage));
+				/*if(xGetInt(dProjectiles, xProjSpecial) == 0){
+					trTechInvokeGodPower(0, "tremor", kbGetBlockPosition(""+xGetInt(dEnemies, xUnitID)), vector(0,0,0));
+				}*/
 				//Dont do the two below for multi hit projectiles
-				ProjDead = true;
-				break; //if only hitting one enemy
+				if(xGetBool(dProjectiles, xProjPassthrough) == false){
+					ProjDead = true;
+					if(xGetBool(dProjectiles, xProjDeathSpecial) == true){
+						ProjChange = false;
+						if(xGetInt(dProjectiles, xProjSpecial) == 1){
+							xUnitSelect(dEnemies, xUnitID);
+							trDamageUnit(-1*xGetInt(dProjectiles, xProjDamage));
+							xUnitSelect(dEnemies, xUnitID);
+							trDamageUnitsInArea(cNumberNonGaiaPlayers, "All", 4, xGetInt(dProjectiles, xProjDamage));
+							xUnitSelect(dMissiles, xUnitID);
+							trUnitChangeProtoUnit("Meteor Impact Ground");
+							xUnitSelect(dMissiles, xUnitID);
+							trDamageUnitPercent(-100);
+						}
+					}
+					break; //if only hitting one enemy
+				}
+				else{
+					debugLog(""+dist);
+					continue;
+					//[BUG, HITS ENEMY MULTIPLE TIMES]
+				}
 			}
 		}
 		//Projectile timeout
 		if(trTimeMS() > xGetInt(dMissiles, xMissileStartTime)+1000){
 			ProjDead = true;
+			ProjChange = true;
 		}
 		if(ProjDead){
-			xUnitSelect(dMissiles, xUnitID);
-			trUnitChangeProtoUnit("Dust Small");
-			xUnitSelect(dMissiles, xUnitID);
-			trDamageUnitPercent(-100);
+			if(ProjChange){
+				xUnitSelect(dMissiles, xUnitID);
+				trUnitChangeProtoUnit("Dust Small");
+				xUnitSelect(dMissiles, xUnitID);
+				trDamageUnitPercent(-100);
+			}
 			xFreeDatabaseBlock(dMissiles);
 		}
 		else{

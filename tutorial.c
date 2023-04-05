@@ -1,29 +1,34 @@
 int SpawnEnemy(string pname="", int x = 0, int z = 0, bool stationary = false){
 	int temp = trGetNextUnitScenarioNameNumber();
-	UnitCreate(cNumberNonGaiaPlayers, "Militia", 25,10,0);
+	UnitCreate(cNumberNonGaiaPlayers, "Militia", x,z,0);
 	xAddDatabaseBlock(dEnemies, true);
 	xSetInt(dEnemies, xUnitID, temp);
 	xSetBool(dEnemies, xStationary, stationary);
 	return(temp);
 }
 
-rule PaintTerrain
-highFrequency
-inactive
-{
-	xsDisableSelf();
+void CreatePillBox(int x = 0, int z = 0, int heading = 0){
 	int temp = 0;
 	temp = trGetNextUnitScenarioNameNumber();
-	UnitCreate(0, "Tower", 10, 10);
+	UnitCreate(0, "Tower", x, z, heading);
 	xAddDatabaseBlock(dTowers, true);
 	xSetInt(dTowers, xUnitID, temp);
 	xSetVector(dTowers, xTowerPos, kbGetBlockPosition(""+temp));
 	xSetInt(dTowers, xOwner, 0);
+}
+
+rule PaintTerrain
+highFrequency
+inactive
+{
+	int temp = 0;
+	xsDisableSelf();
+	CreatePillBox(10,10);
 	temp = trGetNextUnitScenarioNameNumber();
 	UnitCreate(1, "Hero Norse", 10, 10);
 	xSetPointer(dPlayerData, 1);
 	xSetInt(dPlayerData, xUnitID, temp);
-	xsEnableRule("ConvertContained");
+	xsEnableRule("GameTowerGarrison");
 	int myPerlin = generatePerlinNoise(100, 5);
 	float height = 0;
 	for(x=0; <= 100) {
@@ -35,11 +40,12 @@ inactive
 	smooth(10);
 }
 
-rule ConvertContained
+rule GameTowerGarrison
 highFrequency
 inactive
 {
 	int temp = 0;
+	int missileclass = 0;
 	for(p = 1; < cNumberNonGaiaPlayers){
 		xSetPointer(dPlayerData, p);
 		xUnitSelect(dPlayerData, xUnitID);
@@ -58,7 +64,26 @@ inactive
 						xUnitSelect(dPlayerData, xUnitID);
 						trImmediateUnitGarrison(""+xGetInt(dTowers, xUnitID));
 						//temporary spawn enemy to test projectile
-						SpawnEnemy("Militia", 10, 18);
+						for(a = 1; < 10){
+							SpawnEnemy("Militia", 10+a, 18);
+						}
+						//dialog
+						missileclass = xGetInt(dPlayerData, xCurrentMissile);
+						xSetPointer(dProjectiles, missileclass);
+						if(xGetInt(dProjectiles, xProjAmmoCost) <= xGetInt(dPlayerData, xAmmo)){
+							if(trCurrentPlayer() == p){
+								uiZoomToProto("Tower");
+								//uiLookAtProto("Tower");
+								characterDialog("Firing " + xGetString(dProjectiles, xProjName), "Ammo remaining - " + xGetInt(dPlayerData, xAmmo), "");
+							}
+						}
+						else{
+							//Not enough ammo
+							if(trCurrentPlayer() == p){
+								characterDialog("Not enough ammo to fire " + xGetString(dProjectiles, xProjName), "Ammo - " + xGetInt(dPlayerData, xAmmo) + "/" + xGetInt(dProjectiles, xProjAmmoCost), "");
+								playSound("cantdothat.wav");
+							}
+						}
 					}
 				}
 			}
@@ -72,6 +97,9 @@ inactive
 						xUnitSelect(dTowers, xUnitID);
 						trUnitConvert(0);
 						xSetInt(dTowers, xOwner, 0);
+						if(trCurrentPlayer() == p){
+							trLetterBox(false);
+						}
 					}
 				}
 			}
@@ -88,6 +116,13 @@ active
 		xUnitSelect(dEnemies, xUnitID);
 		if(trUnitAlive() == false){
 			xFreeDatabaseBlock(dEnemies);
+		}
+	}
+	for(i = xsMin(xGetDatabaseCount(dTowers), cNumberNonGaiaPlayers); > 0){
+		xDatabaseNext(dTowers);
+		xUnitSelect(dTowers, xUnitID);
+		if(trUnitAlive() == false){
+			xFreeDatabaseBlock(dTowers);
 		}
 	}
 }
@@ -107,7 +142,8 @@ active
 	for(c = xGetDatabaseCount(dTowers); > 0){
 		xDatabaseNext(dTowers);
 		if(xGetInt(dTowers, xOwner) > 0){
-			if(trTimeMS() >= trQuestVarGet("tempshoot")){
+			xSetPointer(dPlayerData, xGetInt(dTowers, xOwner));
+			if(trTimeMS() >= xGetInt(dPlayerData, xLastShotTime)){
 				shotby = xGetInt(dTowers, xOwner);
 				towerid = xGetInt(dTowers, xUnitID);
 				xsSetContextPlayer(shotby);
@@ -121,15 +157,38 @@ active
 						startpos = xGetVector(dTowers, xTowerPos);
 						dir = xsVectorNormalize(xsVectorSetY(targetpos-startpos, 0));
 						xSetPointer(dPlayerData, shotby);
-						missileclass = xGetInt(dPlayerData, xMissileClass);
+						missileclass = xGetInt(dPlayerData, xCurrentMissile);
 						xSetPointer(dProjectiles, missileclass);
-						if(xGetInt(dProjectiles, xProjCount) == 1){
-							FireMissile(dir, xGetPointer(dTowers), shotby);
+						if(xGetInt(dProjectiles, xProjAmmoCost) <= xGetInt(dPlayerData, xAmmo)){
+							//ENOUGH AMMO - FIRE
+							if(xGetInt(dProjectiles, xProjCount) == 1){
+								FireMissile(dir, xGetPointer(dTowers), shotby);
+								xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)-xGetInt(dProjectiles, xProjAmmoCost));
+								if(trCurrentPlayer() == shotby){
+									characterDialog("Firing " + xGetString(dProjectiles, xProjName), "Ammo remaining - " + xGetInt(dPlayerData, xAmmo), "");
+								}
+							}
+							else{
+								// FIRE MULTIPLE PROJECTILES
+								dir = rotationMatrix(dir, xGetFloat(dProjectiles, xProjBaseCos), xGetFloat(dProjectiles, xProjBaseSin));
+								for(shots = 0; < xGetInt(dProjectiles, xProjCount)){
+									FireMissile(dir, xGetPointer(dTowers), shotby);
+									dir = rotationMatrix(dir, xGetFloat(dProjectiles, xProjMoveCos), xGetFloat(dProjectiles, xProjMoveSin));
+								}
+								xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)-xGetInt(dProjectiles, xProjAmmoCost));
+								if(trCurrentPlayer() == shotby){
+									characterDialog("Firing " + xGetString(dProjectiles, xProjName), "Ammo remaining - " + xGetInt(dPlayerData, xAmmo), "");
+								}
+							}
+							// playSound(""+xGetString(dProjectiles, xProjSound));
+							xSetInt(dPlayerData, xLastShotTime, trTimeMS()+xGetInt(dProjectiles, xProjFireRate));
 						}
 						else{
-							debugLog("Multiple projs");
+							//NOT ENOUGH AMMO
+							if(trCurrentPlayer() == shotby){
+								characterDialog("Not enough ammo to fire " + xGetString(dProjectiles, xProjName), "Ammo - " + xGetInt(dPlayerData, xAmmo) + "/" + xGetInt(dProjectiles, xProjAmmoCost), "");
+							}
 						}
-						trQuestVarSet("tempshoot", trTimeMS()+xGetInt(dProjectiles, xProjFireRate));
 					}
 				}
 			}
