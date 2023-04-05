@@ -106,7 +106,7 @@ highFrequency
 	ProjSetAngle(0);
 	ProjSetSpeed(30.0);
 	ProjSetSpecial(0);
-	ProjSetSound("pigout.wav");
+	ProjSetSound("arrow" + iModulo(4, (trTime())+1) + ".wav");
 	//ProjAllowPassThrough();
 	//ProjDeathEffect();
 	
@@ -127,7 +127,7 @@ highFrequency
 	ProjSetAngle(0);
 	ProjSetSpeed(30.0);
 	ProjSetSpecial(0);
-	ProjSetSound("pigout.wav");
+	ProjSetSound("arrow" + iModulo(4, (trTime())+1) + ".wav");
 	//ProjAllowPassThrough();
 	//ProjDeathEffect();
 	
@@ -149,7 +149,7 @@ highFrequency
 	ProjSetAngle(5);
 	ProjSetSpeed(30.0);
 	ProjSetSpecial(0);
-	ProjSetSound("pigout.wav");
+	ProjSetSound("arrow" + iModulo(4, (trTime())+1) + ".wav");
 	ProjSetBaseCosSin(0.996195, 0.087156); //the initial +cos/sin (+5)
 	ProjSetMoveCosSin(0.996195, -0.087156); //the incremental -cos/sin (-5 for +5,0,-5)
 	//ProjAllowPassThrough();
@@ -184,4 +184,32 @@ Relics
 
 ?LOS/Range
 
+*/
+
+
+//NOTTUD DEPLOY OUT OF LOS
+/*
+int deployRandomLocOutOfLOS(string unit = "", int p = 0){
+	while(true){
+		int nextUnitName = trGetNextUnitScenarioNameNumber();
+		vector deployLocation = pickRandomUnblockedLocation();
+		deployLoc(xsVectorGetX(deployLocation), xsVectorGetZ(deployLocation), unit, p);
+		if(trGetNextUnitScenarioNameNumber() == nextUnitName){
+			continue;
+		}
+		trUnitSelectClear();
+		trUnitSelect(""+nextUnitName);
+		bool inLOS = false;
+		for(q = 1; <= "+h+"){
+			if(trUnitHasLOS(q) && getPlayerDead(q) == false){
+				trUnitDestroy();
+				inLOS = true;
+				break;
+			}
+		}
+		if(inLOS == false){
+			return (nextUnitName);
+		}
+	}
+}
 */

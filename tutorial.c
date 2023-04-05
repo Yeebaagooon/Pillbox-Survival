@@ -180,7 +180,11 @@ active
 									characterDialog("Firing " + xGetString(dProjectiles, xProjName), "Ammo remaining - " + xGetInt(dPlayerData, xAmmo), "");
 								}
 							}
-							// playSound(""+xGetString(dProjectiles, xProjSound));
+							//[SOUND LOS]
+							xUnitSelect(dTowers, xUnitID);
+							if(trUnitVisToPlayer()){
+								playSound(""+xGetString(dProjectiles, xProjSound));
+							}
 							xSetInt(dPlayerData, xLastShotTime, trTimeMS()+xGetInt(dProjectiles, xProjFireRate));
 						}
 						else{
