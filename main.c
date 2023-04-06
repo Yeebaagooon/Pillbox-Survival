@@ -92,4 +92,6 @@ for(i = 0; < 700){
 		rmBuildArea(id);
 	}
 }
+
 */
+

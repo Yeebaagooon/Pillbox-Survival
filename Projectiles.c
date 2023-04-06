@@ -114,7 +114,7 @@ highFrequency
 	index = xAddDatabaseBlock(dProjectiles, true);
 	xSetInt(dProjectiles, xPointer, index);
 	ProjSetClass(1);
-	ProjSetName("Standard bullet FF800");
+	ProjSetName("Rapid fire");
 	ProjSetDesc("Shoots standard bullets at a faster rate");
 	ProjSetProto("Spear");
 	ProjSetAnim(2);
@@ -136,7 +136,7 @@ highFrequency
 	index = xAddDatabaseBlock(dProjectiles, true);
 	xSetInt(dProjectiles, xPointer, index);
 	ProjSetClass(2);
-	ProjSetName("Standard missle C3A5");
+	ProjSetName("Triple shot");
 	ProjSetDesc("Shoots 3 standard bullets at once with 5 degrees offset");
 	ProjSetProto("Spear");
 	ProjSetAnim(2);
