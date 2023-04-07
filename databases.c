@@ -22,6 +22,7 @@ int dTowers = 0;
 int xUnitPos = 0;
 int xTowerPos = 0;
 int xOwner = 0;
+int xTowerSFXID = 0;
 
 int dEnemies = 0;
 int xStationary = 0;
@@ -47,6 +48,15 @@ int SpyDone = 0;
 int xIMissileDmg = 0;
 int xIMissileTime = 0;
 
+//RELICS
+int dHeldRelics = 0;
+int dFreeRelics = 0;
+int xProjType = 0;
+int xSFXID = 0;
+int xSFXProto = 0;
+int xSFXExtra = 0;
+int xProjPointer = 0;
+
 //PROJ PROPERTIES
 int dProjectiles = 0;
 int xProjClass = 0;
@@ -71,6 +81,11 @@ int xProjMoveCos = 0;
 int xProjMoveSin = 0;
 int xProjPassthrough = 0;
 int xProjDeathSpecial = 0;
+int xProjUse = 0;
+int xProjRelicSFX = 0;
+int xProjRelicSpecial = 0;
+int xProjRelicAnimPath = 0;
+int xProjTowerProto = 0;
 
 
 rule setup_first_databases
@@ -96,6 +111,7 @@ highFrequency
 	xUnitID = xInitAddInt(dTowers, "unit id", -1);
 	xOwner = xInitAddInt(dTowers, "owner", 0);
 	xTowerPos = xInitAddVector(dTowers, "pos", vector(0,0,0));
+	xTowerSFXID = xInitAddInt(dTowers, "special unit id", -1);
 	
 	dEnemies = xInitDatabase("enemy db");
 	xUnitID = xInitAddInt(dEnemies, "unit id", -1);
@@ -139,6 +155,27 @@ highFrequency
 	xProjMoveSin = xInitAddFloat(dProjectiles, "circle stuff", 0.0);
 	xProjPassthrough = xInitAddBool(dProjectiles, "passthrough", false);
 	xProjDeathSpecial = xInitAddBool(dProjectiles, "death effect", false);
+	xProjUse = xInitAddBool(dProjectiles, "use proj", true);
+	xProjRelicSFX = xInitAddString(dProjectiles, "relicproto", "Error");
+	xProjRelicSpecial = xInitAddInt(dProjectiles, "specialrelic", 0);
+	xProjRelicAnimPath = xInitAddString(dProjectiles, "ranimpath", "0,0,0,0,0,0");
+	xProjTowerProto  = xInitAddString(dProjectiles, "towerdecor", "Cinematic Block");
+	
+	dHeldRelics = xInitDatabase("held relics");
+	xUnitID = xInitAddInt(dHeldRelics, "relic id", -1);
+	xProjType = xInitAddInt(dHeldRelics, "missile type", -1);
+	xSFXID = xInitAddInt(dHeldRelics, "id of unit", -1);
+	xSFXProto = xInitAddString(dHeldRelics, "proto of", "error");
+	xSFXExtra = xInitAddInt(dHeldRelics, "protoanim", -1);
+	xProjPointer = xInitAddInt(dHeldRelics, "m pointer", 0);
+	
+	dFreeRelics = xInitDatabase("Free relics");
+	xUnitID = xInitAddInt(dFreeRelics, "relic id", -1);
+	xProjType = xInitAddInt(dFreeRelics, "missile type", -1);
+	xSFXID = xInitAddInt(dFreeRelics, "id of unit", -1);
+	xSFXProto = xInitAddString(dFreeRelics, "proto of", "error");
+	xSFXExtra = xInitAddInt(dFreeRelics, "protoanim", -1);
+	xProjPointer = xInitAddInt(dFreeRelics, "m pointer", 0);
 }
 
 

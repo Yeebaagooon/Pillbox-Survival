@@ -10,11 +10,21 @@ int SpawnEnemy(string pname="", int x = 0, int z = 0, bool stationary = false){
 void CreatePillBox(int x = 0, int z = 0, int heading = 0){
 	int temp = 0;
 	temp = trGetNextUnitScenarioNameNumber();
-	UnitCreate(0, "Tower", x, z, heading);
+	UnitCreate(0, "Dwarf", x, z, heading);
 	xAddDatabaseBlock(dTowers, true);
 	xSetInt(dTowers, xUnitID, temp);
 	xSetVector(dTowers, xTowerPos, kbGetBlockPosition(""+temp));
 	xSetInt(dTowers, xOwner, 0);
+	trUnitSelectClear();
+	trUnitSelect(""+temp);
+	trUnitChangeProtoUnit("Titan Atlantean");
+	trUnitSelectClear();
+	trUnitSelect(""+temp);
+	trUnitChangeProtoUnit("Tower");
+	trUnitSelectClear();
+	trUnitSelect(""+(temp+2));
+	trUnitChangeProtoUnit("Cinematic Block");
+	xSetInt(dTowers, xTowerSFXID, temp+2);
 }
 
 rule PaintTerrain
@@ -38,6 +48,8 @@ inactive
 		}
 	}
 	smooth(10);
+	DeployRelic(5,5);
+	DeployRelic(5,15);
 }
 
 rule GameTowerGarrison
@@ -70,6 +82,10 @@ inactive
 						//dialog
 						missileclass = xGetInt(dPlayerData, xCurrentMissile);
 						xSetPointer(dProjectiles, missileclass);
+						xUnitSelect(dTowers, xTowerSFXID);
+						trUnitChangeProtoUnit("Spy Eye");
+						xUnitSelect(dTowers, xTowerSFXID);
+						trMutateSelected(kbGetProtoUnitID(xGetString(dProjectiles, xProjTowerProto)));
 						if(xGetInt(dProjectiles, xProjAmmoCost) <= xGetInt(dPlayerData, xAmmo)){
 							if(trCurrentPlayer() == p){
 								uiZoomToProto("Tower");
@@ -97,6 +113,8 @@ inactive
 						xUnitSelect(dTowers, xUnitID);
 						trUnitConvert(0);
 						xSetInt(dTowers, xOwner, 0);
+						xUnitSelect(dTowers, xTowerSFXID);
+						trUnitChangeProtoUnit("Cinematic Block");
 						if(trCurrentPlayer() == p){
 							trLetterBox(false);
 						}
@@ -161,19 +179,37 @@ active
 						xSetPointer(dProjectiles, missileclass);
 						if(xGetInt(dProjectiles, xProjAmmoCost) <= xGetInt(dPlayerData, xAmmo)){
 							//ENOUGH AMMO - FIRE
-							if(xGetInt(dProjectiles, xProjCount) == 1){
-								FireMissile(dir, xGetPointer(dTowers), shotby);
-								xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)-xGetInt(dProjectiles, xProjAmmoCost));
-								if(trCurrentPlayer() == shotby){
-									characterDialog("Firing " + xGetString(dProjectiles, xProjName), "Ammo remaining - " + xGetInt(dPlayerData, xAmmo), "");
+							if(xGetBool(dProjectiles, xProjUse)){
+								if(xGetInt(dProjectiles, xProjCount) == 1){
+									FireMissile(dir, xGetPointer(dTowers), shotby);
+									xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)-xGetInt(dProjectiles, xProjAmmoCost));
+									if(trCurrentPlayer() == shotby){
+										characterDialog("Firing " + xGetString(dProjectiles, xProjName), "Ammo remaining - " + xGetInt(dPlayerData, xAmmo), "");
+									}
+								}
+								else{
+									// FIRE MULTIPLE PROJECTILES
+									dir = rotationMatrix(dir, xGetFloat(dProjectiles, xProjBaseCos), xGetFloat(dProjectiles, xProjBaseSin));
+									for(shots = 0; < xGetInt(dProjectiles, xProjCount)){
+										FireMissile(dir, xGetPointer(dTowers), shotby);
+										dir = rotationMatrix(dir, xGetFloat(dProjectiles, xProjMoveCos), xGetFloat(dProjectiles, xProjMoveSin));
+									}
+									xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)-xGetInt(dProjectiles, xProjAmmoCost));
+									if(trCurrentPlayer() == shotby){
+										characterDialog("Firing " + xGetString(dProjectiles, xProjName), "Ammo remaining - " + xGetInt(dPlayerData, xAmmo), "");
+									}
 								}
 							}
 							else{
-								// FIRE MULTIPLE PROJECTILES
-								dir = rotationMatrix(dir, xGetFloat(dProjectiles, xProjBaseCos), xGetFloat(dProjectiles, xProjBaseSin));
-								for(shots = 0; < xGetInt(dProjectiles, xProjCount)){
-									FireMissile(dir, xGetPointer(dTowers), shotby);
-									dir = rotationMatrix(dir, xGetFloat(dProjectiles, xProjMoveCos), xGetFloat(dProjectiles, xProjMoveSin));
+								//NO PROJ SHOOTER
+								if(xGetInt(dProjectiles, xProjClass) == 3){
+									//Bolter
+									trUnitSelectClear();
+									trUnitSelect(""+targetid);
+									trTechInvokeGodPower(0, "Bolt", vector(0,0,0), vector(0,0,0));
+									trUnitSelectClear();
+									trUnitSelect(""+targetid);
+									trDamageUnit(xGetInt(dProjectiles, xProjDamage));
 								}
 								xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)-xGetInt(dProjectiles, xProjAmmoCost));
 								if(trCurrentPlayer() == shotby){

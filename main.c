@@ -1,5 +1,4 @@
 rmSetStatusText("",0.01);
-//int MapSize = 100;
 rmSetMapSize(200,200);
 rmSetSeaLevel(0);
 rmSetSeaType("greek river");
@@ -8,90 +7,230 @@ rmSetLightingSet("Dawn");
 rmSetGaiaCiv(cCivIsis);
 
 /*
+// Define some constants
+//int i	= 0;
 int id = 0;
-int skin = 2;
-int r = 0;
-//skin = rmRandInt(1,1);
-// 0==eggy, 1==greek, 2==norse, 3==atlantean
-for(i = 0; < 700){
-	id = rmCreateArea("terrainmix"+i);
-	if(skin == 0){
-		rmSetGaiaCiv(cCivIsis);
-		r = rmRandInt(0,8);
-		if(r == 0)rmSetAreaTerrainType(id,"SandB");
-		if(r == 1)rmSetAreaTerrainType(id,"CoralD");
-		if(r == 2)rmSetAreaTerrainType(id,"SavannahA");
-		if(r == 3)rmSetAreaTerrainType(id,"SavannahD");
-		if(r == 4)rmSetAreaTerrainType(id,"DirtA");
-		if(r == 5)rmSetAreaTerrainType(id,"EgyptianRoadA");
-		if(r == 6)rmSetAreaTerrainType(id,"ForestFloorPalm");
-		if(r == 7)rmSetAreaTerrainType(id,"SandD");
-		if(r == 8)rmSetAreaTerrainType(id,"ForestFloorSavannah");
-		rmSetAreaBaseHeight(id,rmRandFloat(1,5));
-		rmSetAreaCoherence(id,0.5);
-		rmSetAreaHeightBlend(id,1.45);
-		rmSetAreaSize(id,0.001,0.01);
-		rmSetAreaSmoothDistance(id,rmRandInt(0,10));
-		rmBuildArea(id);
+// DONE_DEFINE_CONSTANTS
+
+id = rmCreateArea("areaAll");
+rmSetAreaTerrainType(id,"BlackRock");
+rmSetAreaBaseHeight(id,10);
+rmSetAreaCoherence(id,1.0);
+rmSetAreaHeightBlend(id,10);
+rmSetAreaLocation(id,0.5,0.5);
+setAreaFractionSize(id,1.0);
+rmSetAreaSmoothDistance(id,5);
+rmBuildArea(id);
+
+//Place players
+
+id = rmCreateArea("playerArea");
+rmSetAreaTerrainType(id,"OlympusTile");
+rmSetAreaBaseHeight(id,2.0);
+rmSetAreaCoherence(id,1.0);
+rmSetAreaHeightBlend(id,10);
+rmSetAreaLocation(id,0.5,0.5);
+setAreaAbsoluteSize(id,4000);
+rmSetAreaSmoothDistance(id,5);
+rmBuildArea(id);
+
+//Create the biome areas
+int biomeClass = rmDefineClass("biome");
+int biomeAvoid = rmCreateClassDistanceConstraint("biomeAvoid", biomeClass, 0.000001);
+
+float covered = 0.0;
+
+int i = 0;
+while(covered < 0.8 && i < 20){
+	id = rmCreateArea("areaBiome"+i);
+	float biomeSize = randomFloatWeighted(0.04, 0.2, 2);
+	setBiomeSize(i, biomeSize);
+	covered = covered + biomeSize;
+	setAreaFractionSize(id,biomeSize);
+	int biome = rmRandInt(0, 7);
+	setBiomeIndex(i, biome);
+	if(biome == 0){
+		rmSetAreaTerrainType(id,"GrassA");
+	} else if(biome == 1){
+		rmSetAreaTerrainType(id,"GrassB");
+	} else if(biome == 2){
+		rmSetAreaTerrainType(id,"TundraGrassA");
+	} else if(biome == 3){
+		rmSetAreaTerrainType(id,"SnowB");
+	} else if(biome == 4){
+		rmSetAreaTerrainType(id,"SandC");
+	} else if(biome == 5){
+		rmSetAreaTerrainType(id,"SavannahA");
+	} else if(biome == 6){
+		rmSetAreaTerrainType(id,"MarshC");
+	} else if(biome == 7){
+		rmSetAreaTerrainType(id,"JungleDirt50");
 	}
-	if(skin == 1){
-		rmSetGaiaCiv(cCivZeus);
-		r = rmRandInt(0,8);
-		if(r == 0)rmSetAreaTerrainType(id,"CliffGreekB");
-		if(r == 1)rmSetAreaTerrainType(id,"RiverGrassyC");
-		if(r == 2)rmSetAreaTerrainType(id,"MarshF");
-		if(r == 3)rmSetAreaTerrainType(id,"JungleA");
-		if(r == 4)rmSetAreaTerrainType(id,"GrassDirt25");
-		if(r == 5)rmSetAreaTerrainType(id,"GrassDirt50");
-		if(r == 6)rmSetAreaTerrainType(id,"ForestFloorOak");
-		if(r == 7)rmSetAreaTerrainType(id,"GrassA");
-		if(r == 8)rmSetAreaTerrainType(id,"ForestFloorPine");
-		rmSetAreaBaseHeight(id,rmRandFloat(1,5));
-		rmSetAreaCoherence(id,0.5);
-		rmSetAreaHeightBlend(id,1.45);
-		rmSetAreaSize(id,0.001,0.01);
-		rmSetAreaSmoothDistance(id,rmRandInt(0,10));
-		rmBuildArea(id);
-	}
-	if(skin == 2){
-		rmSetGaiaCiv(cCivThor);
-		r = rmRandInt(0,8);
-		if(r == 0)rmSetAreaTerrainType(id,"IceA"); //5,0
-		if(r == 1)rmSetAreaTerrainType(id,"SnowB"); //0,42
-		if(r == 2)rmSetAreaTerrainType(id,"ShorelineAtlanticB"); //4,15
-		if(r == 3)rmSetAreaTerrainType(id,"OlympusA"); //0,50
-		if(r == 4)rmSetAreaTerrainType(id,"TundraGrassA"); //0,54
-		if(r == 5)rmSetAreaTerrainType(id,"TundraRockB"); //0,57
-		if(r == 6)rmSetAreaTerrainType(id,"OlympusB"); //0,51
-		if(r == 7)rmSetAreaTerrainType(id,"ForestFloorTundra"); //0,93
-		if(r == 8)rmSetAreaTerrainType(id,"ForestFloorPineSnow"); //0,88
-		rmSetAreaBaseHeight(id,rmRandFloat(1,5));
-		rmSetAreaCoherence(id,0.5);
-		rmSetAreaHeightBlend(id,1.45);
-		rmSetAreaSize(id,0.001,0.01);
-		rmSetAreaSmoothDistance(id,rmRandInt(0,10));
-		rmBuildArea(id);
-	}
-	if(skin == 3){
-		rmSetGaiaCiv(cCivOuranos);
-		r = rmRandInt(0,8);
-		if(r == 0)rmSetAreaTerrainType(id,"MarshA"); //0-58
-		if(r == 1)rmSetAreaTerrainType(id,"MarshC"); //0-60
-		if(r == 2)rmSetAreaTerrainType(id,"GaiaCreepA"); //0-8
-		if(r == 3)rmSetAreaTerrainType(id,"GaiaCreepB"); //0-1
-		if(r == 4)rmSetAreaTerrainType(id,"GrassB"); //0,54
-		if(r == 5)rmSetAreaTerrainType(id,"RiverGrassyC");
-		if(r == 6)rmSetAreaTerrainType(id,"RiverMarshC"); //4-40
-		if(r == 7)rmSetAreaTerrainType(id,"ForestFloorGaia"); //0-90
-		if(r == 8)rmSetAreaTerrainType(id,"ForestFloorMarsh"); //0-94
-		rmSetAreaBaseHeight(id,rmRandFloat(1,5));
-		rmSetAreaCoherence(id,0.5);
-		rmSetAreaHeightBlend(id,1.45);
-		rmSetAreaSize(id,0.001,0.01);
-		rmSetAreaSmoothDistance(id,rmRandInt(0,10));
-		rmBuildArea(id);
+	rmSetAreaBaseHeight(id, 2.0);
+	rmSetAreaHeightBlend(id, 1);
+	rmAddAreaToClass(id, biomeClass);
+	rmAddAreaConstraint(id, biomeAvoid);
+	i = i + 1;
+}
+int biomeCount = i;
+
+rmBuildAllAreas();
+
+int playerAvoid = rmCreateAreaDistanceConstraint("playerAvoid", rmAreaID("playerArea"), 0.000001);
+
+//Fill biomes
+
+int avoidImpassable = rmCreateTerrainDistanceConstraint("avoidImpassable", "Land", false, 0.000001);
+
+for(i = 0; < biomeCount){
+	float biomeSize = getBiomeSize(i);
+	int biome = getBiomeIndex(i);
+	int areaId = rmAreaID("areaBiome"+i);
+	int insideBiome = rmCreateAreaConstraint("insideBiome"+i, areaId);
+	if(biome == 0){
+		for(j = 0; < 100 * biomeSize){
+			id = rmCreateArea("biomeCliff"+i+"i"+j);
+			rmSetAreaCliffType(id, "Greek");
+			rmSetAreaCliffPainting(id, true, false, true, 0.5, false);
+			rmSetAreaCliffEdge(id, 1, 1.0, 0.0, 1.0, 0);
+			rmSetAreaCliffHeight(id, 4.0, 4.0);
+			setAreaFractionSize(id, 0.001);
+			rmAddAreaConstraint(id, playerAvoid);
+			rmAddAreaConstraint(id, insideBiome);
+			rmBuildArea(id);
+		}
+		for(j = 0; < 400 * biomeSize){
+			id = rmCreateArea("biomeForest"+i+"i"+j);
+			rmSetAreaForestType(id, "Autumn Oak Forest");
+			setAreaFractionSize(id, 0.001);
+			rmAddAreaConstraint(id, playerAvoid);
+			rmAddAreaConstraint(id, insideBiome);
+			rmAddAreaConstraint(id, avoidImpassable);
+			rmBuildArea(id);
+		}
+	} else if(biome == 1){
+		for(j = 0; < 400 * biomeSize){
+			id = rmCreateArea("biomeForest"+i+"i"+j);
+			rmSetAreaForestType(id, "Pine Forest");
+			setAreaFractionSize(id, 0.002);
+			rmAddAreaConstraint(id, playerAvoid);
+			rmAddAreaConstraint(id, insideBiome);
+			rmAddAreaConstraint(id, avoidImpassable);
+			rmBuildArea(id);
+		}
+	} else if(biome == 2){
+		for(j = 0; < 100 * biomeSize){
+			id = rmCreateArea("biomeCliff"+i+"i"+j);
+			rmSetAreaCliffType(id, "Norse");
+			rmSetAreaCliffPainting(id, true, false, true, 0.5, false);
+			rmSetAreaCliffEdge(id, 1, 1.0, 0.0, 1.0, 0);
+			rmSetAreaCliffHeight(id, 4.0, 2.0);
+			setAreaFractionSize(id, 0.001);
+			rmAddAreaConstraint(id, playerAvoid);
+			rmAddAreaConstraint(id, insideBiome);
+			rmBuildArea(id);
+		}
+		for(j = 0; < 400 * biomeSize){
+			id = rmCreateArea("biomeForest"+i+"i"+j);
+			rmSetAreaForestType(id, "Tundra Forest");
+			setAreaFractionSize(id, 0.0001);
+			rmAddAreaConstraint(id, playerAvoid);
+			rmAddAreaConstraint(id, insideBiome);
+			rmAddAreaConstraint(id, avoidImpassable);
+			rmBuildArea(id);
+		}
+	} else if(biome == 3){
+		for(j = 0; < 100 * biomeSize){
+			id = rmCreateArea("biomeCliff"+i+"i"+j);
+			rmSetAreaCliffType(id, "Norse");
+			rmSetAreaCliffPainting(id, true, false, true, 0.5, false);
+			rmSetAreaCliffEdge(id, 1, 0.5, 0.0, 1.0, 0);
+			rmSetAreaCliffHeight(id, 10.0, 8.0);
+			setAreaFractionSize(id, 0.004);
+			rmAddAreaConstraint(id, playerAvoid);
+			rmAddAreaConstraint(id, insideBiome);
+			rmBuildArea(id);
+		}
+		for(j = 0; < 200 * biomeSize){
+			id = rmCreateArea("biomeForest"+i+"i"+j);
+			rmSetAreaForestType(id, "Snow Pine Forest");
+			setAreaFractionSize(id, 0.002);
+			rmAddAreaConstraint(id, playerAvoid);
+			rmAddAreaConstraint(id, insideBiome);
+			rmAddAreaConstraint(id, avoidImpassable);
+			rmBuildArea(id);
+		}
+	} else if(biome == 4){
+		for(j = 0; < 100 * biomeSize){
+			id = rmCreateArea("biomeCliff"+i+"i"+j);
+			rmSetAreaCliffType(id, "Egyptian");
+			rmSetAreaCliffPainting(id, true, false, true, 0.5, false);
+			rmSetAreaCliffEdge(id, 1, 1.0, 0.0, 1.0, 0);
+			rmSetAreaCliffHeight(id, 0.0, 5.0);
+			setAreaFractionSize(id, 0.001);
+			rmAddAreaConstraint(id, playerAvoid);
+			rmAddAreaConstraint(id, insideBiome);
+			rmBuildArea(id);
+		}
+		for(j = 0; < 400 * biomeSize){
+			id = rmCreateArea("biomeForest"+i+"i"+j);
+			rmSetAreaForestType(id, "Palm Forest");
+			setAreaFractionSize(id, 0.0001);
+			rmAddAreaConstraint(id, playerAvoid);
+			rmAddAreaConstraint(id, insideBiome);
+			rmAddAreaConstraint(id, avoidImpassable);
+			rmBuildArea(id);
+		}
+	} else if(biome == 5){
+		for(j = 0; < 200 * biomeSize){
+			id = rmCreateArea("biomeWater"+i+"i"+j);
+			rmSetAreaWaterType(id, "Savannah Water Hole");
+			setAreaFractionSize(id, 0.004);
+			rmAddAreaConstraint(id, playerAvoid);
+			rmAddAreaConstraint(id, insideBiome);
+			rmBuildArea(id);
+		}
+		for(j = 0; < 400 * biomeSize){
+			id = rmCreateArea("biomeForest"+i+"i"+j);
+			rmSetAreaForestType(id, "Savannah Forest");
+			rmSetAreaBaseHeight(id, 2.0);
+			setAreaFractionSize(id, 0.0004);
+			rmAddAreaConstraint(id, playerAvoid);
+			rmAddAreaConstraint(id, insideBiome);
+			rmAddAreaConstraint(id, avoidImpassable);
+			rmBuildArea(id);
+		}
+	} else if(biome == 6){
+		for(j = 0; < 4000 * biomeSize){
+			id = rmCreateArea("biomeForest"+i+"i"+j);
+			rmSetAreaForestType(id, "Marsh Forest");
+			setAreaFractionSize(id, 0.0001);
+			rmAddAreaConstraint(id, playerAvoid);
+			rmAddAreaConstraint(id, insideBiome);
+			rmAddAreaConstraint(id, avoidImpassable);
+			rmBuildArea(id);
+		}
+	} else if(biome == 7){
+		for(j = 0; < 100 * biomeSize){
+			id = rmCreateArea("biomeCliff"+i+"i"+j);
+			rmSetAreaCliffType(id, "Jungle");
+			rmSetAreaCliffPainting(id, true, false, true, 0.5, false);
+			rmSetAreaCliffEdge(id, 1, 1.0, 0.0, 1.0, 0);
+			rmSetAreaCliffHeight(id, 4.0, 4.0);
+			setAreaFractionSize(id, 0.001);
+			rmAddAreaConstraint(id, playerAvoid);
+			rmAddAreaConstraint(id, insideBiome);
+			rmBuildArea(id);
+		}
+		for(j = 0; < 2000 * biomeSize){
+			id = rmCreateArea("biomeForest"+i+"i"+j);
+			rmSetAreaForestType(id, "Jungle Forest");
+			setAreaFractionSize(id, 0.0002);
+			rmAddAreaConstraint(id, playerAvoid);
+			rmAddAreaConstraint(id, insideBiome);
+			rmAddAreaConstraint(id, avoidImpassable);
+			rmBuildArea(id);
+		}
 	}
 }
-
 */
-

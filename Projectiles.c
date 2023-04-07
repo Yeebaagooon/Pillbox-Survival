@@ -84,6 +84,21 @@ void ProjDeathEffect(){
 	xSetBool(dProjectiles, xProjDeathSpecial, true);
 }
 
+void ProjNoShoot(){
+	xSetBool(dProjectiles, xProjUse, false);
+}
+
+void ProjRelicDecorate(string proto = "", int special = 0, string path = "0,0,0,0,0,0"){
+	xSetString(dProjectiles, xProjRelicSFX, proto);
+	xSetInt(dProjectiles, xProjRelicSpecial, special);
+	//1 = refresh every 2000ms
+	xSetString(dProjectiles, xProjRelicAnimPath, path);
+}
+
+void ProjTowerDecor(string proto = ""){
+	xSetString(dProjectiles, xProjTowerProto, proto);
+}
+
 rule SetupProjTypes
 inactive
 highFrequency
@@ -109,6 +124,9 @@ highFrequency
 	ProjSetSound("arrow" + iModulo(4, (trTime())+1) + ".wav");
 	//ProjAllowPassThrough();
 	//ProjDeathEffect();
+	//ProjNoShoot();
+	//ProjRelicDecorate("")
+	ProjTowerDecor("Cinematic Block");
 	
 	//--BUILD MISSILE --- 1
 	index = xAddDatabaseBlock(dProjectiles, true);
@@ -130,6 +148,9 @@ highFrequency
 	ProjSetSound("arrow" + iModulo(4, (trTime())+1) + ".wav");
 	//ProjAllowPassThrough();
 	//ProjDeathEffect();
+	//ProjNoShoot();
+	ProjRelicDecorate("Arkantos Boost SFX", 1);
+	ProjTowerDecor("Cinematic Block");
 	
 	
 	//--BUILD MISSILE --- 2
@@ -154,7 +175,35 @@ highFrequency
 	ProjSetMoveCosSin(0.996195, -0.087156); //the incremental -cos/sin (-5 for +5,0,-5)
 	//ProjAllowPassThrough();
 	//ProjDeathEffect();
+	//ProjNoShoot();
+	ProjRelicDecorate("Arkantos Boost SFX", 1);
+	ProjTowerDecor("Cinematic Block");
 	
+	//--BUILD MISSILE --- 3
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(3);
+	ProjSetName("Bolter");
+	ProjSetDesc("Rains lightning down on targets");
+	ProjSetProto("Spear");
+	ProjSetAnim(2);
+	ProjSetAnimPath("0,0,0,0,0,0");
+	ProjSetSize(0.4);
+	ProjSetDamage(250);
+	ProjSetAmmoCost(5);
+	ProjSetFireRate(2000);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("lightningstrike" + iModulo(4, (trTime())+1) + ".wav");
+	//ProjSetBaseCosSin(0.996195, 0.087156); //the initial +cos/sin (+5)
+	//ProjSetMoveCosSin(0.996195, -0.087156); //the incremental -cos/sin (-5 for +5,0,-5)
+	//ProjAllowPassThrough();
+	//ProjDeathEffect();
+	ProjNoShoot();
+	ProjRelicDecorate("Lightning Sparks Ground", 1);
+	ProjTowerDecor("Lightning Cloud");
 	
 	//SET INDEX FOR ALL PLAYERS TO DEFAULT MISSILE
 	for(p = 1; < cNumberNonGaiaPlayers){
