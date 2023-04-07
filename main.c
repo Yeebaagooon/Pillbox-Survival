@@ -3,8 +3,8 @@ rmSetMapSize(200,200);
 rmSetSeaLevel(0);
 rmSetSeaType("greek river");
 rmTerrainInitialize("GrassB",5);
-rmSetLightingSet("Dawn");
-rmSetGaiaCiv(cCivIsis);
+rmSetLightingSet("default");
+rmSetGaiaCiv(cCivZeus);
 
 /*
 // Define some constants

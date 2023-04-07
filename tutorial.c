@@ -29,6 +29,34 @@ void CreatePillBox(int x = 0, int z = 0, int heading = 0){
 	xSetInt(dTowers, xTowerSFXID, temp+2);
 }
 
+void CreateRocket(int x = 0, int z = 0){
+	int temp = 0;
+	temp = trGetNextUnitScenarioNameNumber()+1;
+	UnitCreate(0, "Dwarf", x, z, 0);
+	UnitCreate(0, "Dwarf", x, z, 0);
+	UnitCreate(0, "Dwarf", x, z, 60);
+	UnitCreate(0, "Dwarf", x, z, 120);
+	UnitCreate(0, "Dwarf", x, z, 180);
+	UnitCreate(0, "Dwarf", x, z, 240);
+	UnitCreate(0, "Dwarf", x, z, 300);
+	for(a = temp; < temp+6){
+		trUnitSelectClear();
+		trUnitSelect(""+a);
+		trUnitChangeProtoUnit("Shrine");
+		trUnitSelectClear();
+		trUnitSelect(""+a);
+		trSetSelectedScale(2,10,2);
+	}
+	trUnitSelectClear();
+	trUnitSelect(""+(temp-1));
+	trUnitChangeProtoUnit("Columns");
+	trUnitSelectClear();
+	trUnitSelect(""+(temp-1));
+	trSetSelectedScale(8,8,8);
+	
+	//Maybe have black rock so players cant attack
+}
+
 rule PaintTerrain
 highFrequency
 inactive
@@ -46,6 +74,9 @@ inactive
 		}
 	}
 	smooth(10);
+	xsEnableRule("BeginDay");
+	NextDay = trTime();
+	CreateRocket(50,50);
 }
 
 rule DeployPlayers
@@ -135,7 +166,12 @@ inactive
 		xUnitSelect(dPlayerData, xUnitID);
 		if(trUnitGetIsContained("Tower") == false){
 			if(trCurrentPlayer() == p){
-				trSetCounterDisplay("Current ammo: " + xGetInt(dPlayerData, xAmmo));
+				if(xGetInt(dPlayerData, xAmmo) == 0){
+					trSetCounterDisplay("<color={PlayerColor(2)}>Current ammo: " + xGetInt(dPlayerData, xAmmo));
+				}
+				else{
+					trSetCounterDisplay("Current ammo: " + xGetInt(dPlayerData, xAmmo));
+				}
 			}
 			if(xGetBool(dPlayerData, xInTower) == true){
 				for(c = xGetDatabaseCount(dTowers); > 0){
