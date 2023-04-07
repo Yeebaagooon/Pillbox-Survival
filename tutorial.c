@@ -156,6 +156,7 @@ active
 	int towerid = -1;
 	int shotby = 0;
 	int missileclass = 0;
+	int index = 0;
 	//cycle through all towers and find ones under player control
 	for(c = xGetDatabaseCount(dTowers); > 0){
 		xDatabaseNext(dTowers);
@@ -211,6 +212,17 @@ active
 									trUnitSelect(""+targetid);
 									trDamageUnit(xGetInt(dProjectiles, xProjDamage));
 								}
+								if(xGetInt(dProjectiles, xProjClass) == 4){
+									//Burner
+									trUnitSelectClear();
+									trUnitSelect(""+targetid);
+									index = xAddDatabaseBlock(dOnFire, true);
+									xSetInt(dOnFire, xUnitID, targetid);
+									xSetFloat(dOnFire, xTimeToBurn, trTimeMS()+xGetInt(dProjectiles, xProjFireRate));
+									xSetFloat(dOnFire, xTotalBurnDamage, xGetInt(dProjectiles, xProjDamage));
+									xSetFloat(dOnFire, xDamagePerTick, 50.0*xGetInt(dProjectiles, xProjDamage)/xGetInt(dProjectiles, xProjFireRate));
+									spyEffect(kbGetProtoUnitID("Inferno Unit Flame"), 2, xsVectorSet(dOnFire, xBurnSpyID, index), vector(1,1,1));
+								}
 								xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)-xGetInt(dProjectiles, xProjAmmoCost));
 								if(trCurrentPlayer() == shotby){
 									characterDialog("Firing " + xGetString(dProjectiles, xProjName), "Ammo remaining - " + xGetInt(dPlayerData, xAmmo), "");
@@ -233,5 +245,28 @@ active
 				}
 			}
 		}
+	}
+}
+
+rule UnitsOnFire
+active
+highFrequency
+{
+	int time = trTimeMS();
+	if(time >= timelastfire){
+		if(xGetDatabaseCount(dOnFire) > 0){
+			for(a = xGetDatabaseCount(dOnFire); > 0){
+				xDatabaseNext(dOnFire);
+				xUnitSelect(dOnFire, xUnitID);
+				trDamageUnit(xGetFloat(dOnFire, xDamagePerTick));
+				xSetFloat(dOnFire, xTimeToBurn, xGetFloat(dOnFire, xTimeToBurn)-50);
+				if(time > xGetFloat(dOnFire, xTimeToBurn)){
+					xUnitSelect(dOnFire, xBurnSpyID);
+					trUnitDestroy();
+					xFreeDatabaseBlock(dOnFire);
+				}
+			}
+		}
+		timelastfire = timelastfire+50;
 	}
 }

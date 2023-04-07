@@ -5,6 +5,8 @@ string MapVersion = "Test Version";
 string MapName = "Pillbox Survival";
 
 int timelast = 0;
+int timelastfire = 0;
+int DefaultMissilePointer = 0;
 
 int dPlayerData = 0;
 int xSpyID = 0;

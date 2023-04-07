@@ -106,6 +106,7 @@ highFrequency
 	//--BUILD MISSILE --- 0
 	int index = 0;
 	index = xAddDatabaseBlock(dProjectiles, true);
+	DefaultMissilePointer = index;
 	xSetInt(dProjectiles, xPointer, index);
 	ProjSetClass(0);
 	ProjSetName("Standard bullet");
@@ -204,6 +205,32 @@ highFrequency
 	ProjNoShoot();
 	ProjRelicDecorate("Lightning Sparks Ground", 1);
 	ProjTowerDecor("Lightning Cloud");
+	
+	//--BUILD MISSILE --- 4
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(4);
+	ProjSetName("Burner");
+	ProjSetDesc("Sets nearby units ablaze");
+	ProjSetProto("Spear");
+	ProjSetAnim(2);
+	ProjSetAnimPath("0,0,0,0,0,0");
+	ProjSetSize(0.4);
+	ProjSetDamage(150);
+	ProjSetAmmoCost(5);
+	ProjSetFireRate(2000);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("inferno.wav");
+	//ProjSetBaseCosSin(0.996195, 0.087156); //the initial +cos/sin (+5)
+	//ProjSetMoveCosSin(0.996195, -0.087156); //the incremental -cos/sin (-5 for +5,0,-5)
+	//ProjAllowPassThrough();
+	//ProjDeathEffect();
+	ProjNoShoot();
+	ProjRelicDecorate("Inferno Unit Flame", 1);
+	ProjTowerDecor("Inferno Fire Ground");
 	
 	//SET INDEX FOR ALL PLAYERS TO DEFAULT MISSILE
 	for(p = 1; < cNumberNonGaiaPlayers){

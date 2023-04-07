@@ -56,6 +56,7 @@ int xSFXID = 0;
 int xSFXProto = 0;
 int xSFXExtra = 0;
 int xProjPointer = 0;
+int xHeldBy = 0;
 
 //PROJ PROPERTIES
 int dProjectiles = 0;
@@ -86,6 +87,13 @@ int xProjRelicSFX = 0;
 int xProjRelicSpecial = 0;
 int xProjRelicAnimPath = 0;
 int xProjTowerProto = 0;
+
+//STATUS DB
+int dOnFire = 0;
+int xTimeToBurn =0;
+int xTotalBurnDamage = 0;
+int xDamagePerTick = 0;
+int xBurnSpyID = 0;
 
 
 rule setup_first_databases
@@ -168,6 +176,7 @@ highFrequency
 	xSFXProto = xInitAddString(dHeldRelics, "proto of", "error");
 	xSFXExtra = xInitAddInt(dHeldRelics, "protoanim", -1);
 	xProjPointer = xInitAddInt(dHeldRelics, "m pointer", 0);
+	xHeldBy = xInitAddInt(dHeldRelics, "holder", 0);
 	
 	dFreeRelics = xInitDatabase("Free relics");
 	xUnitID = xInitAddInt(dFreeRelics, "relic id", -1);
@@ -176,6 +185,13 @@ highFrequency
 	xSFXProto = xInitAddString(dFreeRelics, "proto of", "error");
 	xSFXExtra = xInitAddInt(dFreeRelics, "protoanim", -1);
 	xProjPointer = xInitAddInt(dFreeRelics, "m pointer", 0);
+	
+	dOnFire = xInitDatabase("units on fire");
+	xUnitID = xInitAddInt(dOnFire, "unit id", -1);
+	xTimeToBurn = xInitAddFloat(dOnFire, "burn time", 0.0);
+	xTotalBurnDamage = xInitAddFloat(dOnFire, "burn time", 0.0);
+	xDamagePerTick = xInitAddFloat(dOnFire, "burn tick", 0.0);
+	xBurnSpyID = xInitAddInt(dOnFire, "burn spy id", -1);
 }
 
 
