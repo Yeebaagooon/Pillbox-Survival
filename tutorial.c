@@ -1,9 +1,11 @@
 int SpawnEnemy(string pname="", int x = 0, int z = 0, bool stationary = false){
 	int temp = trGetNextUnitScenarioNameNumber();
 	UnitCreate(cNumberNonGaiaPlayers, "Militia", x,z,0);
-	xAddDatabaseBlock(dEnemies, true);
+	int index = xAddDatabaseBlock(dEnemies, true);
 	xSetInt(dEnemies, xUnitID, temp);
 	xSetBool(dEnemies, xStationary, stationary);
+	xUnitSelect(dEnemies, xUnitID);
+	spyEffect(kbGetProtoUnitID("Cinematic Block"), 2, xsVectorSet(dEnemies, xSpyBurn, index), vector(1,1,1));
 	return(temp);
 }
 
@@ -34,11 +36,7 @@ inactive
 	int temp = 0;
 	xsDisableSelf();
 	CreatePillBox(10,10);
-	temp = trGetNextUnitScenarioNameNumber();
-	UnitCreate(1, "Hero Norse", 10, 10);
-	xSetPointer(dPlayerData, 1);
-	xSetInt(dPlayerData, xUnitID, temp);
-	xsEnableRule("GameTowerGarrison");
+	xsEnableRule("DeployPlayers");
 	int myPerlin = generatePerlinNoise(100, 5);
 	float height = 0;
 	for(x=0; <= 100) {
@@ -48,8 +46,28 @@ inactive
 		}
 	}
 	smooth(10);
-	DeployRelic(5,5);
-	DeployRelic(5,15);
+}
+
+rule DeployPlayers
+highFrequency
+inactive
+{
+	int temp = 0;
+	for(p = 1 ; < cNumberNonGaiaPlayers){
+		temp = trGetNextUnitScenarioNameNumber();
+		UnitCreate(p, "Villager Atlantean Hero", 10*p, 10);
+		xSetPointer(dPlayerData, p);
+		xSetInt(dPlayerData, xUnitID, temp);
+		DeployRelic(10*p-6,5);
+		DeployRelic(10*p-4,5);
+		CreatePillBox(10*p,20);
+		trClearCounterDisplay();
+		if(trCurrentPlayer() == p){
+			trSetCounterDisplay("Current ammo: " + xGetInt(dPlayerData, xAmmo));
+		}
+	}
+	xsEnableRule("GameTowerGarrison");
+	xsDisableSelf();
 }
 
 rule GameTowerGarrison
@@ -58,53 +76,67 @@ inactive
 {
 	int temp = 0;
 	int missileclass = 0;
+	int targetid = 0;
+	int anim = 0;
+	int unit = 0;
 	for(p = 1; < cNumberNonGaiaPlayers){
 		xSetPointer(dPlayerData, p);
+		unit = xGetInt(dPlayerData, xUnitID);
 		xUnitSelect(dPlayerData, xUnitID);
-		if(trUnitGetIsContained("Tower") == true){
-			if(xGetBool(dPlayerData, xInTower) == false){
-				//cycle through to get tower
-				xSetVector(dPlayerData, xUnitPos, kbGetBlockPosition(""+xGetInt(dPlayerData, xUnitID)));
-				for(b = xGetDatabaseCount(dTowers); > 0){
-					xDatabaseNext(dTowers);
-					if(xGetVector(dTowers, xTowerPos) == xGetVector(dPlayerData, xUnitPos)){
-						xSetBool(dPlayerData, xInTower, true);
-						xUnitSelect(dTowers, xUnitID);
-						trUnitConvert(p);
-						xSetInt(dTowers, xOwner, p);
-						//garrison inside
-						xUnitSelect(dPlayerData, xUnitID);
-						trImmediateUnitGarrison(""+xGetInt(dTowers, xUnitID));
-						//temporary spawn enemy to test projectile
-						for(a = 1; < 10){
-							SpawnEnemy("Militia", 10+a, 18);
-						}
-						//dialog
-						missileclass = xGetInt(dPlayerData, xCurrentMissile);
-						xSetPointer(dProjectiles, missileclass);
-						xUnitSelect(dTowers, xTowerSFXID);
-						trUnitChangeProtoUnit("Spy Eye");
-						xUnitSelect(dTowers, xTowerSFXID);
-						trMutateSelected(kbGetProtoUnitID(xGetString(dProjectiles, xProjTowerProto)));
-						if(xGetInt(dProjectiles, xProjAmmoCost) <= xGetInt(dPlayerData, xAmmo)){
-							if(trCurrentPlayer() == p){
-								uiZoomToProto("Tower");
-								//uiLookAtProto("Tower");
-								characterDialog("Firing " + xGetString(dProjectiles, xProjName), "Ammo remaining - " + xGetInt(dPlayerData, xAmmo), "");
-							}
-						}
-						else{
-							//Not enough ammo
-							if(trCurrentPlayer() == p){
-								characterDialog("Not enough ammo to fire " + xGetString(dProjectiles, xProjName), "Ammo - " + xGetInt(dPlayerData, xAmmo) + "/" + xGetInt(dProjectiles, xProjAmmoCost), "");
-								playSound("cantdothat.wav");
-							}
+		xsSetContextPlayer(p);
+		targetid = trGetUnitScenarioNameNumber(kbUnitGetTargetUnitID(kbGetBlockID(""+unit)));
+		xsSetContextPlayer(0);
+		anim = kbUnitGetAnimationActionType(kbGetBlockID(""+unit));
+		if(anim == 6){
+			for(d = xGetDatabaseCount(dTowers); > 0){
+				xDatabaseNext(dTowers);
+				if(targetid == xGetInt(dTowers, xUnitID)){
+					xUnitSelect(dPlayerData, xUnitID);
+					trImmediateUnitGarrison(""+xGetInt(dTowers, xUnitID));
+					xSetVector(dPlayerData, xUnitPos, kbGetBlockPosition(""+unit));
+					xSetBool(dPlayerData, xInTower, true);
+					xUnitSelect(dTowers, xUnitID);
+					trUnitConvert(p);
+					xSetInt(dTowers, xOwner, p);
+					//garrison inside
+					xUnitSelect(dPlayerData, xUnitID);
+					trImmediateUnitGarrison(""+xGetInt(dTowers, xUnitID));
+					//temporary spawn enemy to test projectile
+					for(a = 1; < 10){
+						SpawnEnemy("Militia", 10+a, 18);
+					}
+					//dialog
+					missileclass = xGetInt(dPlayerData, xCurrentMissile);
+					xSetPointer(dProjectiles, missileclass);
+					xUnitSelect(dTowers, xTowerSFXID);
+					trUnitChangeProtoUnit("Spy Eye");
+					xUnitSelect(dTowers, xTowerSFXID);
+					trMutateSelected(kbGetProtoUnitID(xGetString(dProjectiles, xProjTowerProto)));
+					if(xGetInt(dProjectiles, xProjAmmoCost) <= xGetInt(dPlayerData, xAmmo)){
+						if(trCurrentPlayer() == p){
+							trClearCounterDisplay();
+							uiZoomToProto("Tower");
+							//uiLookAtProto("Tower");
+							characterDialog("Firing " + xGetString(dProjectiles, xProjName), "Ammo remaining - " + xGetInt(dPlayerData, xAmmo), "");
 						}
 					}
+					else{
+						//Not enough ammo
+						if(trCurrentPlayer() == p){
+							trClearCounterDisplay();
+							characterDialog("Not enough ammo to fire " + xGetString(dProjectiles, xProjName), "Ammo - " + xGetInt(dPlayerData, xAmmo) + "/" + xGetInt(dProjectiles, xProjAmmoCost), "");
+							playSound("cantdothat.wav");
+						}
+					}
+					//If the unit is doing attack animation on a tower, garrison inside it
 				}
 			}
 		}
-		else if(trUnitGetIsContained("Tower") == false){
+		xUnitSelect(dPlayerData, xUnitID);
+		if(trUnitGetIsContained("Tower") == false){
+			if(trCurrentPlayer() == p){
+				trSetCounterDisplay("Current ammo: " + xGetInt(dPlayerData, xAmmo));
+			}
 			if(xGetBool(dPlayerData, xInTower) == true){
 				for(c = xGetDatabaseCount(dTowers); > 0){
 					xDatabaseNext(dTowers);
@@ -220,8 +252,17 @@ active
 									xSetInt(dOnFire, xUnitID, targetid);
 									xSetFloat(dOnFire, xTimeToBurn, trTimeMS()+xGetInt(dProjectiles, xProjFireRate));
 									xSetFloat(dOnFire, xTotalBurnDamage, xGetInt(dProjectiles, xProjDamage));
-									xSetFloat(dOnFire, xDamagePerTick, 50.0*xGetInt(dProjectiles, xProjDamage)/xGetInt(dProjectiles, xProjFireRate));
-									spyEffect(kbGetProtoUnitID("Inferno Unit Flame"), 2, xsVectorSet(dOnFire, xBurnSpyID, index), vector(1,1,1));
+									xSetFloat(dOnFire, xDamagePerTick, xGetFloat(dOnFire, xTotalBurnDamage)/xGetInt(dProjectiles, xProjFireRate));
+									//select the burn spy id
+									for(u = xGetDatabaseCount(dEnemies); > 0){
+										xDatabaseNext(dEnemies);
+										if(xGetInt(dEnemies, xUnitID) == targetid){
+											break;
+										}
+									}
+									xUnitSelect(dEnemies, xSpyBurn);
+									trMutateSelected(kbGetProtoUnitID("Inferno Unit Flame"));
+									xSetInt(dOnFire, xBurnSpyID, xGetInt(dEnemies, xSpyBurn));
 								}
 								xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)-xGetInt(dProjectiles, xProjAmmoCost));
 								if(trCurrentPlayer() == shotby){
@@ -252,21 +293,21 @@ rule UnitsOnFire
 active
 highFrequency
 {
-	int time = trTimeMS();
-	if(time >= timelastfire){
+	if(trTimeMS() > firetimelast){
+		firetimediff = (trTimeMS() - firetimelast); // calculate timediff
 		if(xGetDatabaseCount(dOnFire) > 0){
 			for(a = xGetDatabaseCount(dOnFire); > 0){
 				xDatabaseNext(dOnFire);
 				xUnitSelect(dOnFire, xUnitID);
-				trDamageUnit(xGetFloat(dOnFire, xDamagePerTick));
-				xSetFloat(dOnFire, xTimeToBurn, xGetFloat(dOnFire, xTimeToBurn)-50);
-				if(time > xGetFloat(dOnFire, xTimeToBurn)){
+				trDamageUnit(xGetFloat(dOnFire, xDamagePerTick)*firetimediff);
+				if(trTimeMS() > xGetFloat(dOnFire, xTimeToBurn)){
 					xUnitSelect(dOnFire, xBurnSpyID);
-					trUnitDestroy();
+					//trMutateSelected(kbGetProtoUnitID("Cinematic Block"));
+					trUnitChangeProtoUnit("Cinematic Block");
 					xFreeDatabaseBlock(dOnFire);
 				}
 			}
 		}
-		timelastfire = timelastfire+50;
+		firetimelast = trTimeMS();
 	}
 }

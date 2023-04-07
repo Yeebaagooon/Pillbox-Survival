@@ -20,8 +20,12 @@ void DeployRelic(int x = 0, int z = 0){
 	trUnitSelectClear();
 	trUnitSelect(""+temp);
 	trUnitChangeProtoUnit("Relic");
+	trUnitSelectClear();
+	trUnitSelect(""+temp);
+	trSetRelicType(461);
+	//Force to gaias book
 	//Number of classes
-	trQuestVarSetFromRand("temp", 4, 4, true);
+	trQuestVarSetFromRand("temp", 3, 4, true);
 	for(a = xGetDatabaseCount(dProjectiles); > 0){
 		xDatabaseNext(dProjectiles);
 		if(xGetInt(dProjectiles, xProjClass) == 1*trQuestVarGet("temp")){
@@ -123,7 +127,7 @@ highFrequency
 		if (trUnitGetIsContained("Unit") == false) {
 			dropper = xGetInt(dHeldRelics, xHeldBy);
 			if (trCurrentPlayer() == dropper) {
-				ColouredChatToPlayer(dropper, "1,0.5,0", xGetString(dProjectiles, xProjName) + " dropped");
+				ColouredChatToPlayer(dropper, "1,0.2,0", xGetString(dProjectiles, xProjName) + " dropped");
 				trSoundPlayFN("foot.wav","1",-1,"","");
 			}
 			trUnitSelectClear();

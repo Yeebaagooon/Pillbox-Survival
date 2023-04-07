@@ -26,6 +26,7 @@ int xTowerSFXID = 0;
 
 int dEnemies = 0;
 int xStationary = 0;
+int xSpyBurn = 0;
 
 int dMissiles = 0;
 int xMissilePos = 0;
@@ -124,6 +125,7 @@ highFrequency
 	dEnemies = xInitDatabase("enemy db");
 	xUnitID = xInitAddInt(dEnemies, "unit id", -1);
 	xStationary = xInitAddBool(dEnemies, "no movement", false);
+	xSpyBurn = xInitAddInt(dEnemies, "spy id for burn", -1);
 	
 	dMissiles = xInitDatabase("Missiles DB");
 	xUnitID = xInitAddInt(dMissiles, "missile unit id", -1);

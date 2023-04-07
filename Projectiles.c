@@ -276,7 +276,7 @@ int deployRandomLocOutOfLOS(string unit = "", int p = 0){
 		trUnitSelectClear();
 		trUnitSelect(""+nextUnitName);
 		bool inLOS = false;
-		for(q = 1; <= "+h+"){
+		for(q = 1; <= cNumberNonGaiaPlayers){
 			if(trUnitHasLOS(q) && getPlayerDead(q) == false){
 				trUnitDestroy();
 				inLOS = true;

@@ -107,7 +107,9 @@ highFrequency
 	trQuestVarSet("PlayerID", trQuestVarGet("PlayerID")+1);}
 	
 	for(p=1 ; < cNumberNonGaiaPlayers){
-		trPlayerSetDiplomacy(0, p, "Ally");
+		trPlayerSetDiplomacy(0, p, "Enemy");
+		trPlayerSetDiplomacy(p, 0, "Enemy");
+		//HAVE TO BOTH BE ALLY FOR GARRISON
 		trPlayerSetDiplomacy(cNumberNonGaiaPlayers, p, "Enemy");
 		trPlayerSetDiplomacy(p, cNumberNonGaiaPlayers, "Enemy");
 	}
