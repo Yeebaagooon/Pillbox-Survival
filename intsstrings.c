@@ -21,14 +21,8 @@ int DontDestroyBelow = 0;
 
 string TreeType = "";
 string ForestTerrain = "";
-string TerrainMain = "";
-string Terrain2 = "";
-string Terrain3 = "";
-string Terrain4 = "";
-string Terrain5 = "";
-string Terrain6 = "";
-string Decor1 = "";
-string Decor2 = "";
+string UnderForestTerrain = "";
+string LowestTerrain = "";
 
 //---
 int timelast = 0;

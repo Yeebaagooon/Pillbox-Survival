@@ -11,7 +11,9 @@ int SpawnEnemy(string pname="", int x = 0, int z = 0, bool stationary = false){
 
 void CreateRocket(int x = 0, int z = 0){
 	int temp = 0;
-	temp = trGetNextUnitScenarioNameNumber()+1;
+	temp = trGetNextUnitScenarioNameNumber()+3;
+	UnitCreate(0, "Dwarf", x, z, 0);
+	UnitCreate(0, "Dwarf", x, z, 0);
 	UnitCreate(0, "Dwarf", x, z, 0);
 	UnitCreate(0, "Dwarf", x, z, 0);
 	UnitCreate(0, "Dwarf", x, z, 60);
@@ -22,7 +24,10 @@ void CreateRocket(int x = 0, int z = 0){
 	for(a = temp; < temp+6){
 		trUnitSelectClear();
 		trUnitSelect(""+a);
-		trUnitChangeProtoUnit("Shrine");
+		trUnitChangeProtoUnit("Spy Eye");
+		trUnitSelectClear();
+		trUnitSelect(""+a);
+		trMutateSelected(kbGetProtoUnitID("Shrine"));
 		trUnitSelectClear();
 		trUnitSelect(""+a);
 		trSetSelectedScale(2,10,2);
@@ -33,8 +38,55 @@ void CreateRocket(int x = 0, int z = 0){
 	trUnitSelectClear();
 	trUnitSelect(""+(temp-1));
 	trSetSelectedScale(8,8,8);
-	
+	trUnitSelectClear();
+	trUnitSelect(""+(temp-2));
+	trUnitChangeProtoUnit("Spy Eye");
+	trUnitSelectClear();
+	trUnitSelect(""+(temp-2));
+	trMutateSelected(kbGetProtoUnitID("Wonder"));
+	trUnitSelectClear();
+	trUnitSelect(""+(temp-2));
+	trSetSelectedScale(0,0,0);
+	trUnitSelectClear();
+	trUnitSelect(""+(temp-2));
+	trUnitSetAnimationPath("3,0,0,0,0,0");
 	//Maybe have black rock so players cant attack
+}
+
+void SpawnPlayers(){
+	paintCircleHeight(getMapSize()/4,getMapSize()/4, 11, "GrassA", 0);
+	CreateRocket(getMapSize()/2,getMapSize()/2);
+	//SPAWN PLAYERS
+	int temp = 0;
+	trVectorQuestVarSet("CentreMap", xsVectorSet(getMapSize()/2, 0, getMapSize()/2));
+	trVectorQuestVarSet("dir", xsVectorSet(0, 0, 14));
+	trVectorQuestVarSet("dir2", xsVectorSet(0, 0, 18));
+	float baseCos = xsCos(6.283185 / (cNumberNonGaiaPlayers-1)*0.5);
+	float baseSin = xsSin(6.283185 / (cNumberNonGaiaPlayers-1)*0.5);
+	int heading = 90;
+	for(p=1; < cNumberNonGaiaPlayers) {
+		xSetPointer(dPlayerData, p);
+		trVectorQuestVarSet("base", trVectorQuestVarGet("CentreMap") + trVectorQuestVarGet("dir"));
+		trVectorQuestVarSet("tower", trVectorQuestVarGet("CentreMap") + trVectorQuestVarGet("dir2"));
+		heading = heading-(360/(cNumberNonGaiaPlayers-1));
+		if(heading > 360){
+			heading = heading-360;
+		}
+		if(heading < 0){
+			heading = heading+360;
+		}
+		temp = trGetNextUnitScenarioNameNumber();
+		UnitCreate(p, "Villager Atlantean Hero", trVectorQuestVarGetX("base"), trVectorQuestVarGetZ("base"), heading);
+		xSetPointer(dPlayerData, p);
+		xSetInt(dPlayerData, xUnitID, temp);
+		trPlayerKillAllGodPowers(p);
+		trVectorQuestVarSet("dir", rotationMatrix(trVectorQuestVarGet("dir"), baseCos, baseSin));
+		trVectorQuestVarSet("dir2", rotationMatrix(trVectorQuestVarGet("dir2"), baseCos, baseSin));
+		trUnitSelectClear();
+		CreatePillBox(trVectorQuestVarGetX("tower"), trVectorQuestVarGetZ("tower"));
+	}
+	CreatePillBox(getMapSize()/2+16,getMapSize()/2+16);
+	CreatePillBox(getMapSize()/2+16,getMapSize()/2-16);
 }
 
 rule PaintTerrain
@@ -43,24 +95,33 @@ inactive
 {
 	int temp = 0;
 	xsDisableSelf();
-	CreatePillBox(10,10);
 	xsEnableRule("DeployPlayers");
-	int myPerlin = generatePerlinNoise(150, 5);
+	int myPerlin = generatePerlinNoise(getMapSize()/2, 10);
 	float height = 0;
-	for(x=0; <= 150) {
-		for(y=0; <= 150) {
-			height = getPerlinNoise(myPerlin, x, y) * 4.0; // you may need to tweak this modifier
+	for(x=0; <= getMapSize()/2) {
+		for(y=0; <= getMapSize()/2) {
+			height = getPerlinNoise(myPerlin, x, y) * 2.0; // you may need to tweak this modifier
+			//Always do the height
+			trChangeTerrainHeight(x,y,x,y,height);
+			if(height > 2){
+				trPaintTerrain(x,y,x,y,getTerrainType("ForestFloorGaia"),getTerrainSubType("ForestFloorGaia"));
+			}
 			if(height > 3){
-				UnitCreate(0, "Militia", x*2, y*2);
+				trPaintTerrain(x,y,x,y,getTerrainType("ForestFloorPine"),getTerrainSubType("ForestFloorPine"));
+			}
+			if(height < -5){
+				trPaintTerrain(x,y,x,y,0,64);
 			}
 		}
 	}
-	//smooth(10);
 	xsEnableRule("BeginDay");
 	NextDay = trTime();
-	//createMarsh();
-	CreateRocket(getMapSize()/2,getMapSize()/2);
-	DeployRelic(4,4);
+	SpawnPlayers();
+	//DeployRelic(4,4);
+	smooth(2);
+	trPaintTerrain(getMapSize()/4-1,getMapSize()/4-1,getMapSize()/4+1,getMapSize()/4+1,2,13);
+	paintTrees2("ForestFloorPine", "Pine");
+	//REFRESH TERRAIN
 }
 
 rule DeployPlayers
