@@ -1,9 +1,10 @@
-int SpawnEnemy(string pname="", int x = 0, int z = 0, bool stationary = false){
+int SpawnEnemy(string pname="", int x = 0, int z = 0, bool stationary = false, int cityid = 0){
 	int temp = trGetNextUnitScenarioNameNumber();
-	UnitCreate(cNumberNonGaiaPlayers, "Militia", x,z,0);
+	UnitCreate(cNumberNonGaiaPlayers, pname, x,z,0);
 	int index = xAddDatabaseBlock(dEnemies, true);
 	xSetInt(dEnemies, xUnitID, temp);
 	xSetBool(dEnemies, xStationary, stationary);
+	xSetInt(dEnemies, xCityGuard, cityid);
 	xUnitSelect(dEnemies, xUnitID);
 	spyEffect(kbGetProtoUnitID("Cinematic Block"), 2, xsVectorSet(dEnemies, xSpyBurn, index), vector(1,1,1));
 	return(temp);
@@ -53,7 +54,7 @@ void CreateRocket(int x = 0, int z = 0){
 	//Maybe have black rock so players cant attack
 	trUnitSelectClear();
 	trUnitSelect(""+(temp-3));
-	trUnitChangeProtoUnit("Cinematic Block");
+	trUnitChangeProtoUnit("Revealer");
 }
 
 void SpawnPlayers(){
@@ -92,6 +93,117 @@ void SpawnPlayers(){
 	paintCircleHeight(getMapSize()/4,getMapSize()/4, 11, "GreekRoadA", 0);
 }
 
+void BuildCities(){
+	int CitiesToMake = 5;
+	int Chooser = 0;
+	int temp = 0;
+	int ABORT = 0;
+	string poi = "";
+	vector spawn = vector(0,0,0);
+	vector MapMid = xsVectorSet(getMapSize()/2, 0, getMapSize()/2);
+	for(a = CitiesToMake; > 0){
+		Chooser = 0;
+		while(Chooser <= 0){
+			ABORT = ABORT+1;
+			Chooser = 0;
+			trQuestVarSetFromRand("temp", 1, xGetDatabaseCount(dLowTerrain));
+			xSetPointer(dLowTerrain, 1*trQuestVarGet("temp"));
+			spawn = xGetVector(dLowTerrain, xDeployLoc);
+			//If city not too close to map edge
+			if((xsVectorGetX(spawn) > 20) && (xsVectorGetX(spawn) < 380) && (xsVectorGetZ(spawn) > 20) && (xsVectorGetZ(spawn) < 380)){
+				//If city not too close to start point
+				if(distanceBetweenVectors(spawn, MapMid, true) > 5000){
+					debugLog("START - " + xGetDatabaseCount(dCity) + " cities exist");
+					for(b = xGetDatabaseCount(dCity); > 0){
+						//Check distance to all other cities
+						xDatabaseNext(dCity);
+						poi = " ("+b+" to "+(xGetDatabaseCount(dCity)+1)+") ";
+						trChatSend(0, "Distance" + poi + " = " + distanceBetweenVectors(spawn, xGetVector(dCity, xLocation),true));
+						if(distanceBetweenVectors(spawn, xGetVector(dCity, xLocation),true) < 10000){
+							Chooser = Chooser-1;
+						}
+					}
+					Chooser = Chooser+1;
+					if(Chooser == 1){
+						trChatSend(0, "<color=0,1,0>Creation allowed</color>");
+					}
+				}
+			}
+			if(ABORT > 500){
+				Chooser = 1;
+				debugLog("ABORT");
+			}
+		}
+		xAddDatabaseBlock(dCity, true);
+		xSetFloat(dCity, xDistance, distanceBetweenVectors(spawn, MapMid));
+		xSetVector(dCity, xLocation, spawn);
+		xSetInt(dCity, xNumber, 0);
+		xSetInt(dCity, xPopulation, 0);
+		xSetInt(dCity, xDifficultyStat, 0);
+		spawn = spawn/2;
+		paintCircleHeight(xsVectorGetX(spawn),xsVectorGetZ(spawn), 11, "OlympusTile", -2);
+		trPaintTerrain(xsVectorGetX(spawn),xsVectorGetZ(spawn),xsVectorGetX(spawn),xsVectorGetZ(spawn),getTerrainType("CityTileWaterPool"),getTerrainSubType("CityTileWaterPool"));
+		spawn = spawn*2;
+		temp = trGetNextUnitScenarioNameNumber();
+		UnitCreate(cNumberNonGaiaPlayers, "Dwarf",xsVectorGetX(spawn),xsVectorGetZ(spawn));
+		xSetInt(dCity, xCityFlagID, temp);
+		temp = trGetNextUnitScenarioNameNumber();
+		UnitCreate(0, "Dwarf",xsVectorGetX(spawn),xsVectorGetZ(spawn), 90);
+		trUnitSelectClear();
+		trUnitSelect(""+temp);
+		trUnitChangeProtoUnit("Great Box");
+		xSetInt(dCity, xCityChestID, temp);
+		xUnitSelect(dCity, xCityFlagID);
+		trUnitChangeProtoUnit("Spy Eye");
+		xUnitSelect(dCity, xCityFlagID);
+		trMutateSelected(kbGetProtoUnitID("Flag Numbered"));
+		xUnitSelect(dCity, xCityFlagID);
+		trUnitSetAnimationPath(""+(5-a)+",0,0,0,0,0");
+		xUnitSelect(dCity, xCityFlagID);
+		trSetSelectedScale(2,2,2);
+		temp = trGetNextUnitScenarioNameNumber();
+		UnitCreate(0, "Dwarf",xsVectorGetX(spawn)+2,xsVectorGetZ(spawn)+2, 0);
+		trUnitSelectClear();
+		trUnitSelect(""+temp);
+		trUnitChangeProtoUnit("Revealer");
+	}
+}
+
+void SetupCities(){
+	float currentcheck = 0.0;
+	float nextcheck = 0.0;
+	int rank = 0;
+	for(a = xGetDatabaseCount(dCity); > 0){
+		rank = 0;
+		xDatabaseNext(dCity);
+		currentcheck = xGetFloat(dCity, xDistance);
+		for(b = xGetDatabaseCount(dCity); > 0){
+			xDatabaseNext(dCity);
+			nextcheck = xGetFloat(dCity, xDistance);
+			if(currentcheck > nextcheck){
+				rank = rank+1;
+			}
+		}
+		rank=rank-1;
+		xSetInt(dCity, xNumber, (rank+2));
+		xSetInt(dCity, xDifficultyStat, rank);
+		xUnitSelect(dCity, xCityFlagID);
+		trUnitSetAnimationPath(""+(1+rank)+",0,0,0,0,0");
+	}
+	for(a = xGetDatabaseCount(dCity); > 0){
+		xDatabaseNext(dCity);
+		if(xGetInt(dCity, xNumber) == 1){
+			//Populate City 1
+			tempV = xGetVector(dCity, xLocation);
+			SpawnEnemy("Militia", xsVectorGetX(tempV)+6,xsVectorGetZ(tempV)-6,true,1);
+			SpawnEnemy("Militia", xsVectorGetX(tempV)+6,xsVectorGetZ(tempV)+6,true,1);
+			SpawnEnemy("Militia", xsVectorGetX(tempV)-6,xsVectorGetZ(tempV)+6,true,1);
+			SpawnEnemy("Militia", xsVectorGetX(tempV)-6,xsVectorGetZ(tempV)-6,true,1);
+			break;
+		}
+	}
+}
+
 rule WorldCreate
 highFrequency
 inactive
@@ -101,6 +213,7 @@ inactive
 	xsEnableRule("DeployPlayers");
 	int myPerlin = generatePerlinNoise(getMapSize()/2, 10);
 	float height = 0;
+	float biome = 0.0;
 	for(x=0; <= getMapSize()/2) {
 		for(y=0; <= getMapSize()/2) {
 			height = getPerlinNoise(myPerlin, x, y) * 2.0; // you may need to tweak this modifier
@@ -129,23 +242,25 @@ inactive
 			}
 		}
 	}
+	//--- Split using MapBuild void
 	TerrainTileDBSet("GrassDirt75", dLowTerrain, xDeployLoc);
 	SpawnPlayers();
+	//---
+	BuildCities();
+	//---
 	//DeployRelic(4,4);
 	smooth(4);
-	
 	trPaintTerrain(getMapSize()/4-1,getMapSize()/4-1,getMapSize()/4+1,getMapSize()/4+1,2,13);
 	paintTrees2("ForestFloorOak", "Oak Tree");
 	xsEnableRule("BeginDay");
 	NextDay = trTime();
 	trUnblockAllSounds();
 	vector spawn = vector(0,0,0);
-	/*for(a = xGetDatabaseCount(dLowTerrain); > 0){
-		xDatabaseNext(dLowTerrain);
-		spawn = xGetVector(dLowTerrain, xDeployLoc);
-		UnitCreate(0, "Militia", xsVectorGetX(spawn), xsVectorGetZ(spawn));
-	}*/
+	//---
+	SetupCities();
 	refreshPassability();
+	//perlinRoll(myPerlin, 30,30, 1, -7,20, true) ;
+	trSetFogAndBlackmap(true, true);
 }
 
 rule DeployPlayers

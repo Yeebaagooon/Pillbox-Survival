@@ -27,6 +27,7 @@ size = number of tiles in one dimension of the graph. This always generates a sq
 granularity = how far apart the vectors are
 This function generates this: https://upload.wikimedia.org/wikipedia/commons/0/09/PerlinNoiseGradientGrid.png
 */
+//Size is map size or area size, granularity is bigger number for bigger 'cells'
 int generatePerlinNoise(int size = 25, int granularity = 50) {
 	int db = aiPlanCreate("perlinNoise", 8);
 	int meta = zNewArray(mInt, 4, "perlinMeta");

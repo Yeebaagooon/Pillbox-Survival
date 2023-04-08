@@ -88,7 +88,6 @@ highFrequency
 		modifyProtounitAbsolute("Tower", p, 12, 0);
 		modifyProtounitAbsolute("Tower", p, 13, 0);
 		modifyProtounitAbsolute("Kronny Flying", p, 1, 30);
-		modifyProtounitAbsolute("Militia", p, 1, 0.5);
 	}
 	modifyProtounitAbsolute("Bolt Strike", 0, 27, 0);
 	modifyProtounitAbsolute("Bolt Strike", 0, 28, 0);

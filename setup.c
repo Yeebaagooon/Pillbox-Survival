@@ -115,6 +115,7 @@ highFrequency
 	}
 	trPlayerSetDiplomacy(0, cNumberNonGaiaPlayers, "Enemy");
 	trTechSetStatus(0, 304, 4);
+	aiSet("NoAI", cNumberNonGaiaPlayers);
 }
 
 rule load2

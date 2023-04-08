@@ -101,6 +101,17 @@ int xBurnSpyID = 0;
 int dLowTerrain = 0;
 int xDeployLoc = 0;
 
+//CITY DB
+int dCity = 0;
+int xNumber = 0;
+int xDistance = 0;
+int xLocation = 0;
+int xDifficultyStat = 0;
+int xPopulation = 0;
+int xCityFlagID = 0;
+int xCityChestID = 0;
+int xCityGuard = 0;
+
 
 rule setup_first_databases
 active
@@ -131,6 +142,7 @@ highFrequency
 	xUnitID = xInitAddInt(dEnemies, "unit id", -1);
 	xStationary = xInitAddBool(dEnemies, "no movement", false);
 	xSpyBurn = xInitAddInt(dEnemies, "spy id for burn", -1);
+	xCityGuard = xInitAddInt(dEnemies, "guard of city num", 0);
 	
 	dMissiles = xInitDatabase("Missiles DB");
 	xUnitID = xInitAddInt(dMissiles, "missile unit id", -1);
@@ -203,6 +215,15 @@ highFrequency
 	
 	dLowTerrain = xInitDatabase("tiledeployset");
 	xDeployLoc = xInitAddVector(dLowTerrain, "location", vector(0,0,0));
+	
+	dCity = xInitDatabase("citydb");
+	xNumber = xInitAddInt(dCity, "number", 0);
+	xDistance = xInitAddFloat(dCity, "distance to mid", 0.0);
+	xLocation = xInitAddVector(dCity, "location", vector(0,0,0));
+	xDifficultyStat = xInitAddInt(dCity, "difficultyflag", 0);
+	xPopulation = xInitAddInt(dCity, "population", 0);
+	xCityFlagID = xInitAddInt(dCity, "idflag", -1);
+	xCityChestID = xInitAddInt(dCity, "idchest", -1);
 }
 
 
