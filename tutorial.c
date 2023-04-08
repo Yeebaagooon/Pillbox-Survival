@@ -65,18 +65,19 @@ inactive
 	xsDisableSelf();
 	CreatePillBox(10,10);
 	xsEnableRule("DeployPlayers");
-	int myPerlin = generatePerlinNoise(100, 5);
+	/*int myPerlin = generatePerlinNoise(150, 5);
 	float height = 0;
-	for(x=0; <= 100) {
-		for(y=0; <= 100) {
+	for(x=0; <= 150) {
+		for(y=0; <= 150) {
 			height = getPerlinNoise(myPerlin, x, y) * 4.0; // you may need to tweak this modifier
 			trChangeTerrainHeight(x, y, x, y, height, false);
 		}
 	}
-	smooth(10);
+	smooth(10);*/
 	xsEnableRule("BeginDay");
 	NextDay = trTime();
 	CreateRocket(50,50);
+	createMarsh();
 }
 
 rule DeployPlayers

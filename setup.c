@@ -31,7 +31,7 @@ highFrequency
 runImmediately
 {
 	characterDialog("Waiting for everyone to connect.", " ", "icons\special e son of osiris icon 64");
-	trUIFadeToColor(0, 0, 0, 0, 10000, false);
+	trUIFadeToColor(31,28,26, 0, 10000, false);
 	trFadeOutAllSounds(0.1);
 	trFadeOutMusic(0.1);
 	if(QuickStart == 0){
@@ -156,7 +156,7 @@ highFrequency
 		//fade out when loaded
 		trUnblockAllSounds();
 		trLetterBox(false);
-		trUIFadeToColor(0,0,0,1000,1,false);
+		trUIFadeToColor(31,28,26,1000,1,false);
 		trOverlayTextColour(255, 125, 0);
 		gadgetUnreal("ShowImageBox");
 		trOverlayText(MapName, 8.0, 574, 28, 1000);

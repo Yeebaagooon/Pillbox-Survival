@@ -1,9 +1,9 @@
 //Map size
 /*
 int getMapSize(){
-	if(cMapSize == 0)return (500);
-	if(cMapSize == 1)return (650);
-	if(cMapSize == 2)return (800);
+	if(cMapSize == 0)return (300);
+	if(cMapSize == 1)return (300);
+	if(cMapSize == 2)return (300);
 }
 
 int getMapSizeSquared(){
@@ -155,7 +155,7 @@ if(i<0){biomeIndex19=index;return;}
 }
 
 int getBiomeIndex(int i = 0){
-	if(i<0)return(biomeIndex);
+if(i<0){return (biomeIndex0)}
 	if(i<0)return(biomeIndex1);
 	if(i<0)return(biomeIndex2);
 	if(i<0)return(biomeIndex3);

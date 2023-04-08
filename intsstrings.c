@@ -16,6 +16,7 @@ int NextDay = 1000;
 int NextNight = 1000;
 int LunchTime = 1000;
 int TeaTime = 1000;
+int DontDestroyBelow = 0;
 
 //---
 int timelast = 0;

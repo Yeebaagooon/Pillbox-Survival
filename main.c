@@ -1,5 +1,5 @@
 rmSetStatusText("",0.01);
-rmSetMapSize(200,200);
+rmSetMapSize(300,300);
 rmSetSeaLevel(0);
 rmSetSeaType("greek river");
 rmTerrainInitialize("GrassB",5);
@@ -233,4 +233,5 @@ for(i = 0; < biomeCount){
 		}
 	}
 }
+
 */

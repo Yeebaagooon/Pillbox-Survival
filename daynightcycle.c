@@ -10,6 +10,9 @@ highFrequency
 		xsDisableSelf();
 		xsEnableRule("Lunch");
 		trOverlayText("Day " + Date, 4.0);
+		playSound("restorationbirth.wav");
+		playSound("recreation.wav");
+		playSound("herorevived.wav");
 	}
 }
 
@@ -49,5 +52,7 @@ highFrequency
 		Day = false;
 		xsEnableRule("BeginDay");
 		trOverlayText("Night " + Date, 4.0);
+		playSound("\xpack\xcinematics\intro\magicvoice.mp3");
+		playSound("eclipsebirth.wav");
 	}
 }
