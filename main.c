@@ -5,8 +5,8 @@ rmSetSeaType("greek river");
 rmTerrainInitialize("GrassB",5);
 rmSetLightingSet("default");
 rmSetGaiaCiv(cCivZeus);
-
 /*
+
 // Define some constants
 //int i	= 0;
 int id = 0;
@@ -26,11 +26,11 @@ rmBuildArea(id);
 
 id = rmCreateArea("playerArea");
 rmSetAreaTerrainType(id,"OlympusTile");
-rmSetAreaBaseHeight(id,2.0);
+rmSetAreaBaseHeight(id,5.0);
 rmSetAreaCoherence(id,1.0);
 rmSetAreaHeightBlend(id,10);
 rmSetAreaLocation(id,0.5,0.5);
-setAreaAbsoluteSize(id,4000);
+setAreaFractionSize(id,0.01);
 rmSetAreaSmoothDistance(id,5);
 rmBuildArea(id);
 
@@ -41,14 +41,14 @@ int biomeAvoid = rmCreateClassDistanceConstraint("biomeAvoid", biomeClass, 0.000
 float covered = 0.0;
 
 int i = 0;
-while(covered < 0.8 && i < 20){
+while(covered < 0.85 && i < 20){
 	id = rmCreateArea("areaBiome"+i);
 	float biomeSize = randomFloatWeighted(0.04, 0.2, 2);
-	setBiomeSize(i, biomeSize);
+	//setBiomeSize(i, biomeSize);
 	covered = covered + biomeSize;
 	setAreaFractionSize(id,biomeSize);
 	int biome = rmRandInt(0, 7);
-	setBiomeIndex(i, biome);
+	//	setBiomeIndex(i, biome);
 	if(biome == 0){
 		rmSetAreaTerrainType(id,"GrassA");
 	} else if(biome == 1){

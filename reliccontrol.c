@@ -25,7 +25,7 @@ void DeployRelic(int x = 0, int z = 0){
 	trSetRelicType(461);
 	//Force to gaias book
 	//Number of classes
-	trQuestVarSetFromRand("temp", 3, 4, true);
+	trQuestVarSetFromRand("temp", 5, 5, true);
 	for(a = xGetDatabaseCount(dProjectiles); > 0){
 		xDatabaseNext(dProjectiles);
 		if(xGetInt(dProjectiles, xProjClass) == 1*trQuestVarGet("temp")){
@@ -46,6 +46,7 @@ void DeployRelic(int x = 0, int z = 0){
 	trUnitSelectClear();
 	trUnitSelect(""+(temp+2));
 	trMutateSelected(kbGetProtoUnitID(xGetString(dProjectiles, xProjRelicSFX)));
+	trSetSelectedScale(xGetFloat(dProjectiles, xProjRelicSize),xGetFloat(dProjectiles, xProjRelicSize),xGetFloat(dProjectiles, xProjRelicSize));
 	xSetPointer(dProjectiles, old);
 }
 
@@ -144,6 +145,7 @@ highFrequency
 			trUnitSelectClear();
 			trUnitSelect(""+(temp+1));
 			trMutateSelected(kbGetProtoUnitID(xGetString(dProjectiles, xProjRelicSFX)));
+			trSetSelectedScale(xGetFloat(dProjectiles, xProjRelicSize),xGetFloat(dProjectiles, xProjRelicSize),xGetFloat(dProjectiles, xProjRelicSize));
 			xAddDatabaseBlock(dFreeRelics, true);
 			xSetInt(dFreeRelics, xUnitID, xGetInt(dHeldRelics, xUnitID));
 			xSetInt(dFreeRelics, xProjType, xGetInt(dHeldRelics, xProjType));

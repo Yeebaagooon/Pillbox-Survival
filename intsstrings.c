@@ -10,6 +10,7 @@ Pillboxes can attack other gaia pillboxes (only if player says so)
 */
 
 //---Game Data
+int MapSkin = 0;
 bool Day = true;
 int Date = 0;
 int NextDay = 1000;
@@ -17,6 +18,17 @@ int NextNight = 1000;
 int LunchTime = 1000;
 int TeaTime = 1000;
 int DontDestroyBelow = 0;
+
+string TreeType = "";
+string ForestTerrain = "";
+string TerrainMain = "";
+string Terrain2 = "";
+string Terrain3 = "";
+string Terrain4 = "";
+string Terrain5 = "";
+string Terrain6 = "";
+string Decor1 = "";
+string Decor2 = "";
 
 //---
 int timelast = 0;

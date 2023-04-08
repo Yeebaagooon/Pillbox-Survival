@@ -13,6 +13,26 @@ bool rayCollision(vector start = vector(0,0,0), vector dir = vector(1,0,0), floa
 	return(false);
 }
 
+void CreatePillBox(int x = 0, int z = 0, int heading = 0){
+	int temp = 0;
+	temp = trGetNextUnitScenarioNameNumber();
+	UnitCreate(0, "Dwarf", x, z, heading);
+	xAddDatabaseBlock(dTowers, true);
+	xSetInt(dTowers, xUnitID, temp);
+	xSetVector(dTowers, xTowerPos, kbGetBlockPosition(""+temp));
+	xSetInt(dTowers, xOwner, 0);
+	trUnitSelectClear();
+	trUnitSelect(""+temp);
+	trUnitChangeProtoUnit("Titan Atlantean");
+	trUnitSelectClear();
+	trUnitSelect(""+temp);
+	trUnitChangeProtoUnit("Tower");
+	trUnitSelectClear();
+	trUnitSelect(""+(temp+2));
+	trUnitChangeProtoUnit("Cinematic Block");
+	xSetInt(dTowers, xTowerSFXID, temp+2);
+}
+
 rule CollisionDetection
 active
 highFrequency
@@ -57,6 +77,16 @@ highFrequency
 							trUnitChangeProtoUnit("Meteor Impact Ground");
 							xUnitSelect(dMissiles, xUnitID);
 							trDamageUnitPercent(-100);
+						}
+						if(xGetInt(dProjectiles, xProjSpecial) == 2){
+							xUnitSelect(dEnemies, xUnitID);
+							if(trUnitPercentDamaged() >= 50){
+								trDamageUnitPercent(100);
+								xUnitSelect(dMissiles, xUnitID);
+								trUnitChangeProtoUnit("Regeneration SFX");
+								xUnitSelect(dMissiles, xUnitID);
+								trDamageUnitPercent(-100);
+							}
 						}
 					}
 					break; //if only hitting one enemy

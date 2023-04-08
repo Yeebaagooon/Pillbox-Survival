@@ -9,26 +9,6 @@ int SpawnEnemy(string pname="", int x = 0, int z = 0, bool stationary = false){
 	return(temp);
 }
 
-void CreatePillBox(int x = 0, int z = 0, int heading = 0){
-	int temp = 0;
-	temp = trGetNextUnitScenarioNameNumber();
-	UnitCreate(0, "Dwarf", x, z, heading);
-	xAddDatabaseBlock(dTowers, true);
-	xSetInt(dTowers, xUnitID, temp);
-	xSetVector(dTowers, xTowerPos, kbGetBlockPosition(""+temp));
-	xSetInt(dTowers, xOwner, 0);
-	trUnitSelectClear();
-	trUnitSelect(""+temp);
-	trUnitChangeProtoUnit("Titan Atlantean");
-	trUnitSelectClear();
-	trUnitSelect(""+temp);
-	trUnitChangeProtoUnit("Tower");
-	trUnitSelectClear();
-	trUnitSelect(""+(temp+2));
-	trUnitChangeProtoUnit("Cinematic Block");
-	xSetInt(dTowers, xTowerSFXID, temp+2);
-}
-
 void CreateRocket(int x = 0, int z = 0){
 	int temp = 0;
 	temp = trGetNextUnitScenarioNameNumber()+1;
@@ -65,19 +45,22 @@ inactive
 	xsDisableSelf();
 	CreatePillBox(10,10);
 	xsEnableRule("DeployPlayers");
-	/*int myPerlin = generatePerlinNoise(150, 5);
+	int myPerlin = generatePerlinNoise(150, 5);
 	float height = 0;
 	for(x=0; <= 150) {
 		for(y=0; <= 150) {
 			height = getPerlinNoise(myPerlin, x, y) * 4.0; // you may need to tweak this modifier
-			trChangeTerrainHeight(x, y, x, y, height, false);
+			if(height > 3){
+				UnitCreate(0, "Militia", x*2, y*2);
+			}
 		}
 	}
-	smooth(10);*/
+	//smooth(10);
 	xsEnableRule("BeginDay");
 	NextDay = trTime();
-	CreateRocket(50,50);
-	createMarsh();
+	//createMarsh();
+	CreateRocket(getMapSize()/2,getMapSize()/2);
+	DeployRelic(4,4);
 }
 
 rule DeployPlayers
@@ -87,17 +70,13 @@ inactive
 	int temp = 0;
 	for(p = 1 ; < cNumberNonGaiaPlayers){
 		temp = trGetNextUnitScenarioNameNumber();
-		UnitCreate(p, "Villager Atlantean Hero", 10*p, 10);
-		xSetPointer(dPlayerData, p);
-		xSetInt(dPlayerData, xUnitID, temp);
-		DeployRelic(10*p-6,5);
-		DeployRelic(10*p-4,5);
-		CreatePillBox(10*p,20);
 		trClearCounterDisplay();
 		if(trCurrentPlayer() == p){
 			trSetCounterDisplay("Current ammo: " + xGetInt(dPlayerData, xAmmo));
 		}
 	}
+	uiZoomToProto("Villager Atlantean Hero");
+	uiLookAtProto("Villager Atlantean Hero");
 	xsEnableRule("GameTowerGarrison");
 	xsDisableSelf();
 }

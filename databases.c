@@ -88,6 +88,7 @@ int xProjRelicSFX = 0;
 int xProjRelicSpecial = 0;
 int xProjRelicAnimPath = 0;
 int xProjTowerProto = 0;
+int xProjRelicSize = 0;
 
 //STATUS DB
 int dOnFire = 0;
@@ -170,6 +171,7 @@ highFrequency
 	xProjRelicSpecial = xInitAddInt(dProjectiles, "specialrelic", 0);
 	xProjRelicAnimPath = xInitAddString(dProjectiles, "ranimpath", "0,0,0,0,0,0");
 	xProjTowerProto  = xInitAddString(dProjectiles, "towerdecor", "Cinematic Block");
+	xProjRelicSize = xInitAddFloat(dProjectiles, "relic decor scale", 1.0);
 	
 	dHeldRelics = xInitDatabase("held relics");
 	xUnitID = xInitAddInt(dHeldRelics, "relic id", -1);

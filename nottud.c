@@ -1322,12 +1322,28 @@ void createStartTown(){
 }
 
 void createMarsh(){
-	clearMap("SandC", -5.0);
+	//MapSkin = randomInt(1,4);
+	MapSkin = 1;
+	
+	if(MapSkin == 1){
+		TreeType = "Savannah Tree";
+		ForestTerrain = "ForestFloorSavannah";
+		TerrainMain = "SandC";
+		Terrain2 = "SavannahB";
+		Terrain3 = "DirtA";
+		Terrain4 = "SavannahA";
+		Terrain5 = "SavannahC";
+		Terrain6 = "SavannahD";
+		Decor1 = "Grass";
+		Decor2 = "Bush";
+	}
+	
+	clearMap(TerrainMain, -5.0);
 	for(i = 0; < 60) {
 		tempV = xsVectorSet(randomInt(toTiles(0), toTiles(1.0)), 0.0, randomInt(toTiles(0), toTiles(1.0)));
 		for(k = 0; < 10) {
 			tempV2 = randomCircleLoc(xsVectorGetX(tempV), xsVectorGetZ(tempV), 4.0);
-			paintCircleHeight(xsVectorGetX(tempV2), xsVectorGetZ(tempV2), toTiles(randomFloat(0.0, 0.03)), "SavannahB", -5.0);
+			paintCircleHeight(xsVectorGetX(tempV2), xsVectorGetZ(tempV2), toTiles(randomFloat(0.0, 0.03)), Terrain2, -5.0);
 		}
 	}
 	for(i = 0; < 50) {
@@ -1337,7 +1353,7 @@ void createMarsh(){
 			tempV = randomCircleLoc(centrePosX, centrePosZ, 5.0);
 			for(k = 0; < 3) {
 				tempV2 = randomCircleLoc(xsVectorGetX(tempV), xsVectorGetZ(tempV), 10.0);
-				paintCircleHeight2(xsVectorGetX(tempV2), xsVectorGetZ(tempV2), toTiles(randomFloat(0.0, 0.04)), "DirtA", 2.0);
+				paintCircleHeight2(xsVectorGetX(tempV2), xsVectorGetZ(tempV2), toTiles(randomFloat(0.0, 0.04)), Terrain3, 2.0);
 			}
 		}
 	}
@@ -1346,7 +1362,7 @@ void createMarsh(){
 		for(k = 0; < 5) {
 			tempV2 = randomCircleLoc(xsVectorGetX(tempV), xsVectorGetZ(tempV), 4.0);
 			replaceCircle(xsVectorGetX(tempV2), xsVectorGetZ(tempV2), toTiles(randomFloatWeighted(0.0, 0.05, 2)),
-				"SavannahB", "SavannahA");
+				Terrain2, Terrain4);
 		}
 	}
 	for(i = 0; < 250) {
@@ -1354,56 +1370,37 @@ void createMarsh(){
 		for(k = 0; < 5) {
 			tempV2 = randomCircleLoc(xsVectorGetX(tempV), xsVectorGetZ(tempV), 2.0);
 			replaceCircle(xsVectorGetX(tempV2), xsVectorGetZ(tempV2), toTiles(randomFloatWeighted(0.0, 0.05, 2)),
-				"DirtA", "SavannahC");
+				Terrain3, Terrain5);
 		}
 	}
 	//START
 	vector tileForStart = vector(75,0,75);
+	int temp = 0;
 	int StartTileX = xsVectorGetX(tileForStart);
 	int StartTileZ = xsVectorGetZ(tileForStart);
 	float StartHeight = trGetTerrainHeight(StartTileX, StartTileZ);
 	float StartMetreX = StartTileX*2+1;
 	float StartMetreZ = StartTileZ*2+1;
 	trVectorQuestVarSet("dir", xsVectorSet(11, 0, 0));
+	trVectorQuestVarSet("dir2", xsVectorSet(16, 0, 0));
 	trVectorQuestVarSet("CentreMap", xsVectorSet(StartMetreX, 0, StartMetreZ));
-	paintCircleHeight2(StartTileX, StartTileZ, 13, "IceA", StartHeight+1);
-	//SPAWN PLAYERS
-	float baseCos = xsCos(6.283185 / (cNumberNonGaiaPlayers-1));
-	float baseSin = xsSin(6.283185 / (cNumberNonGaiaPlayers-1));
-	int heading = 90;
-	/*for(p=1; < cNumberNonGaiaPlayers) {
-		xSetPointer(dPlayerData, p);
-		trVectorQuestVarSet("base", trVectorQuestVarGet("CentreMap") + trVectorQuestVarGet("dir"));
-		heading = heading-(360/(cNumberNonGaiaPlayers-1));
-		if(heading > 360){
-			heading = heading-360;
-		}
-		if(heading < 0){
-			heading = heading+360;
-		}
-		if(xGetBool(dPlayerData, xPlayerActive) == true){
-			//CreateRhino(p, trVectorQuestVarGetX("base"), trVectorQuestVarGetZ("base"), heading);
-		}
-		trPlayerKillAllGodPowers(p);
-		trVectorQuestVarSet("dir", rotationMatrix(trVectorQuestVarGet("dir"), baseCos, baseSin));
-		trUnitSelectClear();
-	}*/
+	paintCircleHeight2(StartTileX, StartTileZ, 11, "IceA", StartHeight+1);
 	for(i = 0; < 35) {
 		tempV = xsVectorSet(randomInt(toTiles(0), toTiles(1.0)), 0.0, randomInt(toTiles(0), toTiles(1.0)));
 		for(k = 0; < 5) {
 			tempV2 = randomCircleLoc(xsVectorGetX(tempV), xsVectorGetZ(tempV), 2.0);
 			replaceCircle(xsVectorGetX(tempV2), xsVectorGetZ(tempV2), toTiles(randomFloatWeighted(0.0, 0.05, 2)),
-				"DirtA", "SavannahB");
+				Terrain3, Terrain2);
 			paintCircleHeight(xsVectorGetX(tempV2), xsVectorGetZ(tempV2), toTiles(0.04),
-				"SavannahC", randomFloatWeighted(1.0, 5.0, 2));
+				Terrain5, randomFloatWeighted(1.0, 5.0, 2));
 			tempV3 = randomCircleLoc(xsVectorGetX(tempV2), xsVectorGetZ(tempV2), 2.0);
 			replaceCircle(xsVectorGetX(tempV3), xsVectorGetZ(tempV3), toTiles(randomFloatWeighted(0.0, 0.01, 1)),
-				"SavannahC", "SavannahD");
+				Terrain5, Terrain6);
 			paintCircleHeight(xsVectorGetX(tempV3), xsVectorGetZ(tempV3), toTiles(randomFloatWeighted(0.0, 0.01, 1)),
-				"SavannahA", randomFloatWeighted(1.0, 2.0, 2));
-			deployCluster(xsVectorGetX(tempV3)*2, xsVectorGetZ(tempV3)*2, "Bush", 0, 8, 10.0, false);
-			deployCluster(xsVectorGetX(tempV3)*2, xsVectorGetZ(tempV3)*2, "Grass", 0, 18, 10.0, false);
-			deployCluster(xsVectorGetX(tempV3)*2, xsVectorGetZ(tempV3)*2, "Savannah Tree", 0, 2, 7.0, false);
+				Terrain4, randomFloatWeighted(1.0, 2.0, 2));
+			deployCluster(xsVectorGetX(tempV3)*2, xsVectorGetZ(tempV3)*2, Decor1, 0, 8, 10.0, false);
+			deployCluster(xsVectorGetX(tempV3)*2, xsVectorGetZ(tempV3)*2, Decor2, 0, 18, 10.0, false);
+			deployCluster(xsVectorGetX(tempV3)*2, xsVectorGetZ(tempV3)*2, TreeType, 0, 2, 7.0, false);
 		}
 		trQuestVarSetFromRand("temp", 1, 2);
 		if(1*trQuestVarGet("temp") == 1){
@@ -1415,20 +1412,45 @@ void createMarsh(){
 	trUnitChangeInArea(0,0,"Villager Chinese", "Gold Mine Small", 600);
 	smooth(5);
 	
-	
-	paintUnit("SavannahA", "Water Reeds", 0, 0.4);
-	paintUnit("SavannahA", "Rock River Sandy", 0, 0.2);
-	paintUnit("SavannahC", "Rock Sandstone Small", 0, 0.01);
-	paintUnit("SavannahC", "Sand Drift Plain", 0, 0.002);
-	paintUnit("SavannahC", "Rock Sandstone Big", 0, 0.015);
-	paintUnit("SavannahC", "Dust Devil", 0, 0.005);
+	paintCircleHeight2(StartTileX, StartTileZ, 11, "IceA", StartHeight+3);
+	paintUnit(Terrain4, "Water Reeds", 0, 0.2);
+	paintUnit(Terrain4, "Rock River Sandy", 0, 0.1);
+	paintUnit(Terrain5, "Rock Sandstone Small", 0, 0.01);
+	paintUnit(Terrain5, "Sand Drift Plain", 0, 0.002);
+	paintUnit(Terrain5, "Rock Sandstone Big", 0, 0.015);
+	paintUnit(Terrain5, "Dust Devil", 0, 0.005);
 	refreshPassability();
-	paintCircleHeight2(StartTileX, StartTileZ, 13, "IceA", StartHeight+7);
-	paintTrees2("SandC", "Savannah Tree");
-	replaceCircle(75,75,150, "SandC", "ForestFloorSavannah");
+	
+	paintTrees2(TerrainMain, TreeType);
+	replaceCircle(75,75,150, TerrainMain, ForestTerrain);
 	UnitCreate(0, "Victory Marker", 150,150);
 	trUnitSelectClear();
 	trUnitSelect(""+(trGetNextUnitScenarioNameNumber()-1));
 	trUnitChangeInArea(0,0,"All", "Rocket", 20);
+	//SPAWN PLAYERS
+	float baseCos = xsCos(6.283185 / (cNumberNonGaiaPlayers-1));
+	float baseSin = xsSin(6.283185 / (cNumberNonGaiaPlayers-1));
+	int heading = 90;
+	for(p=1; < cNumberNonGaiaPlayers) {
+		xSetPointer(dPlayerData, p);
+		trVectorQuestVarSet("base", trVectorQuestVarGet("CentreMap") + trVectorQuestVarGet("dir"));
+		trVectorQuestVarSet("tower", trVectorQuestVarGet("CentreMap") + trVectorQuestVarGet("dir2"));
+		heading = heading-(360/(cNumberNonGaiaPlayers-1));
+		if(heading > 360){
+			heading = heading-360;
+		}
+		if(heading < 0){
+			heading = heading+360;
+		}
+		temp = trGetNextUnitScenarioNameNumber();
+		UnitCreate(p, "Villager Atlantean Hero", trVectorQuestVarGetX("base"), trVectorQuestVarGetZ("base"), heading);
+		xSetPointer(dPlayerData, p);
+		xSetInt(dPlayerData, xUnitID, temp);
+		trPlayerKillAllGodPowers(p);
+		trVectorQuestVarSet("dir", rotationMatrix(trVectorQuestVarGet("dir"), baseCos, baseSin));
+		trVectorQuestVarSet("dir2", rotationMatrix(trVectorQuestVarGet("dir2"), baseCos, baseSin));
+		trUnitSelectClear();
+		CreatePillBox(trVectorQuestVarGetX("tower"), trVectorQuestVarGetZ("tower"));
+	}
 	//	xsEnableRule("Reset Blackmap");
 }

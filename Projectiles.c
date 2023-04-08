@@ -88,11 +88,12 @@ void ProjNoShoot(){
 	xSetBool(dProjectiles, xProjUse, false);
 }
 
-void ProjRelicDecorate(string proto = "", int special = 0, string path = "0,0,0,0,0,0"){
+void ProjRelicDecorate(string proto = "", int special = 0, string path = "0,0,0,0,0,0", float size = 1.0){
 	xSetString(dProjectiles, xProjRelicSFX, proto);
 	xSetInt(dProjectiles, xProjRelicSpecial, special);
 	//1 = refresh every 2000ms
 	xSetString(dProjectiles, xProjRelicAnimPath, path);
+	xSetFloat(dProjectiles, xProjRelicSize, size);
 }
 
 void ProjTowerDecor(string proto = ""){
@@ -128,6 +129,13 @@ highFrequency
 	//ProjNoShoot();
 	//ProjRelicDecorate("")
 	ProjTowerDecor("Cinematic Block");
+	
+	//SET INDEX FOR ALL PLAYERS TO DEFAULT MISSILE
+	for(p = 1; < cNumberNonGaiaPlayers){
+		xSetPointer(dPlayerData, p);
+		xSetInt(dPlayerData, xMissileClass, index);
+		xSetInt(dPlayerData, xAmmo, 100);
+	}
 	
 	//--BUILD MISSILE --- 1
 	index = xAddDatabaseBlock(dProjectiles, true);
@@ -232,12 +240,30 @@ highFrequency
 	ProjRelicDecorate("Inferno Unit Flame", 1);
 	ProjTowerDecor("Inferno Fire Ground");
 	
-	//SET INDEX FOR ALL PLAYERS TO DEFAULT MISSILE
-	for(p = 1; < cNumberNonGaiaPlayers){
-		xSetPointer(dPlayerData, p);
-		xSetInt(dPlayerData, xMissileClass, index);
-		xSetInt(dPlayerData, xAmmo, 100);
-	}
+	//--BUILD MISSILE --- 5
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(5);
+	ProjSetName("Golden bullet");
+	ProjSetDesc("Kills a unit if it has less than half HP");
+	ProjSetProto("Poison SFX");
+	ProjSetAnim(2);
+	ProjSetAnimPath("0,0,0,0,0,0");
+	ProjSetSize(1);
+	ProjSetDamage(15);
+	ProjSetAmmoCost(5);
+	ProjSetFireRate(1000);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(2);
+	ProjSetSound("arrow" + iModulo(4, (trTime())+1) + ".wav");
+	//ProjAllowPassThrough();
+	ProjDeathEffect();
+	//ProjNoShoot();
+	ProjRelicDecorate("Poison SFX", 1);
+	ProjTowerDecor("Cinematic Block");
+	
 	//END
 	xsDisableSelf();
 }

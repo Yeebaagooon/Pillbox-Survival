@@ -1,5 +1,5 @@
 //Map size
-/*
+
 int getMapSize(){
 	if(cMapSize == 0)return (300);
 	if(cMapSize == 1)return (300);
@@ -107,7 +107,7 @@ float getBiomeSize(int i = 0){
 	if(i<0)return(biomeSize18);
 	if(i<0)return(biomeSize19);
 }
-
+/*
 //Biome index
 
 int biomeIndex0 = 0;
