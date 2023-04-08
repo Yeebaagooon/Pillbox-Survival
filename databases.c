@@ -97,6 +97,10 @@ int xTotalBurnDamage = 0;
 int xDamagePerTick = 0;
 int xBurnSpyID = 0;
 
+//TERRAIN DB
+int dLowTerrain = 0;
+int xDeployLoc = 0;
+
 
 rule setup_first_databases
 active
@@ -196,6 +200,9 @@ highFrequency
 	xTotalBurnDamage = xInitAddFloat(dOnFire, "burn time", 0.0);
 	xDamagePerTick = xInitAddFloat(dOnFire, "burn tick", 0.0);
 	xBurnSpyID = xInitAddInt(dOnFire, "burn spy id", -1);
+	
+	dLowTerrain = xInitDatabase("tiledeployset");
+	xDeployLoc = xInitAddVector(dLowTerrain, "location", vector(0,0,0));
 }
 
 

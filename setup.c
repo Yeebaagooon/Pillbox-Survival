@@ -154,7 +154,6 @@ highFrequency
 {
 	if((trTime()-cActivationTime) >= 1){
 		//fade out when loaded
-		trUnblockAllSounds();
 		trLetterBox(false);
 		trUIFadeToColor(31,28,26,1000,1,false);
 		trOverlayTextColour(255, 125, 0);
@@ -172,7 +171,7 @@ highFrequency
 		gadgetReal("ShowImageBox-BordersRightTop");
 		gadgetReal("ShowImageBox-CloseButton");
 		//startNPCDialog(1);
-		xsEnableRule("PaintTerrain");
+		xsEnableRule("WorldCreate");
 		xsEnableRule("ysearch");
 		//xsEnableRule("CustomContentChat");
 	}

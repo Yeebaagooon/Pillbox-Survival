@@ -627,6 +627,10 @@ void characterDialog(string character = "", string message = "", string portrait
 	trSoundPlayFN("","1",-1,""+character+":"+message,portrait);
 }
 
+void MapBuild(string message = "", string portrait = ""){
+	trSoundPlayFN("","1",-1,"Building map" + ":"+message,portrait);
+}
+
 void modifyProtounitAbsolute(string protounit = "", int p = 0, int field = 0, float value = 0.0){
 	if(field == 6){
 		trModifyProtounit(protounit, p, field, -9999999999999999999.0);

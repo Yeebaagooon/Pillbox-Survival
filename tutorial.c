@@ -51,10 +51,12 @@ void CreateRocket(int x = 0, int z = 0){
 	trUnitSelect(""+(temp-2));
 	trUnitSetAnimationPath("3,0,0,0,0,0");
 	//Maybe have black rock so players cant attack
+	trUnitSelectClear();
+	trUnitSelect(""+(temp-3));
+	trUnitChangeProtoUnit("Cinematic Block");
 }
 
 void SpawnPlayers(){
-	paintCircleHeight(getMapSize()/4,getMapSize()/4, 11, "GrassA", 0);
 	CreateRocket(getMapSize()/2,getMapSize()/2);
 	//SPAWN PLAYERS
 	int temp = 0;
@@ -87,9 +89,10 @@ void SpawnPlayers(){
 	}
 	CreatePillBox(getMapSize()/2+16,getMapSize()/2+16);
 	CreatePillBox(getMapSize()/2+16,getMapSize()/2-16);
+	paintCircleHeight(getMapSize()/4,getMapSize()/4, 11, "GreekRoadA", 0);
 }
 
-rule PaintTerrain
+rule WorldCreate
 highFrequency
 inactive
 {
@@ -107,21 +110,42 @@ inactive
 				trPaintTerrain(x,y,x,y,getTerrainType("ForestFloorGaia"),getTerrainSubType("ForestFloorGaia"));
 			}
 			if(height > 3){
-				trPaintTerrain(x,y,x,y,getTerrainType("ForestFloorPine"),getTerrainSubType("ForestFloorPine"));
+				trPaintTerrain(x,y,x,y,getTerrainType("ForestFloorOak"),getTerrainSubType("ForestFloorOak"));
+			}
+			if((height <= 2) && (height > 0)){
+				trPaintTerrain(x,y,x,y,getTerrainType("RiverGrassyC"),getTerrainSubType("RiverGrassyC"));
+			}
+			if((height <= 0) && (height > -2.5)){
+				trPaintTerrain(x,y,x,y,getTerrainType("CliffGreekB"),getTerrainSubType("CliffGreekB"));
+			}
+			if((height <= -2.5) && (height > -5)){
+				trPaintTerrain(x,y,x,y,getTerrainType("GrassDirt25"),getTerrainSubType("GrassDirt25"));
 			}
 			if(height < -5){
-				trPaintTerrain(x,y,x,y,0,64);
+				trPaintTerrain(x,y,x,y,getTerrainType("GrassDirt50"),getTerrainSubType("GrassDirt50"));
+			}
+			if(height < -6){
+				trPaintTerrain(x,y,x,y,getTerrainType("GrassDirt75"),getTerrainSubType("GrassDirt75"));
 			}
 		}
 	}
-	xsEnableRule("BeginDay");
-	NextDay = trTime();
+	TerrainTileDBSet("GrassDirt75", dLowTerrain, xDeployLoc);
 	SpawnPlayers();
 	//DeployRelic(4,4);
-	smooth(2);
+	smooth(4);
+	
 	trPaintTerrain(getMapSize()/4-1,getMapSize()/4-1,getMapSize()/4+1,getMapSize()/4+1,2,13);
-	paintTrees2("ForestFloorPine", "Pine");
-	//REFRESH TERRAIN
+	paintTrees2("ForestFloorOak", "Oak Tree");
+	xsEnableRule("BeginDay");
+	NextDay = trTime();
+	trUnblockAllSounds();
+	vector spawn = vector(0,0,0);
+	/*for(a = xGetDatabaseCount(dLowTerrain); > 0){
+		xDatabaseNext(dLowTerrain);
+		spawn = xGetVector(dLowTerrain, xDeployLoc);
+		UnitCreate(0, "Militia", xsVectorGetX(spawn), xsVectorGetZ(spawn));
+	}*/
+	refreshPassability();
 }
 
 rule DeployPlayers
