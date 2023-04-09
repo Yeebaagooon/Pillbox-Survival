@@ -9,6 +9,9 @@ string MapName = "Pillbox Survival";
 Pillboxes can attack other gaia pillboxes (only if player says so)
 */
 
+//---Launch Codes
+bool Visible = false;
+
 //---Game Data
 int MapSkin = 0;
 bool Day = true;
@@ -17,7 +20,10 @@ int NextDay = 1000;
 int NextNight = 1000;
 int LunchTime = 1000;
 int TeaTime = 1000;
+int myPerlin = 0;
 int DontDestroyBelow = 0;
+int CitiesToMake = 0;
+int CitiesCaptured = 0;
 
 string TreeType = "";
 string ForestTerrain = "";
@@ -30,6 +36,7 @@ int timelastfire = 0;
 int DefaultMissilePointer = 0;
 int firetimediff = 0;
 int firetimelast = 0;
+int citychecktime = 0;
 
 //---Player Data
 int dPlayerData = 0;

@@ -111,6 +111,17 @@ int xPopulation = 0;
 int xCityFlagID = 0;
 int xCityChestID = 0;
 int xCityGuard = 0;
+int xCitySFXID = 0;
+int xCityAlive = 0;
+int xCityLOSID = 0;
+
+//CITY EYECANDY DB
+int dCityBuildings = 0;
+int xCity = 0;
+
+//CART DB
+int dCarts = 0;
+int xFromCity = 0;
 
 
 rule setup_first_databases
@@ -224,6 +235,17 @@ highFrequency
 	xPopulation = xInitAddInt(dCity, "population", 0);
 	xCityFlagID = xInitAddInt(dCity, "idflag", -1);
 	xCityChestID = xInitAddInt(dCity, "idchest", -1);
+	xCitySFXID = xInitAddInt(dCity, "sfxid", -1);
+	xCityAlive = xInitAddBool(dCity, "alive", true);
+	xCityLOSID = xInitAddInt(dCity, "revealerid", -1);
+	
+	dCityBuildings = xInitDatabase("citybuildingdb");
+	xUnitID = xInitAddInt(dCityBuildings, "unit id", -1);
+	xCity = xInitAddInt(dCityBuildings, "of city", 0);
+	
+	dCarts = xInitDatabase("carts");
+	xUnitID = xInitAddInt(dCarts, "unit id", -1);
+	xFromCity = xInitAddInt(dCarts, "came from city", 0);
 }
 
 

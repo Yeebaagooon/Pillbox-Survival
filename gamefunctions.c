@@ -189,3 +189,45 @@ xOwner = xInitAddInt(dIncomingMissiles, "missile owner", -1);
 xMissilePos = xInitAddVector(dIncomingMissiles, "position", vector(0,0,0));
 xMissileDir = xInitAddVector(dIncomingMissiles, "direction", vector(0,0,0));
 */
+
+void CreateUnitInAtlantisBox(int centrex = 0, int centrez = 0, int size = 1, int tt = 0, int ts = 0, int owner = 0, string proto = "", int heading = 0, string path = ""){
+	//INPUT IN TILES
+	//Create Unit
+	centrex = centrex*2;
+	centrez = centrez*2;
+	int temp = trGetNextUnitScenarioNameNumber();
+	UnitCreate(0, "Dwarf", centrex,centrez, heading);
+	trUnitSelectClear();
+	trUnitSelect(""+temp);
+	trUnitChangeProtoUnit(proto);
+	if(path != ""){
+		trUnitSelectClear();
+		trUnitSelect(""+temp);
+		trUnitSetAnimationPath(path);
+	}
+	
+	xAddDatabaseBlock(dCityBuildings, true);
+	xSetInt(dCityBuildings, xUnitID, temp);
+	xSetInt(dCityBuildings, xCity, xGetInt(dCity, xNumber));
+	
+	centrex = centrex/2;
+	centrez = centrez/2;
+	if((tt != -1) && (ts != -1)){
+		trPaintTerrain(centrex-size, centrez-size, centrex+size, centrez+size, tt, ts, false);
+	}
+	
+	trPaintTerrain(centrex-size, centrez+size, centrex+size, centrez+size, 0, 75, false);
+	trPaintTerrain(centrex+size, centrez-size, centrex+size, centrez+size, 0, 74, false);
+	trPaintTerrain(centrex-size, centrez-size, centrex-size, centrez+size, 0, 74, false);
+	trPaintTerrain(centrex-size, centrez-size, centrex+size, centrez-size, 0, 75, false);
+	
+	
+	trPaintTerrain(centrex-size, centrez+size, centrex-size, centrez+size, 0, 83, false);
+	trPaintTerrain(centrex+size, centrez+size, centrex+size, centrez+size, 0, 80, false);
+	
+	trPaintTerrain(centrex+size, centrez-size, centrex+size, centrez-size, 0, 81, false);
+	trPaintTerrain(centrex-size, centrez-size, centrex-size, centrez-size, 0, 82, false);
+	
+	
+	//Create Box
+}

@@ -1,6 +1,6 @@
-int SpawnEnemy(string pname="", int x = 0, int z = 0, bool stationary = false, int cityid = 0){
+int SpawnEnemy(string pname="", int x = 0, int z = 0, bool stationary = false, int cityid = 0, int heading = 0){
 	int temp = trGetNextUnitScenarioNameNumber();
-	UnitCreate(cNumberNonGaiaPlayers, pname, x,z,0);
+	UnitCreate(cNumberNonGaiaPlayers, pname, x,z,heading);
 	int index = xAddDatabaseBlock(dEnemies, true);
 	xSetInt(dEnemies, xUnitID, temp);
 	xSetBool(dEnemies, xStationary, stationary);
@@ -94,7 +94,7 @@ void SpawnPlayers(){
 }
 
 void BuildCities(){
-	int CitiesToMake = 5;
+	CitiesToMake = 5;
 	int Chooser = 0;
 	int temp = 0;
 	int ABORT = 0;
@@ -140,6 +140,7 @@ void BuildCities(){
 		xSetInt(dCity, xNumber, 0);
 		xSetInt(dCity, xPopulation, 0);
 		xSetInt(dCity, xDifficultyStat, 0);
+		xSetBool(dCity, xCityAlive, true);
 		spawn = spawn/2;
 		paintCircleHeight(xsVectorGetX(spawn),xsVectorGetZ(spawn), 11, "OlympusTile", -2);
 		trPaintTerrain(xsVectorGetX(spawn),xsVectorGetZ(spawn),xsVectorGetX(spawn),xsVectorGetZ(spawn),getTerrainType("CityTileWaterPool"),getTerrainSubType("CityTileWaterPool"));
@@ -147,6 +148,9 @@ void BuildCities(){
 		temp = trGetNextUnitScenarioNameNumber();
 		UnitCreate(cNumberNonGaiaPlayers, "Dwarf",xsVectorGetX(spawn),xsVectorGetZ(spawn));
 		xSetInt(dCity, xCityFlagID, temp);
+		temp = trGetNextUnitScenarioNameNumber();
+		UnitCreate(cNumberNonGaiaPlayers, "Dwarf",xsVectorGetX(spawn),xsVectorGetZ(spawn));
+		xSetInt(dCity, xCitySFXID, temp);
 		temp = trGetNextUnitScenarioNameNumber();
 		UnitCreate(0, "Dwarf",xsVectorGetX(spawn),xsVectorGetZ(spawn), 90);
 		trUnitSelectClear();
@@ -161,11 +165,18 @@ void BuildCities(){
 		trUnitSetAnimationPath(""+(5-a)+",0,0,0,0,0");
 		xUnitSelect(dCity, xCityFlagID);
 		trSetSelectedScale(2,2,2);
+		xUnitSelect(dCity, xCitySFXID);
+		trUnitChangeProtoUnit("Spy Eye");
+		xUnitSelect(dCity, xCitySFXID);
+		trMutateSelected(kbGetProtoUnitID("Osiris Box Glow"));
+		xUnitSelect(dCity, xCitySFXID);
+		trUnitSetAnimationPath("0,0,1,0,0,0");
 		temp = trGetNextUnitScenarioNameNumber();
 		UnitCreate(0, "Dwarf",xsVectorGetX(spawn)+2,xsVectorGetZ(spawn)+2, 0);
 		trUnitSelectClear();
 		trUnitSelect(""+temp);
 		trUnitChangeProtoUnit("Revealer");
+		xSetInt(dCity, xCityLOSID, temp);
 	}
 }
 
@@ -173,6 +184,7 @@ void SetupCities(){
 	float currentcheck = 0.0;
 	float nextcheck = 0.0;
 	int rank = 0;
+	int temp = 0;
 	for(a = xGetDatabaseCount(dCity); > 0){
 		rank = 0;
 		xDatabaseNext(dCity);
@@ -195,11 +207,35 @@ void SetupCities(){
 		if(xGetInt(dCity, xNumber) == 1){
 			//Populate City 1
 			tempV = xGetVector(dCity, xLocation);
-			SpawnEnemy("Militia", xsVectorGetX(tempV)+6,xsVectorGetZ(tempV)-6,true,1);
-			SpawnEnemy("Militia", xsVectorGetX(tempV)+6,xsVectorGetZ(tempV)+6,true,1);
-			SpawnEnemy("Militia", xsVectorGetX(tempV)-6,xsVectorGetZ(tempV)+6,true,1);
-			SpawnEnemy("Militia", xsVectorGetX(tempV)-6,xsVectorGetZ(tempV)-6,true,1);
-			break;
+			SpawnEnemy("Minotaur", xsVectorGetX(tempV),xsVectorGetZ(tempV)+4,true,1, 180);
+			SpawnEnemy("Militia", xsVectorGetX(tempV)+6,xsVectorGetZ(tempV)-6,true,1, 0);
+			SpawnEnemy("Militia", xsVectorGetX(tempV)+6,xsVectorGetZ(tempV)+6,true,1, 180);
+			SpawnEnemy("Militia", xsVectorGetX(tempV)-6,xsVectorGetZ(tempV)+6,true,1, 180);
+			SpawnEnemy("Militia", xsVectorGetX(tempV)-6,xsVectorGetZ(tempV)-6,true,1, 0);
+			
+			for(b = 1; < cNumberNonGaiaPlayers){
+				SpawnEnemy("Militia", xsVectorGetX(tempV)-8,(xsVectorGetZ(tempV)-(cNumberNonGaiaPlayers*2)+(b*4)),true,1, 90);
+				SpawnEnemy("Militia", xsVectorGetX(tempV)+8,(xsVectorGetZ(tempV)-(cNumberNonGaiaPlayers*2)+(b*4)),true,1, 270);
+			}
+			tempV = tempV/2;
+			//from metres to tiles
+			//---CITY 1 LAYOUT
+			CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)-5, 3, getTerrainType("GrassDirt50"), getTerrainSubType("GrassDirt50"), 0, "Academy", 180);
+			trQuestVarSet("temp1", trGetNextUnitScenarioNameNumber());
+			UnitCreate(0, "Dwarf",(xsVectorGetX(tempV)+4)*2,(xsVectorGetZ(tempV)+5)*2);
+			trQuestVarSet("temp2", trGetNextUnitScenarioNameNumber());
+			UnitCreate(0, "Dwarf",(xsVectorGetX(tempV)-4)*2,(xsVectorGetZ(tempV)+5)*2);
+			CreateUnitInAtlantisBox(xsVectorGetX(tempV)+4,xsVectorGetZ(tempV)+5, 1,-1, -1, 0, "Fountain", 0, "1,1,0,0,0,0");
+			CreateUnitInAtlantisBox(xsVectorGetX(tempV)-4,xsVectorGetZ(tempV)+5, 1,-1, -1, 0, "Fountain", 0, "1,1,0,0,0,0");
+			trUnitSelectByQV("temp1");
+			trUnitChangeProtoUnit("Flowers");
+			trUnitSelectByQV("temp2");
+			trUnitChangeProtoUnit("Flowers");
+		}
+		else{
+			//Placeholder populate the rest
+			tempV = xGetVector(dCity, xLocation);
+			SpawnEnemy("Cyclops", xsVectorGetX(tempV),xsVectorGetZ(tempV)+4,true,xGetInt(dCity, xNumber), 180);
 		}
 	}
 }
@@ -211,7 +247,7 @@ inactive
 	int temp = 0;
 	xsDisableSelf();
 	xsEnableRule("DeployPlayers");
-	int myPerlin = generatePerlinNoise(getMapSize()/2, 10);
+	myPerlin = generatePerlinNoise(getMapSize()/2, 10);
 	float height = 0;
 	float biome = 0.0;
 	for(x=0; <= getMapSize()/2) {
@@ -260,7 +296,10 @@ inactive
 	SetupCities();
 	refreshPassability();
 	//perlinRoll(myPerlin, 30,30, 1, -7,20, true) ;
-	trSetFogAndBlackmap(true, true);
+	if(Visible == false){
+		trSetFogAndBlackmap(true, true);
+	}
+	xsEnableRule("CaptureCity");
 }
 
 rule DeployPlayers
@@ -525,5 +564,57 @@ highFrequency
 			}
 		}
 		firetimelast = trTimeMS();
+	}
+}
+
+rule CaptureCity
+inactive
+highFrequency
+{
+	int cityalive = 0;
+	if(trTime() > citychecktime){
+		citychecktime = trTime();
+		//change city int
+		for(city = 1; <= CitiesToMake){
+			cityalive = 0;
+			while(xGetInt(dCity, xNumber) != city){
+				xDatabaseNext(dCity);
+			}
+			if(xGetBool(dCity, xCityAlive)){
+				for(a = xGetDatabaseCount(dEnemies); > 0){
+					xDatabaseNext(dEnemies);
+					if(xGetInt(dEnemies, xCityGuard) == city){
+						cityalive = 1;
+						//There is at least one guard remaining
+					}
+				}
+				
+				if(cityalive == 0){
+					//---CITY CAPTURED
+					CitiesCaptured = CitiesCaptured+1;
+					trOverlayText("City captured!", 4);
+					playSound("fanfare.wav");
+					xSetBool(dCity, xCityAlive, false);
+					xUnitSelect(dCity, xCityFlagID);
+					trUnitChangeProtoUnit("Olympus Temple SFX");
+					xUnitSelect(dCity, xCitySFXID);
+					trUnitChangeProtoUnit("Osiris Box Glow");
+					xUnitSelect(dCity, xCityChestID);
+					trUnitChangeProtoUnit("Great Box Cart");
+					xUnitSelect(dCity, xCityLOSID);
+					trUnitChangeProtoUnit("Heavenlight");
+					xAddDatabaseBlock(dCarts, true);
+					xSetInt(dCarts, xUnitID, xGetInt(dCity, xCityChestID));
+					xSetInt(dCarts, xFromCity, xGetInt(dCity, xNumber));
+					for(c = xGetDatabaseCount(dCityBuildings); > 0){
+						xDatabaseNext(dCityBuildings);
+						if(xGetInt(dCityBuildings, xCity) == city){
+							xUnitSelect(dCityBuildings, xUnitID);
+							trDamageUnitPercent(100);
+						}
+					}
+				}
+			}
+		}
 	}
 }

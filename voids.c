@@ -714,10 +714,18 @@ void OverlayTextPlayerColor(int p = 0){
 }
 
 void UnitCreate(int xplayerx = 0, string protounitname = "", int xx = 0, int zz = 0, int xheadingx = 0){
-	trQuestVarSet("CreatingU", trGetNextUnitScenarioNameNumber());
+	int CreatingU = trGetNextUnitScenarioNameNumber();
 	trArmyDispatch(""+xplayerx+",0", "Dwarf", 1, xx, 0, zz, xheadingx, true);
 	trUnitSelectClear();
-	trUnitSelect(""+1*trQuestVarGet("CreatingU"));
+	trUnitSelect(""+CreatingU);
+	trMutateSelected(kbGetProtoUnitID(""+protounitname+""));
+}
+
+void UnitCreateV(int xplayerx = 0, string protounitname = "", vector creat = vector(0,0,0), int xheadingx = 0){
+	int CreatingU = trGetNextUnitScenarioNameNumber();
+	trArmyDispatch(""+xplayerx+",0", "Dwarf", 1, xsVectorGetX(creat), 0, xsVectorGetZ(creat), xheadingx, true);
+	trUnitSelectClear();
+	trUnitSelect(""+CreatingU);
 	trMutateSelected(kbGetProtoUnitID(""+protounitname+""));
 }
 
