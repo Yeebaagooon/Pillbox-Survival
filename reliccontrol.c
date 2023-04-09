@@ -1,11 +1,11 @@
-void RelicDetailedHelp(string coverride = ""){
+void RelicDetailedHelp(int p = 0, string coverride = ""){
 	if(coverride == ""){
 		coverride = "1.0,0.5,0";
 	}
-	ColouredChat(coverride, xGetString(dProjectiles, xProjDesc));
-	ColouredChat(coverride, "Ammo Cost: " + xGetInt(dProjectiles, xProjAmmoCost));
-	ColouredChat(coverride, "Fire Rate: " + xGetInt(dProjectiles, xProjFireRate));
-	ColouredChat(coverride, "Damage: " + xGetInt(dProjectiles, xProjDamage));
+	ColouredChatToPlayer(p, coverride, xGetString(dProjectiles, xProjDesc));
+	ColouredChatToPlayer(p, coverride, "Ammo Cost: " + xGetInt(dProjectiles, xProjAmmoCost));
+	ColouredChatToPlayer(p, coverride, "Fire Rate: " + xGetInt(dProjectiles, xProjFireRate));
+	ColouredChatToPlayer(p, coverride, "Damage: " + xGetInt(dProjectiles, xProjDamage));
 }
 
 
@@ -75,7 +75,7 @@ highFrequency
 					}
 					trUnitSelectClear();
 					if(1*trQuestVarGet("P"+p+"HeardOf"+xGetInt(dProjectiles, xPointer)+"") == 0){
-						RelicDetailedHelp();
+						RelicDetailedHelp(p);
 					}
 					trQuestVarModify("P"+p+"HeardOf"+xGetInt(dProjectiles, xPointer)+"", "+", 1);
 					xSetPointer(dPlayerData, p);
@@ -99,7 +99,7 @@ highFrequency
 		if (trUnitIsSelected()) {
 			uiClearSelection();
 			ColouredChat("1,1,0", "<u>" + xGetString(dProjectiles, xProjName) + "</u>");
-			RelicDetailedHelp("0.8,0.8,0");
+			RelicDetailedHelp(trCurrentPlayer(), "0.8,0.8,0");
 		}
 		trUnitSelectClear();
 		if(time > timelast){

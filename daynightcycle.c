@@ -54,5 +54,8 @@ highFrequency
 		trOverlayText("Night " + Date, 4.0);
 		playSound("\xpack\xcinematics\intro\magicvoice.mp3");
 		playSound("eclipsebirth.wav");
+		for(a = 0; < 20){
+			NightAttack("Militia");
+		}
 	}
 }

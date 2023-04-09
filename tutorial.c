@@ -462,7 +462,7 @@ inactive
 	vector spawn = vector(0,0,0);
 	trUnblockAllSounds();
 	//--Test relic
-	DeployRelic(getMapSize()/2+10,getMapSize()/2+10,6);
+	DeployRelic(getMapSize()/2+10,getMapSize()/2+10,9);
 	SpawnEnemy("Militia", getMapSize()/2-10,getMapSize()/2);
 	trPlayerResetBlackMapForAllPlayers();
 	xsEnableRule("BlackMap");
@@ -797,7 +797,6 @@ highFrequency
 	int cityalive = 0;
 	if(trTime() > citychecktime){
 		citychecktime = trTime();
-		NightAttack("Militia");
 		//change city int
 		for(city = 1; <= CitiesToMake){
 			cityalive = 0;

@@ -42,6 +42,7 @@ highFrequency
 	int missileclass = 0;
 	vector pos = vector(0,0,0);
 	vector prev = vector(0,0,0);
+	vector tempV = vector(0,0,0);
 	bool ProjDead = false;
 	bool ProjChange = false;
 	for(a = xsMin(xGetDatabaseCount(dMissiles), cNumberNonGaiaPlayers); > 0){
@@ -78,6 +79,7 @@ highFrequency
 							trUnitChangeProtoUnit("Meteor Impact Ground");
 							xUnitSelect(dMissiles, xUnitID);
 							trDamageUnitPercent(-100);
+							playSound("meteorsmallhit.wav");
 						}
 						if(xGetInt(dProjectiles, xProjSpecial) == 2){
 							//JusticE bullet kill human
@@ -97,9 +99,10 @@ highFrequency
 						}
 					}
 					break; //if only hitting one enemy
+					//[DO NOT PUT DEATH EFFECTS FOR PASSTHROUGH HERE, IT GOES BELOW]
 				}
 				else{
-					debugLog(""+dist);
+					//debugLog(""+dist);
 					continue;
 					//[BUG, HITS ENEMY MULTIPLE TIMES]
 				}
@@ -109,6 +112,20 @@ highFrequency
 		if(trTimeMS() > xGetInt(dMissiles, xMissileStartTime)+1000){
 			ProjDead = true;
 			ProjChange = true;
+			//THEN THE DEATH EFFECTS FOR PROJECTILES THAT PASSTHROUGH GO HERE
+			if(xGetInt(dProjectiles, xProjSpecial) == 3){
+				//Flammen
+				xUnitSelect(dMissiles, xUnitID);
+				tempV = kbGetBlockPosition(""+xGetInt(dMissiles, xUnitID));
+				debugLog(""+xsVectorGetY(tempV));
+				if(xsVectorGetY(tempV) > 4){
+					xUnitSelect(dMissiles, xUnitID);
+					trUnitChangeProtoUnit("Oak Tree");
+					xUnitSelect(dMissiles, xUnitID);
+					trTechInvokeGodPower(0, "Forest Fire", vector(0,0,0), vector(0,0,0));
+					ProjChange = false;
+				}
+			}
 		}
 		if(ProjDead){
 			if(ProjChange){

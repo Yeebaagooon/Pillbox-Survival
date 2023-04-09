@@ -280,6 +280,79 @@ highFrequency
 	ProjRelicDecorate("Ragnorok SFX", 1,);
 	ProjTowerDecor("Vortex Landing", "0,1,0,0,0,0");
 	
+	//--BUILD MISSILE --- 7
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(7);
+	ProjSetName("Mini grenade");
+	ProjSetDesc("Deals explosive damage on impact");
+	ProjSetProto("Implode Sphere");
+	ProjSetAnim(2);
+	ProjSetSize(0.5);
+	ProjSetDamage(100);
+	ProjSetAmmoCost(20);
+	ProjSetFireRate(4000);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(1);
+	ProjSetSound("catapultattack.wav");
+	//ProjAllowPassThrough();
+	ProjDeathEffect();
+	//ProjNoShoot();
+	ProjRelicDecorate("Meteor Impact Ground", 1, "0,1,1,0,0,0");
+	ProjTowerDecor("Cinematic Block");
+	
+	//--BUILD MISSILE --- 8
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(8);
+	ProjSetName("Mini grenade triple");
+	ProjSetDesc("Fires three mini grenades");
+	ProjSetProto("Implode Sphere");
+	ProjSetAnim(2);
+	ProjSetSize(0.5);
+	ProjSetDamage(100);
+	ProjSetAmmoCost(50);
+	ProjSetFireRate(4000);
+	ProjSetCount(3);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(1);
+	ProjSetSound("catapultattack.wav");
+	ProjSetBaseCosSin(0.984808, 0.173648); //the initial +cos/sin (+10)
+	ProjSetMoveCosSin(0.984808, -0.173648); //the incremental -cos/sin (-10 for +5,0,-5)
+	//ProjAllowPassThrough();
+	ProjDeathEffect();
+	//ProjNoShoot();
+	ProjRelicDecorate("Meteor Impact Ground", 1, "0,1,1,0,0,0");
+	ProjTowerDecor("Cinematic Block");
+	
+	//--BUILD MISSILE --- 9
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(9);
+	ProjSetName("Flammenwerfer");
+	ProjSetDesc("Werfs flammen");
+	ProjSetProto("Fire Giant");
+	ProjSetAnim(6);
+	ProjSetSize(0);
+	ProjSetDamage(100);
+	ProjSetAmmoCost(50);
+	ProjSetFireRate(4000);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(3);
+	ProjSetSound("firegiantdie.wav");
+	//ProjSetBaseCosSin(0.984808, 0.173648); //the initial +cos/sin (+10)
+	//ProjSetMoveCosSin(0.984808, -0.173648); //the incremental -cos/sin (-10 for +5,0,-5)
+	ProjAllowPassThrough();
+	ProjDeathEffect();
+	//ProjNoShoot();
+	ProjRelicDecorate("Fire Giant", 0, "0,1,1,0,0,0", 0.0);
+	ProjTowerDecor("Fire Hades");
+	
 	//END
 	
 	//SET INDEX FOR ALL PLAYERS TO DEFAULT MISSILE
