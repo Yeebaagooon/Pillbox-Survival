@@ -83,7 +83,9 @@ highFrequency
 							if(trUnitPercentDamaged() >= 50){
 								trDamageUnitPercent(100);
 								xUnitSelect(dMissiles, xUnitID);
-								trUnitChangeProtoUnit("Regeneration SFX");
+								trUnitChangeProtoUnit("Hero Birth");
+								xUnitSelect(dMissiles, xUnitID);
+								trUnitSetAnimationPath(xGetString(dProjectiles, xProjRelicAnimPath));
 								xUnitSelect(dMissiles, xUnitID);
 								trDamageUnitPercent(-100);
 							}

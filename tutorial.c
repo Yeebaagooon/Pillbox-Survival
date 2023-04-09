@@ -90,7 +90,7 @@ void SpawnPlayers(){
 	}
 	CreatePillBox(getMapSize()/2+16,getMapSize()/2+16);
 	CreatePillBox(getMapSize()/2+16,getMapSize()/2-16);
-	paintCircleHeight(getMapSize()/4,getMapSize()/4, 11, "GreekRoadA", 0);
+	paintCircleHeight(getMapSize()/4,getMapSize()/4, 11, "RiverGrassyB", 0);
 }
 
 void BuildCities(){
@@ -235,8 +235,181 @@ void SetupCities(){
 		else{
 			//Placeholder populate the rest
 			tempV = xGetVector(dCity, xLocation);
-			SpawnEnemy("Cyclops", xsVectorGetX(tempV),xsVectorGetZ(tempV)+4,true,xGetInt(dCity, xNumber), 180);
+			SpawnEnemy("Fire Giant", xsVectorGetX(tempV),xsVectorGetZ(tempV)+4,true,xGetInt(dCity, xNumber), 180);
+			SpawnEnemy("Fire Giant", xsVectorGetX(tempV)+2,xsVectorGetZ(tempV)+4,true,xGetInt(dCity, xNumber), 180);
+			SpawnEnemy("Fire Giant", xsVectorGetX(tempV)+4,xsVectorGetZ(tempV)+4,true,xGetInt(dCity, xNumber), 180);
+			SpawnEnemy("Fire Giant", xsVectorGetX(tempV)-2,xsVectorGetZ(tempV)+4,true,xGetInt(dCity, xNumber), 180);
+			SpawnEnemy("Fire Giant", xsVectorGetX(tempV)-4,xsVectorGetZ(tempV)+4,true,xGetInt(dCity, xNumber), 180);
 		}
+	}
+}
+
+void CreateLargeGold(int num = 1){
+	vector spawn = vector(0,0,0);
+	vector MapMid = xsVectorSet(getMapSize()/2, 0, getMapSize()/2);
+	int temp = 0;
+	while(num > 0){
+		trQuestVarSetFromRand("x", 0, 200);
+		trQuestVarSetFromRand("z", 0, 200);
+		spawn = perlinRoll(myPerlin, 1*trQuestVarGet("x"),1*trQuestVarGet("z"), 1, -8,20, false) ;
+		if(distanceBetweenVectors(spawn, MapMid) > 2000){
+			temp = trGetNextUnitScenarioNameNumber();
+			UnitCreateV(0, "Dwarf", spawn);
+			trUnitSelectClear();
+			trUnitSelect(""+temp);
+			trUnitChangeProtoUnit("Gold Mine");
+			num = num-1;
+		}
+	}
+}
+
+void CreateStartingGold(int num = 1){
+	int allow = 0;
+	vector spawn = vector(0,0,0);
+	vector MapMid = xsVectorSet(getMapSize()/2, 0, getMapSize()/2);
+	int temp = 0;
+	while(num > 0){
+		trQuestVarSetFromRand("x", 0, 200);
+		trQuestVarSetFromRand("z", 0, 200);
+		spawn = perlinRoll(myPerlin, 1*trQuestVarGet("x"),1*trQuestVarGet("z"), 1, -8,20, false) ;
+		if(distanceBetweenVectors(spawn, MapMid) > 2000){
+			temp = trGetNextUnitScenarioNameNumber();
+			UnitCreateV(0, "Victory Marker", spawn);
+			if(trCountUnitsInArea(""+temp, 0, "Victory Marker", 20) == 1){
+				//No clustering
+				
+				//no city
+				allow = 0;
+				for(b = xGetDatabaseCount(dCity); > 0){
+					xDatabaseNext(dCity);
+					if(distanceBetweenVectors(spawn, xGetVector(dCity, xLocation)) > 2000){
+						allow = allow+1;
+					}
+				}
+				if(allow == CitiesToMake){
+					num = num-1;
+				}
+				else{
+					trUnitSelectClear();
+					trUnitSelect(""+temp);
+					trUnitDestroy();
+				}
+			}
+			else{
+				trUnitSelectClear();
+				trUnitSelect(""+temp);
+				trUnitDestroy();
+			}
+		}
+	}
+	if(num == 0){
+		trUnitSelectClear();
+		trUnitSelect(""+temp);
+		trUnitChangeInArea(0, 0, "Victory Marker", "Gold Mine Small", 999.0);
+	}
+}
+
+void CreateStartingPillBoxes(int num = 1){
+	vector spawn = vector(0,0,0);
+	vector MapMid = xsVectorSet(getMapSize()/2, 0, getMapSize()/2);
+	int temp = 0;
+	int allow = 0;
+	while(num > 0){
+		trQuestVarSetFromRand("x", 0, 200);
+		trQuestVarSetFromRand("z", 0, 200);
+		spawn = perlinRoll(myPerlin, 1*trQuestVarGet("x"),1*trQuestVarGet("z"), 1, -8,20, false) ;
+		if(distanceBetweenVectors(spawn, MapMid) > 2000){
+			temp = trGetNextUnitScenarioNameNumber();
+			UnitCreateV(0, "Victory Marker", spawn);
+			if(trCountUnitsInArea(""+temp, 0, "Tower", 20) == 0){
+				//No clustering
+				
+				//no city
+				allow = 0;
+				for(b = xGetDatabaseCount(dCity); > 0){
+					xDatabaseNext(dCity);
+					if(distanceBetweenVectors(spawn, xGetVector(dCity, xLocation)) > 2000){
+						allow = allow+1;
+					}
+				}
+				if(allow == CitiesToMake){
+					CreatePillBox(xsVectorGetX(spawn), xsVectorGetZ(spawn));
+					num = num-1;
+				}
+			}
+			else{
+				trUnitSelectClear();
+				trUnitSelect(""+temp);
+				trUnitDestroy();
+			}
+		}
+	}
+	if(num == 0){
+		//Destroy unused victory markers
+		trUnitSelectClear();
+		trUnitSelect(""+temp);
+		trUnitChangeInArea(0, 0, "Victory Marker", "Rocket", 999.0);
+	}
+}
+
+void CreateStartingRelics(int num = 1){
+	vector spawn = vector(0,0,0);
+	vector MapMid = xsVectorSet(getMapSize()/2, 0, getMapSize()/2);
+	int temp = 0;
+	int allow = 0;
+	float dist = 0.0;
+	while(num > 0){
+		trQuestVarSetFromRand("x", 0, 200);
+		trQuestVarSetFromRand("z", 0, 200);
+		spawn = perlinRoll(myPerlin, 1*trQuestVarGet("x"),1*trQuestVarGet("z"), 1, -8,20, false) ;
+		dist = distanceBetweenVectors(spawn, MapMid, false);
+		if(dist > 26){
+			temp = trGetNextUnitScenarioNameNumber();
+			UnitCreateV(0, "Victory Marker", spawn);
+			if(trCountUnitsInArea(""+temp, 0, "Victory Marker", 20) == 1){
+				//No clustering
+				
+				//no city
+				allow = 0;
+				for(b = xGetDatabaseCount(dCity); > 0){
+					xDatabaseNext(dCity);
+					if(distanceBetweenVectors(spawn, xGetVector(dCity, xLocation)) > 2000){
+						allow = allow+1;
+					}
+				}
+				if(allow == CitiesToMake){
+					num = num-1;
+					if(dist < 80){
+						//FORCE LEVEL 1 RELICS
+						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn),1);
+					}
+					if((dist < 120) && (dist >= 80)){
+						//FORCE LEVEL 2 RELICS
+						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn),3);
+					}
+					if((dist < 160) && (dist >= 120)){
+						//FORCE LEVEL 3 RELICS
+						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn),4);
+					}
+					else if(dist >= 160){
+						//FORCE LEVEL 4 RELICS
+						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn),5);
+						debugLog(""+dist);
+					}
+				}
+			}
+			else{
+				trUnitSelectClear();
+				trUnitSelect(""+temp);
+				trUnitDestroy();
+			}
+		}
+	}
+	if(num == 0){
+		//Destroy unused victory markers
+		trUnitSelectClear();
+		trUnitSelect(""+temp);
+		trUnitChangeInArea(0, 0, "Victory Marker", "Rocket", 999.0);
 	}
 }
 
@@ -284,22 +457,32 @@ inactive
 	//---
 	BuildCities();
 	//---
-	//DeployRelic(4,4);
 	smooth(4);
 	trPaintTerrain(getMapSize()/4-1,getMapSize()/4-1,getMapSize()/4+1,getMapSize()/4+1,2,13);
 	paintTrees2("ForestFloorOak", "Oak Tree");
-	xsEnableRule("BeginDay");
-	NextDay = trTime();
-	trUnblockAllSounds();
-	vector spawn = vector(0,0,0);
 	//---
 	SetupCities();
+	CreateLargeGold(6+cNumberNonGaiaPlayers);
+	CreateStartingGold(50);
+	//---
+	CreateStartingPillBoxes(40);
+	//---
+	CreateStartingRelics(40);
 	refreshPassability();
 	//perlinRoll(myPerlin, 30,30, 1, -7,20, true) ;
 	if(Visible == false){
 		trSetFogAndBlackmap(true, true);
 	}
 	xsEnableRule("CaptureCity");
+	xsEnableRule("RocketAssembled");
+	xsEnableRule("BeginDay");
+	xsEnableRule("GameMechanics");
+	NextDay = trTime();
+	vector spawn = vector(0,0,0);
+	trUnblockAllSounds();
+	//--Test relic
+	DeployRelic(getMapSize()/2+10,getMapSize()/2+10,5);
+	SpawnEnemy("Militia", getMapSize()/2-10,getMapSize()/2);
 }
 
 rule DeployPlayers
@@ -317,6 +500,8 @@ inactive
 	uiZoomToProto("Villager Atlantean Hero");
 	uiLookAtProto("Villager Atlantean Hero");
 	xsEnableRule("GameTowerGarrison");
+	trCounterAbort("rocketparts");
+	trCounterAddTime("rocketparts", -100, -20000, "Rocket Parts: " + CartsCaptured + "/" + CitiesToMake, -1);
 	xsDisableSelf();
 }
 
@@ -404,10 +589,27 @@ inactive
 						trUnitChangeProtoUnit("Cinematic Block");
 						if(trCurrentPlayer() == p){
 							trLetterBox(false);
+							uiZoomToProto("Villager Atlantean Hero");
+							uiLookAtProto("Villager Atlantean Hero");
 						}
 					}
 				}
 			}
+		}
+	}
+}
+
+rule GameMechanics
+highFrequency
+active
+{
+	int resource = 0;
+	for(p=1 ; < cNumberNonGaiaPlayers){
+		xSetPointer(dPlayerData, p);
+		resource = trPlayerResourceCount(p, "Gold");
+		if(resource > 0){
+			trPlayerGrantResources(p, "Gold", -1*resource);
+			xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)+5*resource);
 		}
 	}
 }
@@ -616,5 +818,36 @@ highFrequency
 				}
 			}
 		}
+		//Check cart
+		if(xGetDatabaseCount(dCarts) > 0){
+			for(a = xGetDatabaseCount(dCarts); > 0){
+				xDatabaseNext(dCarts);
+				if(unitOnTerrain(xGetInt(dCarts, xUnitID), "RiverGrassyB")){
+					//Cart home
+					//[THIS WILL CAUSE OOS IF TERRAIN CHANGES]
+					trOverlayText("Rocket part returned!", 4);
+					playSound("fanfare.wav");
+					CartsCaptured = CartsCaptured+1;
+					trCounterAbort("rocketparts");
+					trCounterAddTime("rocketparts", -100, -20000, "Rocket Parts: " + CartsCaptured + "/" + CitiesToMake, -1);
+					xUnitSelect(dCarts, xUnitID);
+					trUnitChangeProtoUnit("Osiris Box Glow");
+					xUnitSelect(dCarts, xUnitID);
+					trUnitSetAnimationPath("0,1,0,0,0,0");
+					xFreeDatabaseBlock(dCarts);
+				}
+			}
+		}
+	}
+}
+
+rule RocketAssembled
+inactive
+highFrequency
+{
+	if(CartsCaptured == CitiesToMake){
+		trCounterAbort("rocketparts");
+		trOverlayText("Rocket assembled!", 4);
+		xsDisableSelf();
 	}
 }

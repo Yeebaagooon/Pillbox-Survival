@@ -130,13 +130,6 @@ highFrequency
 	//ProjRelicDecorate("")
 	ProjTowerDecor("Cinematic Block");
 	
-	//SET INDEX FOR ALL PLAYERS TO DEFAULT MISSILE
-	for(p = 1; < cNumberNonGaiaPlayers){
-		xSetPointer(dPlayerData, p);
-		xSetInt(dPlayerData, xMissileClass, index);
-		xSetInt(dPlayerData, xAmmo, 100);
-	}
-	
 	//--BUILD MISSILE --- 1
 	index = xAddDatabaseBlock(dProjectiles, true);
 	xSetInt(dProjectiles, xPointer, index);
@@ -172,7 +165,7 @@ highFrequency
 	ProjSetAnim(2);
 	ProjSetAnimPath("0,0,0,0,0,0");
 	ProjSetSize(0.4);
-	ProjSetDamage(5);
+	ProjSetDamage(10);
 	ProjSetAmmoCost(3);
 	ProjSetFireRate(1000);
 	ProjSetCount(3);
@@ -199,7 +192,7 @@ highFrequency
 	ProjSetAnimPath("0,0,0,0,0,0");
 	ProjSetSize(0.4);
 	ProjSetDamage(250);
-	ProjSetAmmoCost(5);
+	ProjSetAmmoCost(25);
 	ProjSetFireRate(2000);
 	ProjSetCount(1);
 	ProjSetAngle(0);
@@ -225,7 +218,7 @@ highFrequency
 	ProjSetAnimPath("0,0,0,0,0,0");
 	ProjSetSize(0.4);
 	ProjSetDamage(150);
-	ProjSetAmmoCost(5);
+	ProjSetAmmoCost(15);
 	ProjSetFireRate(2000);
 	ProjSetCount(1);
 	ProjSetAngle(0);
@@ -244,12 +237,11 @@ highFrequency
 	index = xAddDatabaseBlock(dProjectiles, true);
 	xSetInt(dProjectiles, xPointer, index);
 	ProjSetClass(5);
-	ProjSetName("Golden bullet");
-	ProjSetDesc("Kills a unit if it has less than half HP");
-	ProjSetProto("Poison SFX");
+	ProjSetName("Justice bullet");
+	ProjSetDesc("Kills a human if it has less than half HP");
+	ProjSetProto("Relic");
 	ProjSetAnim(2);
-	ProjSetAnimPath("0,0,0,0,0,0");
-	ProjSetSize(1);
+	ProjSetSize(0);
 	ProjSetDamage(15);
 	ProjSetAmmoCost(5);
 	ProjSetFireRate(1000);
@@ -261,10 +253,17 @@ highFrequency
 	//ProjAllowPassThrough();
 	ProjDeathEffect();
 	//ProjNoShoot();
-	ProjRelicDecorate("Poison SFX", 1);
+	ProjRelicDecorate("Hero Birth", 0, "0,1,0,0,0,0");
 	ProjTowerDecor("Cinematic Block");
 	
 	//END
+	
+	//SET INDEX FOR ALL PLAYERS TO DEFAULT MISSILE
+	for(p = 1; < cNumberNonGaiaPlayers){
+		xSetPointer(dPlayerData, p);
+		xSetInt(dPlayerData, xCurrentMissile, DefaultMissilePointer);
+		xSetInt(dPlayerData, xAmmo, 100);
+	}
 	xsDisableSelf();
 }
 

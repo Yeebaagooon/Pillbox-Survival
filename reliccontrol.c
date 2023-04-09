@@ -9,7 +9,7 @@ void RelicDetailedHelp(string coverride = ""){
 }
 
 
-void DeployRelic(int x = 0, int z = 0){
+void DeployRelic(int x = 0, int z = 0, int force = 0){
 	int old = xGetPointer(dProjectiles);
 	int temp = trGetNextUnitScenarioNameNumber();
 	int index = 0;
@@ -25,7 +25,12 @@ void DeployRelic(int x = 0, int z = 0){
 	trSetRelicType(461);
 	//Force to gaias book
 	//Number of classes
-	trQuestVarSetFromRand("temp", 5, 5, true);
+	if(force == 0){
+		trQuestVarSetFromRand("temp", 1, 5, true);
+	}
+	else{
+		trQuestVarSet("temp", force);
+	}
 	for(a = xGetDatabaseCount(dProjectiles); > 0){
 		xDatabaseNext(dProjectiles);
 		if(xGetInt(dProjectiles, xProjClass) == 1*trQuestVarGet("temp")){
@@ -40,13 +45,13 @@ void DeployRelic(int x = 0, int z = 0){
 	xSetInt(dFreeRelics, xSFXID, temp+2);
 	xSetString(dFreeRelics, xSFXProto, xGetString(dProjectiles, xProjRelicSFX));
 	xSetInt(dFreeRelics, xSFXExtra, xGetInt(dProjectiles, xProjRelicSpecial));
-	trUnitSelectClear();
-	trUnitSelect(""+(temp+2));
+	xUnitSelect(dFreeRelics, xSFXID);
 	trUnitChangeProtoUnit("Spy Eye");
-	trUnitSelectClear();
-	trUnitSelect(""+(temp+2));
+	xUnitSelect(dFreeRelics, xSFXID);
 	trMutateSelected(kbGetProtoUnitID(xGetString(dProjectiles, xProjRelicSFX)));
 	trSetSelectedScale(xGetFloat(dProjectiles, xProjRelicSize),xGetFloat(dProjectiles, xProjRelicSize),xGetFloat(dProjectiles, xProjRelicSize));
+	xUnitSelect(dFreeRelics, xSFXID);
+	trUnitSetAnimationPath(xGetString(dProjectiles, xProjRelicAnimPath));
 	xSetPointer(dProjectiles, old);
 }
 
@@ -153,6 +158,8 @@ highFrequency
 			xSetInt(dFreeRelics, xSFXID, (temp+1));
 			xSetString(dFreeRelics, xSFXProto, xGetString(dHeldRelics, xSFXProto));
 			xSetInt(dFreeRelics, xSFXExtra, xGetInt(dHeldRelics, xSFXExtra));
+			xUnitSelect(dFreeRelics, xSFXID);
+			trUnitSetAnimationPath(xGetString(dProjectiles, xProjRelicAnimPath));
 			xFreeDatabaseBlock(dHeldRelics);
 			break;
 		}
