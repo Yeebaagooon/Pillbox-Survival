@@ -10,7 +10,7 @@ Pillboxes can attack other gaia pillboxes (only if player says so)
 */
 
 //---Launch Codes
-bool Visible = true;
+bool Visible = false;
 
 //---Game Data
 int MapSkin = 0;

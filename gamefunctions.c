@@ -69,6 +69,7 @@ highFrequency
 					if(xGetBool(dProjectiles, xProjDeathSpecial) == true){
 						ProjChange = false;
 						if(xGetInt(dProjectiles, xProjSpecial) == 1){
+							//Grenade explosion
 							xUnitSelect(dEnemies, xUnitID);
 							trDamageUnit(-1*xGetInt(dProjectiles, xProjDamage));
 							xUnitSelect(dEnemies, xUnitID);
@@ -79,15 +80,19 @@ highFrequency
 							trDamageUnitPercent(-100);
 						}
 						if(xGetInt(dProjectiles, xProjSpecial) == 2){
+							//JusticE bullet kill human
 							xUnitSelect(dEnemies, xUnitID);
 							if(trUnitPercentDamaged() >= 50){
-								trDamageUnitPercent(100);
-								xUnitSelect(dMissiles, xUnitID);
-								trUnitChangeProtoUnit("Hero Birth");
-								xUnitSelect(dMissiles, xUnitID);
-								trUnitSetAnimationPath(xGetString(dProjectiles, xProjRelicAnimPath));
-								xUnitSelect(dMissiles, xUnitID);
-								trDamageUnitPercent(-100);
+								trDamageUnitsInArea(cNumberNonGaiaPlayers,"HumanSoldier",0,100);
+								xUnitSelect(dEnemies, xUnitID);
+								if(trUnitPercentDamaged() >= 100){
+									xUnitSelect(dMissiles, xUnitID);
+									trUnitChangeProtoUnit("Hero Birth");
+									xUnitSelect(dMissiles, xUnitID);
+									trUnitSetAnimationPath(xGetString(dProjectiles, xProjRelicAnimPath));
+									xUnitSelect(dMissiles, xUnitID);
+									trDamageUnitPercent(-100);
+								}
 							}
 						}
 					}
@@ -177,21 +182,6 @@ void FireMissile(vector dir = vector(0,0,0), int towerpointer = -1, int shotby =
 	xSetVector(dIncomingMissiles, xMissileDir, dir);
 }
 
-/*
-dMissiles = xInitDatabase("Missiles DB");
-xUnitID = xInitAddInt(dMissiles, "missile unit id", -1);
-xOwner = xInitAddInt(dMissiles, "missile owner", 0);
-xMissilePos = xInitAddVector(dMissiles, "position", vector(0,0,0));
-xMissileDir = xInitAddVector(dMissiles, "direction", vector(0,0,0));
-xMissilePrev = xInitAddVector(dMissiles, "prev", vector(0,0,0));
-
-dIncomingMissiles = xInitDatabase("Incoming DB");
-xUnitID = xInitAddInt(dIncomingMissiles, "missile unit id", -1);
-xOwner = xInitAddInt(dIncomingMissiles, "missile owner", -1);
-xMissilePos = xInitAddVector(dIncomingMissiles, "position", vector(0,0,0));
-xMissileDir = xInitAddVector(dIncomingMissiles, "direction", vector(0,0,0));
-*/
-
 void CreateUnitInAtlantisBox(int centrex = 0, int centrez = 0, int size = 1, int tt = 0, int ts = 0, int owner = 0, string proto = "", int heading = 0, string path = ""){
 	//INPUT IN TILES
 	//Create Unit
@@ -232,4 +222,76 @@ void CreateUnitInAtlantisBox(int centrex = 0, int centrez = 0, int size = 1, int
 	
 	
 	//Create Box
+}
+
+int SpawnEnemy(string pname="", int x = 0, int z = 0, bool stationary = false, int cityid = 0, int heading = 0){
+	int temp = trGetNextUnitScenarioNameNumber();
+	UnitCreate(cNumberNonGaiaPlayers, pname, x,z,heading);
+	int index = xAddDatabaseBlock(dEnemies, true);
+	xSetInt(dEnemies, xUnitID, temp);
+	xSetBool(dEnemies, xStationary, stationary);
+	xSetInt(dEnemies, xCityGuard, cityid);
+	xUnitSelect(dEnemies, xUnitID);
+	spyEffect(kbGetProtoUnitID("Cinematic Block"), 2, xsVectorSet(dEnemies, xSpyBurn, index), vector(1,1,1));
+	return(temp);
+}
+
+int NightAttack(string unit = ""){
+	int attempt = 50;
+	int nextUnitName = 0;
+	while(attempt > 0){
+		trQuestVarSetFromRand("temp", 1, xGetDatabaseCount(dLowTerrain));
+		xSetPointer(dLowTerrain, 1*trQuestVarGet("temp"));
+		vector spawn = xGetVector(dLowTerrain, xDeployLoc);
+		nextUnitName = trGetNextUnitScenarioNameNumber();
+		UnitCreateV(cNumberNonGaiaPlayers, "Victory Marker", spawn);
+		trUnitSelectClear();
+		trUnitSelect(""+nextUnitName);
+		bool inLOS = false;
+		for(p = 1; < cNumberNonGaiaPlayers){
+			if(trUnitHasLOS(p) && trPlayerDefeated(p) == false){
+				trUnitDestroy();
+				inLOS = true;
+			}
+		}
+		if(inLOS == false){
+			//UNIT CREATED - SET TARGET
+			//If cart in play go for cart
+			nextUnitName = SpawnEnemy(unit, xsVectorGetX(spawn), xsVectorGetZ(spawn));
+			if(xGetDatabaseCount(dCarts) > 0){
+				trQuestVarSetFromRand("temp", 0, 100);
+				if(1*trQuestVarGet("temp") < 70){
+					trUnitSelectClear();
+					trUnitSelect(""+nextUnitName);
+					trUnitMoveToUnit(""+xGetInt(dCarts, xUnitID),-1,true);
+				}
+			}
+			
+			//If no carts or failed percent
+			trQuestVarSetFromRand("temp", 0, cNumberNonGaiaPlayers);
+			if(1*trQuestVarGet("temp") != cNumberNonGaiaPlayers){
+				xSetPointer(dPlayerData, 1*trQuestVarGet("temp"));
+				if(playerIsPlaying(1*trQuestVarGet("temp"))){
+					trUnitSelectClear();
+					trUnitSelect(""+nextUnitName);
+					trUnitMoveToUnit(""+xGetInt(dPlayerData, xUnitID),-1,true);
+				}
+				else{
+					trUnitSelectClear();
+					trUnitSelect(""+nextUnitName);
+					trUnitMoveToPoint(200,0,200,-1,true);
+				}
+			}
+			if(1*trQuestVarGet("temp") == cNumberNonGaiaPlayers){
+				trUnitSelectClear();
+				trUnitSelect(""+nextUnitName);
+				trUnitMoveToPoint(200,0,200,-1,true);
+			}
+			
+			attempt = 0;
+			return(nextUnitName);
+			break;
+		}
+		attempt = attempt-1;
+	}
 }

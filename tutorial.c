@@ -1,15 +1,3 @@
-int SpawnEnemy(string pname="", int x = 0, int z = 0, bool stationary = false, int cityid = 0, int heading = 0){
-	int temp = trGetNextUnitScenarioNameNumber();
-	UnitCreate(cNumberNonGaiaPlayers, pname, x,z,heading);
-	int index = xAddDatabaseBlock(dEnemies, true);
-	xSetInt(dEnemies, xUnitID, temp);
-	xSetBool(dEnemies, xStationary, stationary);
-	xSetInt(dEnemies, xCityGuard, cityid);
-	xUnitSelect(dEnemies, xUnitID);
-	spyEffect(kbGetProtoUnitID("Cinematic Block"), 2, xsVectorSet(dEnemies, xSpyBurn, index), vector(1,1,1));
-	return(temp);
-}
-
 void CreateRocket(int x = 0, int z = 0){
 	int temp = 0;
 	temp = trGetNextUnitScenarioNameNumber()+3;
@@ -98,7 +86,6 @@ void BuildCities(){
 	int Chooser = 0;
 	int temp = 0;
 	int ABORT = 0;
-	string poi = "";
 	vector spawn = vector(0,0,0);
 	vector MapMid = xsVectorSet(getMapSize()/2, 0, getMapSize()/2);
 	for(a = CitiesToMake; > 0){
@@ -113,20 +100,15 @@ void BuildCities(){
 			if((xsVectorGetX(spawn) > 20) && (xsVectorGetX(spawn) < 380) && (xsVectorGetZ(spawn) > 20) && (xsVectorGetZ(spawn) < 380)){
 				//If city not too close to start point
 				if(distanceBetweenVectors(spawn, MapMid, true) > 5000){
-					debugLog("START - " + xGetDatabaseCount(dCity) + " cities exist");
+					//debugLog("START - " + xGetDatabaseCount(dCity) + " cities exist");
 					for(b = xGetDatabaseCount(dCity); > 0){
 						//Check distance to all other cities
 						xDatabaseNext(dCity);
-						poi = " ("+b+" to "+(xGetDatabaseCount(dCity)+1)+") ";
-						trChatSend(0, "Distance" + poi + " = " + distanceBetweenVectors(spawn, xGetVector(dCity, xLocation),true));
 						if(distanceBetweenVectors(spawn, xGetVector(dCity, xLocation),true) < 10000){
 							Chooser = Chooser-1;
 						}
 					}
 					Chooser = Chooser+1;
-					if(Chooser == 1){
-						trChatSend(0, "<color=0,1,0>Creation allowed</color>");
-					}
 				}
 			}
 			if(ABORT > 500){
@@ -394,7 +376,6 @@ void CreateStartingRelics(int num = 1){
 					else if(dist >= 160){
 						//FORCE LEVEL 4 RELICS
 						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn),5);
-						debugLog(""+dist);
 					}
 				}
 			}
@@ -481,8 +462,20 @@ inactive
 	vector spawn = vector(0,0,0);
 	trUnblockAllSounds();
 	//--Test relic
-	DeployRelic(getMapSize()/2+10,getMapSize()/2+10,5);
+	DeployRelic(getMapSize()/2+10,getMapSize()/2+10,6);
 	SpawnEnemy("Militia", getMapSize()/2-10,getMapSize()/2);
+	trPlayerResetBlackMapForAllPlayers();
+	xsEnableRule("BlackMap");
+}
+
+rule BlackMap
+highFrequency
+inactive
+{
+	if((trTime()-cActivationTime) >= 1){
+		trPlayerResetBlackMapForAllPlayers();
+		xsDisableSelf();
+	}
 }
 
 rule DeployPlayers
@@ -547,6 +540,8 @@ inactive
 					trUnitChangeProtoUnit("Spy Eye");
 					xUnitSelect(dTowers, xTowerSFXID);
 					trMutateSelected(kbGetProtoUnitID(xGetString(dProjectiles, xProjTowerProto)));
+					xUnitSelect(dTowers, xTowerSFXID);
+					trUnitSetAnimationPath(xGetString(dProjectiles, xProjTowerProtoAnimPath));
 					if(xGetInt(dProjectiles, xProjAmmoCost) <= xGetInt(dPlayerData, xAmmo)){
 						if(trCurrentPlayer() == p){
 							trClearCounterDisplay();
@@ -646,6 +641,7 @@ active
 	int shotby = 0;
 	int missileclass = 0;
 	int index = 0;
+	bool AttackAllowed = true;
 	//cycle through all towers and find ones under player control
 	for(c = xGetDatabaseCount(dTowers); > 0){
 		xDatabaseNext(dTowers);
@@ -721,15 +717,40 @@ active
 									trMutateSelected(kbGetProtoUnitID("Inferno Unit Flame"));
 									xSetInt(dOnFire, xBurnSpyID, xGetInt(dEnemies, xSpyBurn));
 								}
+								if(xGetInt(dProjectiles, xProjClass) == 6){
+									//Rapture Human
+									
+									if(trCountUnitsInArea(""+targetid, cNumberNonGaiaPlayers, "HumanSoldier", 0) > 0){
+										//Human check
+										trUnitSelectClear();
+										trUnitSelect(""+targetid);
+										trUnitChangeProtoUnit("Titan Atlantean");
+										trUnitSelectClear();
+										trUnitSelect(""+targetid);
+										trUnitChangeProtoUnit("Dwarf");
+										trUnitSelectClear();
+										trUnitSelect(""+targetid);
+										trUnitChangeInArea(cNumberNonGaiaPlayers, cNumberNonGaiaPlayers, "Titan Gate Dead", "Hero Death", 1);
+										trUnitSelectClear();
+										trUnitSelect(""+targetid);
+										trUnitChangeProtoUnit("Ragnorok SFX");
+									}
+									else{
+										AttackAllowed = false;
+									}
+								}
 								xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)-xGetInt(dProjectiles, xProjAmmoCost));
 								if(trCurrentPlayer() == shotby){
 									characterDialog("Firing " + xGetString(dProjectiles, xProjName), "Ammo remaining - " + xGetInt(dPlayerData, xAmmo), "");
 								}
 							}
 							//[SOUND LOS]
-							xUnitSelect(dTowers, xUnitID);
-							if(trUnitVisToPlayer()){
-								playSound(""+xGetString(dProjectiles, xProjSound));
+							if(AttackAllowed){
+								xUnitSelect(dTowers, xUnitID);
+								
+								if(trUnitVisToPlayer()){
+									playSound(""+xGetString(dProjectiles, xProjSound));
+								}
 							}
 							xSetInt(dPlayerData, xLastShotTime, trTimeMS()+xGetInt(dProjectiles, xProjFireRate));
 						}
@@ -776,6 +797,7 @@ highFrequency
 	int cityalive = 0;
 	if(trTime() > citychecktime){
 		citychecktime = trTime();
+		NightAttack("Militia");
 		//change city int
 		for(city = 1; <= CitiesToMake){
 			cityalive = 0;

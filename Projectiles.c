@@ -96,8 +96,9 @@ void ProjRelicDecorate(string proto = "", int special = 0, string path = "0,0,0,
 	xSetFloat(dProjectiles, xProjRelicSize, size);
 }
 
-void ProjTowerDecor(string proto = ""){
+void ProjTowerDecor(string proto = "" ,string path = "0,0,0,0,0,0"){
 	xSetString(dProjectiles, xProjTowerProto, proto);
+	xSetString(dProjectiles, xProjTowerProtoAnimPath, path);
 }
 
 rule SetupProjTypes
@@ -256,6 +257,29 @@ highFrequency
 	ProjRelicDecorate("Hero Birth", 0, "0,1,0,0,0,0");
 	ProjTowerDecor("Cinematic Block");
 	
+	//--BUILD MISSILE --- 6
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(6);
+	ProjSetName("Rapture Tower");
+	ProjSetDesc("Raptures humans nearby, no effect on stronger units");
+	ProjSetProto("Spear");
+	ProjSetAnim(2);
+	ProjSetSize(0);
+	ProjSetDamage(0);
+	ProjSetAmmoCost(50);
+	ProjSetFireRate(1000);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("\xpack\xcinematics\8_in\krioschange.mp3");
+	//ProjAllowPassThrough();
+	//ProjDeathEffect();
+	ProjNoShoot();
+	ProjRelicDecorate("Ragnorok SFX", 1,);
+	ProjTowerDecor("Vortex Landing", "0,1,0,0,0,0");
+	
 	//END
 	
 	//SET INDEX FOR ALL PLAYERS TO DEFAULT MISSILE
@@ -285,32 +309,4 @@ Relics
 
 ?LOS/Range
 
-*/
-
-
-//NOTTUD DEPLOY OUT OF LOS
-/*
-int deployRandomLocOutOfLOS(string unit = "", int p = 0){
-	while(true){
-		int nextUnitName = trGetNextUnitScenarioNameNumber();
-		vector deployLocation = pickRandomUnblockedLocation();
-		deployLoc(xsVectorGetX(deployLocation), xsVectorGetZ(deployLocation), unit, p);
-		if(trGetNextUnitScenarioNameNumber() == nextUnitName){
-			continue;
-		}
-		trUnitSelectClear();
-		trUnitSelect(""+nextUnitName);
-		bool inLOS = false;
-		for(q = 1; <= cNumberNonGaiaPlayers){
-			if(trUnitHasLOS(q) && getPlayerDead(q) == false){
-				trUnitDestroy();
-				inLOS = true;
-				break;
-			}
-		}
-		if(inLOS == false){
-			return (nextUnitName);
-		}
-	}
-}
 */
