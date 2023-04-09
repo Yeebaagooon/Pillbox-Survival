@@ -1,3 +1,55 @@
+void FireMissile(vector dir = vector(0,0,0), int towerpointer = -1, int shotby = -1){
+	xSetPointer(dTowers, towerpointer);
+	trModifyProtounit("Tower", shotby, 5, 1);
+	xAddDatabaseBlock(dIncomingMissiles, true);
+	xSetInt(dIncomingMissiles, xUnitID, trGetNextUnitScenarioNameNumber());
+	UnitCreate(shotby, "Dwarf", 0,0,0);
+	xUnitSelect(dIncomingMissiles, xUnitID);
+	trImmediateUnitGarrison(""+xGetInt(dTowers, xUnitID));
+	trUnitChangeProtoUnit("Dwarf");
+	xUnitSelect(dIncomingMissiles, xUnitID);
+	trMutateSelected(kbGetProtoUnitID("Kronny Flying"));
+	xUnitSelect(dIncomingMissiles, xUnitID);
+	trSetUnitOrientation(dir, vector(0,1,0), true);
+	xUnitSelect(dIncomingMissiles, xUnitID);
+	trSetSelectedScale(0,-4.5,0);
+	xUnitSelect(dIncomingMissiles, xUnitID);
+	trDamageUnitPercent(100);
+	trModifyProtounit("Tower", shotby, 5, -1);
+	xSetInt(dIncomingMissiles, xOwner, shotby);
+	xSetVector(dIncomingMissiles, xMissilePos, xGetVector(dTowers, xTowerPos));
+	xSetVector(dIncomingMissiles, xMissileDir, dir);
+}
+
+/*void FireMissileNoTower(vector dir = vector(0,0,0), vector startpos = vector(0,0,0), int shotby = 0, int classoverride = 0){
+	xAddDatabaseBlock(dIncomingMissiles, true);
+	xSetInt(dIncomingMissiles, xUnitID, trGetNextUnitScenarioNameNumber());
+	UnitCreateV(0, "Dwarf", startpos);
+	xUnitSelect(dIncomingMissiles, xUnitID);
+	trMutateSelected(kbGetProtoUnitID("Kronny Flying"));
+	xUnitSelect(dIncomingMissiles, xUnitID);
+	trSetUnitOrientation(dir, vector(0,1,0), true);
+	xUnitSelect(dIncomingMissiles, xUnitID);
+	trSetSelectedScale(0,-4.5,0);
+	xUnitSelect(dIncomingMissiles, xUnitID);
+	trDamageUnitPercent(100);
+	
+	xSetInt(dIncomingMissiles, xOwner, -1);
+	xSetVector(dIncomingMissiles, xMissilePos, startpos);
+	xSetVector(dIncomingMissiles, xMissileDir, dir);
+	
+	for(a = xGetDatabaseCount(dProjectiles); > 0){
+		xDatabaseNext(dProjectiles);
+		if(classoverride == xGetInt(dProjectiles, xProjClass)){
+			classoverride = xGetPointer(dProjectiles);
+			modifyProtounitAbsolute("Kronny Flying", 0, 1, xGetFloat(dProjectiles, xProjSpeed));
+			break;
+		}
+	}
+	
+	xSetInt(dIncomingMissiles, xClassOverride, classoverride);
+}*/
+
 bool rayCollision(vector start = vector(0,0,0), vector dir = vector(1,0,0), float dist = 0, float width = 0) {
 	vector pos = vector(0,0,0);
 	vector hitbox = vector(0,0,0);
@@ -97,6 +149,23 @@ highFrequency
 								}
 							}
 						}
+						if(xGetInt(dProjectiles, xProjSpecial) == 4){
+							//Taser, add to StunDB
+							
+							xAddDatabaseBlock(dStunned, true);
+							xSetInt(dStunned, xUnitID, xGetInt(dEnemies, xUnitID));
+							xSetFloat(dStunned, xTimeStunned, trTimeMS()+1000);
+							xSetInt(dStunned, xStunMutate, kbGetUnitBaseTypeID(kbGetBlockID(""+xGetInt(dEnemies, xUnitID))));
+							xSetInt(dStunned, xStunSpyID, xGetInt(dEnemies, xSpyStun));
+							xUnitSelect(dEnemies, xSpyStun);
+							trMutateSelected(kbGetProtoUnitID("Shockwave stun effect"));
+							
+							
+							xUnitSelect(dMissiles, xUnitID);
+							trUnitChangeProtoUnit("Lightning Sparks Ground");
+							xUnitSelect(dMissiles, xUnitID);
+							trDamageUnitPercent(-100);
+						}
 					}
 					break; //if only hitting one enemy
 					//[DO NOT PUT DEATH EFFECTS FOR PASSTHROUGH HERE, IT GOES BELOW]
@@ -117,7 +186,6 @@ highFrequency
 				//Flammen
 				xUnitSelect(dMissiles, xUnitID);
 				tempV = kbGetBlockPosition(""+xGetInt(dMissiles, xUnitID));
-				debugLog(""+xsVectorGetY(tempV));
 				if(xsVectorGetY(tempV) > 4){
 					xUnitSelect(dMissiles, xUnitID);
 					trUnitChangeProtoUnit("Oak Tree");
@@ -176,29 +244,6 @@ highFrequency
 	xClearDatabase(dIncomingMissiles);
 }
 
-void FireMissile(vector dir = vector(0,0,0), int towerpointer = -1, int shotby = -1){
-	xSetPointer(dTowers, towerpointer);
-	trModifyProtounit("Tower", shotby, 5, 1);
-	xAddDatabaseBlock(dIncomingMissiles, true);
-	xSetInt(dIncomingMissiles, xUnitID, trGetNextUnitScenarioNameNumber());
-	UnitCreate(shotby, "Dwarf", 0,0,0);
-	xUnitSelect(dIncomingMissiles, xUnitID);
-	trImmediateUnitGarrison(""+xGetInt(dTowers, xUnitID));
-	trUnitChangeProtoUnit("Dwarf");
-	xUnitSelect(dIncomingMissiles, xUnitID);
-	trMutateSelected(kbGetProtoUnitID("Kronny Flying"));
-	xUnitSelect(dIncomingMissiles, xUnitID);
-	trSetUnitOrientation(dir, vector(0,1,0), true);
-	xUnitSelect(dIncomingMissiles, xUnitID);
-	trSetSelectedScale(0,-4.5,0);
-	xUnitSelect(dIncomingMissiles, xUnitID);
-	trDamageUnitPercent(100);
-	trModifyProtounit("Tower", shotby, 5, -1);
-	xSetInt(dIncomingMissiles, xOwner, shotby);
-	xSetVector(dIncomingMissiles, xMissilePos, xGetVector(dTowers, xTowerPos));
-	xSetVector(dIncomingMissiles, xMissileDir, dir);
-}
-
 void CreateUnitInAtlantisBox(int centrex = 0, int centrez = 0, int size = 1, int tt = 0, int ts = 0, int owner = 0, string proto = "", int heading = 0, string path = ""){
 	//INPUT IN TILES
 	//Create Unit
@@ -250,6 +295,7 @@ int SpawnEnemy(string pname="", int x = 0, int z = 0, bool stationary = false, i
 	xSetInt(dEnemies, xCityGuard, cityid);
 	xUnitSelect(dEnemies, xUnitID);
 	spyEffect(kbGetProtoUnitID("Cinematic Block"), 2, xsVectorSet(dEnemies, xSpyBurn, index), vector(1,1,1));
+	spyEffect(kbGetProtoUnitID("Cinematic Block"), 2, xsVectorSet(dEnemies, xSpyStun, index), vector(1,1,1));
 	return(temp);
 }
 
@@ -310,5 +356,19 @@ int NightAttack(string unit = ""){
 			break;
 		}
 		attempt = attempt-1;
+	}
+}
+
+void CityPillbox(int c = 0){
+	vector central = vector(0,0,0);
+	int dist = 24;
+	for(a = xGetDatabaseCount(dCity); > 0){
+		xDatabaseNext(dCity);
+		if(xGetInt(dCity, xNumber) == c){
+			central = xGetVector(dCity, xLocation);
+			//---22 is edge of white tile, 24 set to lowest
+			CreatePillBox(xsVectorGetX(central)+dist,xsVectorGetZ(central));
+			CreatePillBox(xsVectorGetX(central),xsVectorGetZ(central)+dist);
+		}
 	}
 }

@@ -462,10 +462,13 @@ inactive
 	vector spawn = vector(0,0,0);
 	trUnblockAllSounds();
 	//--Test relic
-	DeployRelic(getMapSize()/2+10,getMapSize()/2+10,9);
+	DeployRelic(getMapSize()/2+4,getMapSize()/2+10,11);
 	SpawnEnemy("Militia", getMapSize()/2-10,getMapSize()/2);
 	trPlayerResetBlackMapForAllPlayers();
 	xsEnableRule("BlackMap");
+	trTechGodPower(1, "Vision", 100);
+	trTechGodPower(1, "Sandstorm", 100);
+	CityPillbox(1);
 }
 
 rule BlackMap
@@ -529,10 +532,6 @@ inactive
 					//garrison inside
 					xUnitSelect(dPlayerData, xUnitID);
 					trImmediateUnitGarrison(""+xGetInt(dTowers, xUnitID));
-					//temporary spawn enemy to test projectile
-					for(a = 1; < 10){
-						SpawnEnemy("Militia", 10+a, 18);
-					}
 					//dialog
 					missileclass = xGetInt(dPlayerData, xCurrentMissile);
 					xSetPointer(dProjectiles, missileclass);
@@ -542,6 +541,10 @@ inactive
 					trMutateSelected(kbGetProtoUnitID(xGetString(dProjectiles, xProjTowerProto)));
 					xUnitSelect(dTowers, xTowerSFXID);
 					trUnitSetAnimationPath(xGetString(dProjectiles, xProjTowerProtoAnimPath));
+					xUnitSelect(dTowers, xTowerSFXID);
+					trSetSelectedScale(xGetFloat(dProjectiles, xProjTowerProtoSize),xGetFloat(dProjectiles, xProjTowerProtoSize),xGetFloat(dProjectiles, xProjTowerProtoSize));
+					modifyProtounitAbsolute("Tower", p, 11, xGetInt(dProjectiles, xProjRange));
+					modifyProtounitAbsolute("Tower", p, 2, xGetInt(dProjectiles, xProjLOS));
 					if(xGetInt(dProjectiles, xProjAmmoCost) <= xGetInt(dPlayerData, xAmmo)){
 						if(trCurrentPlayer() == p){
 							trClearCounterDisplay();
@@ -786,6 +789,19 @@ highFrequency
 				}
 			}
 		}
+		if(xGetDatabaseCount(dStunned) > 0){
+			for(a = xGetDatabaseCount(dStunned); > 0){
+				xDatabaseNext(dStunned);
+				xUnitSelect(dStunned, xUnitID);
+				trMutateSelected(xGetInt(dStunned, xStunMutate));
+				if(trTimeMS() > xGetFloat(dStunned, xTimeStunned)){
+					xUnitSelect(dStunned, xStunSpyID);
+					//trMutateSelected(kbGetProtoUnitID("Cinematic Block"));
+					trUnitChangeProtoUnit("Cinematic Block");
+					xFreeDatabaseBlock(dStunned);
+				}
+			}
+		}
 		firetimelast = trTimeMS();
 	}
 }
@@ -829,6 +845,7 @@ highFrequency
 					xAddDatabaseBlock(dCarts, true);
 					xSetInt(dCarts, xUnitID, xGetInt(dCity, xCityChestID));
 					xSetInt(dCarts, xFromCity, xGetInt(dCity, xNumber));
+					xSetVector(dCarts, xHomeLocation, xGetVector(dCity, xLocation));
 					for(c = xGetDatabaseCount(dCityBuildings); > 0){
 						xDatabaseNext(dCityBuildings);
 						if(xGetInt(dCityBuildings, xCity) == city){
@@ -856,6 +873,12 @@ highFrequency
 					xUnitSelect(dCarts, xUnitID);
 					trUnitSetAnimationPath("0,1,0,0,0,0");
 					xFreeDatabaseBlock(dCarts);
+				}
+				xUnitSelect(dCarts, xUnitID);
+				if(trUnitIsOwnedBy(cNumberNonGaiaPlayers)){
+					xUnitSelect(dCarts, xUnitID);
+					tempV = xGetVector(dCarts, xHomeLocation);
+					trUnitMoveToPoint(xsVectorGetX(tempV),0,xsVectorGetZ(tempV),-1,false);
 				}
 			}
 		}

@@ -6,6 +6,7 @@ void RelicDetailedHelp(int p = 0, string coverride = ""){
 	ColouredChatToPlayer(p, coverride, "Ammo Cost: " + xGetInt(dProjectiles, xProjAmmoCost));
 	ColouredChatToPlayer(p, coverride, "Fire Rate: " + xGetInt(dProjectiles, xProjFireRate));
 	ColouredChatToPlayer(p, coverride, "Damage: " + xGetInt(dProjectiles, xProjDamage));
+	ColouredChatToPlayer(p, coverride, "Range: " + xGetInt(dProjectiles, xProjRange));
 }
 
 

@@ -27,6 +27,7 @@ int xTowerSFXID = 0;
 int dEnemies = 0;
 int xStationary = 0;
 int xSpyBurn = 0;
+int xSpyStun = 0;
 
 int dMissiles = 0;
 int xMissilePos = 0;
@@ -48,6 +49,7 @@ int xMissileAnim = 0;
 int SpyDone = 0;
 int xIMissileDmg = 0;
 int xIMissileTime = 0;
+int xClassOverride = 0;
 
 //RELICS
 int dHeldRelics = 0;
@@ -67,6 +69,8 @@ int xProjDamage = 0;
 int xProjAnim = 0;
 int xProjAnimPath = 0;
 int xProjFireRate = 0;
+int xProjRange = 0;
+int xProjLOS = 0;
 int xProjCount = 0;
 int xProjAngle = 0;
 int xProjSpeed = 0;
@@ -90,6 +94,7 @@ int xProjRelicAnimPath = 0;
 int xProjTowerProto = 0;
 int xProjTowerProtoAnimPath = 0;
 int xProjRelicSize = 0;
+int xProjTowerProtoSize = 0;
 
 //STATUS DB
 int dOnFire = 0;
@@ -97,6 +102,11 @@ int xTimeToBurn =0;
 int xTotalBurnDamage = 0;
 int xDamagePerTick = 0;
 int xBurnSpyID = 0;
+
+int dStunned = 0;
+int xTimeStunned = 0;
+int xStunSpyID = 0;
+int xStunMutate = 0;
 
 //TERRAIN DB
 int dLowTerrain = 0;
@@ -123,6 +133,7 @@ int xCity = 0;
 //CART DB
 int dCarts = 0;
 int xFromCity = 0;
+int xHomeLocation = 0;
 
 
 rule setup_first_databases
@@ -154,6 +165,7 @@ highFrequency
 	xUnitID = xInitAddInt(dEnemies, "unit id", -1);
 	xStationary = xInitAddBool(dEnemies, "no movement", false);
 	xSpyBurn = xInitAddInt(dEnemies, "spy id for burn", -1);
+	xSpyStun = xInitAddInt(dEnemies, "spy id for stun", -1);
 	xCityGuard = xInitAddInt(dEnemies, "guard of city num", 0);
 	
 	dMissiles = xInitDatabase("Missiles DB");
@@ -170,6 +182,7 @@ highFrequency
 	xOwner = xInitAddInt(dIncomingMissiles, "missile owner", -1);
 	xMissilePos = xInitAddVector(dIncomingMissiles, "position", vector(0,0,0));
 	xMissileDir = xInitAddVector(dIncomingMissiles, "direction", vector(0,0,0));
+	xClassOverride = xInitAddInt(dIncomingMissiles, "class override", -1);
 	
 	dProjectiles = xInitDatabase("ProjPropers");
 	xProjClass = xInitAddInt(dProjectiles, "class", 0);
@@ -178,6 +191,8 @@ highFrequency
 	xProjAnim = xInitAddInt(dProjectiles, "anim", 0);
 	xProjAnimPath = xInitAddString(dProjectiles, "animpath", "0,0,0,0,0,0");
 	xProjFireRate = xInitAddInt(dProjectiles, "rate", 0);
+	xProjRange = xInitAddInt(dProjectiles, "range", 10);
+	xProjLOS = xInitAddInt(dProjectiles, "los", 10);
 	xProjCount = xInitAddInt(dProjectiles, "count", 0);
 	xProjAngle = xInitAddInt(dProjectiles, "angle", 0);
 	xProjSpeed = xInitAddFloat(dProjectiles, "speed", 30.0);
@@ -201,6 +216,7 @@ highFrequency
 	xProjTowerProto  = xInitAddString(dProjectiles, "towerdecor", "Cinematic Block");
 	xProjTowerProtoAnimPath = xInitAddString(dProjectiles, "towerdecorpath", "0,0,0,0,0,0");
 	xProjRelicSize = xInitAddFloat(dProjectiles, "relic decor scale", 1.0);
+	xProjTowerProtoSize = xInitAddFloat(dProjectiles, "tower sfx size", 1.0);
 	
 	dHeldRelics = xInitDatabase("held relics");
 	xUnitID = xInitAddInt(dHeldRelics, "relic id", -1);
@@ -248,6 +264,13 @@ highFrequency
 	dCarts = xInitDatabase("carts");
 	xUnitID = xInitAddInt(dCarts, "unit id", -1);
 	xFromCity = xInitAddInt(dCarts, "came from city", 0);
+	xHomeLocation = xInitAddVector(dCarts, "home loc", vector(0,0,0));
+	
+	dStunned = xInitDatabase("stunned");
+	xUnitID = xInitAddInt(dStunned, "unit id", -1);
+	xTimeStunned = xInitAddFloat(dStunned, "stuntime", 0.0);
+	xStunSpyID = xInitAddInt(dStunned, "stun spyunit id", -1);
+	xStunMutate = xInitAddInt(dStunned, "mutate to", -1);
 }
 
 
