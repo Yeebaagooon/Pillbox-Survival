@@ -1,5 +1,8 @@
 void CreateRocket(int x = 0, int z = 0){
 	int temp = 0;
+	temp = trGetNextUnitScenarioNameNumber();
+	UnitCreate(0, "Dwarf", x, z, 0);
+	trQuestVarSet("RocketUnit", temp);
 	temp = trGetNextUnitScenarioNameNumber()+3;
 	UnitCreate(0, "Dwarf", x, z, 0);
 	UnitCreate(0, "Dwarf", x, z, 0);
@@ -43,6 +46,14 @@ void CreateRocket(int x = 0, int z = 0){
 	trUnitSelectClear();
 	trUnitSelect(""+(temp-3));
 	trUnitChangeProtoUnit("Revealer");
+	trUnitSelectByQV("RocketUnit");
+	trUnitChangeProtoUnit("Wonder");
+	trUnitSelectByQV("RocketUnit");
+	trUnitConvert(1);
+	trUnitSelectByQV("RocketUnit");
+	trSetSelectedScale(1,0.1,1);
+	trUnitSelectByQV("RocketUnit");
+	trUnitSetAnimationPath("2,1,0,1,1,0");
 }
 
 void SpawnPlayers(){
@@ -228,6 +239,7 @@ void SetupCities(){
 
 void CreateLargeGold(int num = 1){
 	vector spawn = vector(0,0,0);
+	int allow = 0;
 	vector MapMid = xsVectorSet(getMapSize()/2, 0, getMapSize()/2);
 	int temp = 0;
 	while(num > 0){
@@ -235,12 +247,27 @@ void CreateLargeGold(int num = 1){
 		trQuestVarSetFromRand("z", 0, 200);
 		spawn = perlinRoll(myPerlin, 1*trQuestVarGet("x"),1*trQuestVarGet("z"), 1, -8,20, false) ;
 		if(distanceBetweenVectors(spawn, MapMid) > 2000){
-			temp = trGetNextUnitScenarioNameNumber();
-			UnitCreateV(0, "Dwarf", spawn);
-			trUnitSelectClear();
-			trUnitSelect(""+temp);
-			trUnitChangeProtoUnit("Gold Mine");
-			num = num-1;
+			//no city
+			allow = 0;
+			for(b = xGetDatabaseCount(dCity); > 0){
+				xDatabaseNext(dCity);
+				if(distanceBetweenVectors(spawn, xGetVector(dCity, xLocation)) > 2000){
+					allow = allow+1;
+				}
+			}
+			if(allow == CitiesToMake){
+				temp = trGetNextUnitScenarioNameNumber();
+				UnitCreateV(0, "Dwarf", spawn);
+				trUnitSelectClear();
+				trUnitSelect(""+temp);
+				trUnitChangeProtoUnit("Gold Mine");
+				num = num-1;
+			}
+			else{
+				trUnitSelectClear();
+				trUnitSelect(""+temp);
+				trUnitDestroy();
+			}
 		}
 	}
 }
@@ -394,6 +421,90 @@ void CreateStartingRelics(int num = 1){
 	}
 }
 
+void CreateStartingAnimals(int num = 1){
+	vector spawn = vector(0,0,0);
+	vector MapMid = xsVectorSet(getMapSize()/2, 0, getMapSize()/2);
+	int temp = 0;
+	int allow = 0;
+	float dist = 0.0;
+	while(num > 0){
+		trQuestVarSetFromRand("x", 0, 200);
+		trQuestVarSetFromRand("z", 0, 200);
+		spawn = perlinRoll(myPerlin, 1*trQuestVarGet("x"),1*trQuestVarGet("z"), 1, -2,20, false) ;
+		dist = distanceBetweenVectors(spawn, MapMid, true);
+		if(dist > 670){
+			//no city
+			allow = 0;
+			for(b = xGetDatabaseCount(dCity); > 0){
+				xDatabaseNext(dCity);
+				if(distanceBetweenVectors(spawn, xGetVector(dCity, xLocation)) > 2000){
+					allow = allow+1;
+				}
+			}
+			if(allow == CitiesToMake){
+				temp = trGetNextUnitScenarioNameNumber();
+				UnitCreateV(0, "Victory Marker", spawn);
+				UnitCreateV(0, "Victory Marker", spawn);
+				num = num-1;
+			}
+			else{
+				trUnitSelectClear();
+				trUnitSelect(""+temp);
+				trUnitDestroy();
+			}
+		}
+	}
+	if(num == 0){
+		//Destroy unused victory markers
+		trUnitSelectClear();
+		trUnitSelect(""+temp);
+		trUnitChangeInArea(0, 0, "Victory Marker", "Deer", 999.0);
+	}
+}
+
+void CreateStartingBerries(int num = 1){
+	vector spawn = vector(0,0,0);
+	vector MapMid = xsVectorSet(getMapSize()/2, 0, getMapSize()/2);
+	int temp = 0;
+	int allow = 0;
+	float dist = 0.0;
+	while(num > 0){
+		trQuestVarSetFromRand("x", 0, 200);
+		trQuestVarSetFromRand("z", 0, 200);
+		spawn = perlinRoll(myPerlin, 1*trQuestVarGet("x"),1*trQuestVarGet("z"), 1, -1,20, false) ;
+		dist = distanceBetweenVectors(spawn, MapMid, true);
+		if(dist > 670){
+			//no city
+			allow = 0;
+			for(b = xGetDatabaseCount(dCity); > 0){
+				xDatabaseNext(dCity);
+				if(distanceBetweenVectors(spawn, xGetVector(dCity, xLocation)) > 2000){
+					allow = allow+1;
+				}
+			}
+			if(allow == CitiesToMake){
+				temp = trGetNextUnitScenarioNameNumber();
+				UnitCreate(0, "Victory Marker", xsVectorGetX(spawn)+2, xsVectorGetZ(spawn)+2);
+				UnitCreate(0, "Victory Marker", xsVectorGetX(spawn)+2, xsVectorGetZ(spawn)-2);
+				UnitCreate(0, "Victory Marker", xsVectorGetX(spawn)-2, xsVectorGetZ(spawn)+2);
+				UnitCreate(0, "Victory Marker", xsVectorGetX(spawn)-2, xsVectorGetZ(spawn)-2);
+				num = num-1;
+			}
+			else{
+				trUnitSelectClear();
+				trUnitSelect(""+temp);
+				trUnitDestroy();
+			}
+		}
+	}
+	if(num == 0){
+		//Destroy unused victory markers
+		trUnitSelectClear();
+		trUnitSelect(""+temp);
+		trUnitChangeInArea(0, 0, "Victory Marker", "Berry Bush", 999.0);
+	}
+}
+
 rule WorldCreate
 highFrequency
 inactive
@@ -449,6 +560,9 @@ inactive
 	CreateStartingPillBoxes(40);
 	//---
 	CreateStartingRelics(40);
+	//---
+	CreateStartingAnimals(30);
+	CreateStartingBerries(30);
 	refreshPassability();
 	//perlinRoll(myPerlin, 30,30, 1, -7,20, true) ;
 	if(Visible == false){
@@ -462,13 +576,17 @@ inactive
 	vector spawn = vector(0,0,0);
 	trUnblockAllSounds();
 	//--Test relic
-	DeployRelic(getMapSize()/2+4,getMapSize()/2+10,11);
+	DeployRelic(getMapSize()/2+4,getMapSize()/2+10,12);
 	SpawnEnemy("Militia", getMapSize()/2-10,getMapSize()/2);
 	trPlayerResetBlackMapForAllPlayers();
 	xsEnableRule("BlackMap");
 	trTechGodPower(1, "Vision", 100);
 	trTechGodPower(1, "Sandstorm", 100);
 	CityPillbox(1);
+	xsEnableRule("RocketAttackWarn");
+	xsEnableRule("RocketAttack50Warn");
+	xsEnableRule("RocketDead");
+	xsEnableRule("PlayerDead");
 }
 
 rule BlackMap
@@ -893,5 +1011,111 @@ highFrequency
 		trCounterAbort("rocketparts");
 		trOverlayText("Rocket assembled!", 4);
 		xsDisableSelf();
+	}
+}
+
+rule RocketAttackWarn
+inactive
+highFrequency
+{
+	trUnitSelectByQV("RocketUnit");
+	if(trUnitPercentDamaged() > 0){
+		vector MapMid = xsVectorSet(getMapSize()/2, 0, getMapSize()/2);
+		trOverlayText("The rocket is being attacked!", 4);
+		playSound("attackwarning.wav");
+		for(p = 1; < cNumberNonGaiaPlayers){
+			trMinimapFlare(p, 10, MapMid, true);
+		}
+		xsDisableSelf();
+	}
+}
+
+rule RocketAttack50Warn
+inactive
+highFrequency
+{
+	trUnitSelectByQV("RocketUnit");
+	if(trUnitPercentDamaged() > 49){
+		vector MapMid = xsVectorSet(getMapSize()/2, 0, getMapSize()/2);
+		trOverlayText("The rocket is at half health!", 4);
+		playSound("attackwarning.wav");
+		for(p = 1; < cNumberNonGaiaPlayers){
+			trMinimapFlare(p, 10, MapMid, true);
+		}
+		xsDisableSelf();
+		xsEnableRule("RocketAttack90Warn");
+	}
+}
+
+rule RocketAttack90Warn
+inactive
+highFrequency
+{
+	trUnitSelectByQV("RocketUnit");
+	if(trUnitPercentDamaged() > 89){
+		vector MapMid = xsVectorSet(getMapSize()/2, 0, getMapSize()/2);
+		trOverlayText("Defend the rocket - it is nearly destroyed!", 6);
+		playSound("attackwarning.wav");
+		for(p = 1; < cNumberNonGaiaPlayers){
+			trMinimapFlare(p, 10, MapMid, true);
+		}
+		xsDisableSelf();
+	}
+}
+
+rule PlayerDead
+inactive
+highFrequency
+{
+	for(p = 1 ; < cNumberNonGaiaPlayers){
+		xSetPointer(dPlayerData, p);
+		if(xGetBool(dPlayerData, xPlayerActive)){
+			if((playerIsPlaying(p) == false) || (trPlayerUnitCountSpecific(p, "Villager Atlantean Hero") == 0)){
+				trUnitSelectByQV("RocketUnit");
+				if(trUnitIsOwnedBy(p)){
+					for(q = 1 ; < cNumberNonGaiaPlayers){
+						if((playerIsPlaying(q) == true) && (trPlayerUnitCountSpecific(q, "Villager Atlantean Hero") > 0)){
+							trUnitConvert(q);
+							break;
+						}
+						
+					}
+				}
+				PlayersDead = PlayersDead+1;
+				xSetBool(dPlayerData, xPlayerActive, false);
+				trUnitSelectClear();
+				trSetPlayerDefeated(p);
+				trPlayerKillAllGodPowers(p);
+				trPlayerKillAllUnits(p);
+				trPlayerKillAllBuildings(p);
+				if(kbIsPlayerHuman(p)){
+					EvilLaugh();
+					PlayerColouredChat(p, trStringQuestVarGet("p"+p+"name") + " is dead!");
+				}
+				if(PlayersDead == (cNumberNonGaiaPlayers-1)){
+					xsDisableRule("RocketDead");
+					trShowWinLose("All players have been murdered");
+					trEndGame();
+				}
+			}
+		}
+	}
+}
+
+rule RocketDead
+inactive
+minInterval 2
+{
+	trUnitSelectByQV("RocketUnit");
+	if(trUnitAlive() == false){
+		if(PlayersDead != cNumberNonGaiaPlayers){
+			for(p = 1; < cNumberNonGaiaPlayers){
+				trSetPlayerDefeated(p);
+			}
+			trShowWinLose("The rocket has been destroyed");
+			trEndGame();
+			EvilLaugh();
+			xsDisableSelf();
+		}
 	}
 }

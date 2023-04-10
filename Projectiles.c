@@ -400,7 +400,7 @@ highFrequency
 	xSetInt(dProjectiles, xPointer, index);
 	ProjSetClass(11);
 	ProjSetName("Taser");
-	ProjSetDesc("Deals damage and stuns for 1 second");
+	ProjSetDesc("Deals damage and stuns humans for 1 second");
 	ProjSetProto("Lightning Sparks");
 	ProjSetAnim(2);
 	ProjSetSize(1);
@@ -408,6 +408,30 @@ highFrequency
 	ProjRangeandLOS(22,22);
 	ProjSetAmmoCost(3);
 	ProjSetFireRate(2000);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(4);
+	ProjSetSound("implodehit" + iModulo(2, (trTime())+1) + ".wav");
+	//ProjAllowPassThrough();
+	ProjDeathEffect();
+	//ProjNoShoot();
+	ProjRelicDecorate("Shockwave stun effect");
+	ProjTowerDecor("Cinematic Block");
+	
+	//--BUILD MISSILE --- 12
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(12);
+	ProjSetName("Stun Gun");
+	ProjSetDesc("Stuns human units for 1 second");
+	ProjSetProto("Lightning Sparks");
+	ProjSetAnim(2);
+	ProjSetSize(1);
+	ProjSetDamage(0);
+	ProjRangeandLOS(22,22);
+	ProjSetAmmoCost(1);
+	ProjSetFireRate(750);
 	ProjSetCount(1);
 	ProjSetAngle(0);
 	ProjSetSpeed(30.0);

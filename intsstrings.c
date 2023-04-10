@@ -10,7 +10,7 @@ Pillboxes can attack other gaia pillboxes (only if player says so)
 */
 
 //---Launch Codes
-bool Visible = false;
+bool Visible = true;
 
 //---Game Data
 int MapSkin = 0;
@@ -25,6 +25,7 @@ int DontDestroyBelow = 0;
 int CitiesToMake = 0;
 int CitiesCaptured = 0;
 int CartsCaptured = 0;
+int PlayersDead = 0;
 
 string TreeType = "";
 string ForestTerrain = "";
@@ -44,6 +45,7 @@ int dPlayerData = 0;
 int xSpyID = 0;
 int xUnitID = 0;
 int xTarget = 0;
+int xPlayerActive = 0;
 
 //---Events
 const int EVENT_REMOVE_CAM_TRACKS = 26;

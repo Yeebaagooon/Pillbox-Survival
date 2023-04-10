@@ -151,20 +151,22 @@ highFrequency
 						}
 						if(xGetInt(dProjectiles, xProjSpecial) == 4){
 							//Taser, add to StunDB
-							
-							xAddDatabaseBlock(dStunned, true);
-							xSetInt(dStunned, xUnitID, xGetInt(dEnemies, xUnitID));
-							xSetFloat(dStunned, xTimeStunned, trTimeMS()+1000);
-							xSetInt(dStunned, xStunMutate, kbGetUnitBaseTypeID(kbGetBlockID(""+xGetInt(dEnemies, xUnitID))));
-							xSetInt(dStunned, xStunSpyID, xGetInt(dEnemies, xSpyStun));
-							xUnitSelect(dEnemies, xSpyStun);
-							trMutateSelected(kbGetProtoUnitID("Shockwave stun effect"));
-							
-							
-							xUnitSelect(dMissiles, xUnitID);
-							trUnitChangeProtoUnit("Lightning Sparks Ground");
-							xUnitSelect(dMissiles, xUnitID);
-							trDamageUnitPercent(-100);
+							if(trCountUnitsInArea(""+xGetInt(dEnemies, xUnitID), cNumberNonGaiaPlayers, "HumanSoldier", 0) > 0){
+								//Human check
+								xAddDatabaseBlock(dStunned, true);
+								xSetInt(dStunned, xUnitID, xGetInt(dEnemies, xUnitID));
+								xSetFloat(dStunned, xTimeStunned, trTimeMS()+1000);
+								xSetInt(dStunned, xStunMutate, kbGetUnitBaseTypeID(kbGetBlockID(""+xGetInt(dEnemies, xUnitID))));
+								xSetInt(dStunned, xStunSpyID, xGetInt(dEnemies, xSpyStun));
+								xUnitSelect(dEnemies, xSpyStun);
+								trMutateSelected(kbGetProtoUnitID("Shockwave stun effect"));
+								
+								
+								xUnitSelect(dMissiles, xUnitID);
+								trUnitChangeProtoUnit("Lightning Sparks Ground");
+								xUnitSelect(dMissiles, xUnitID);
+								trDamageUnitPercent(-100);
+							}
 						}
 					}
 					break; //if only hitting one enemy

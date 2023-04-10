@@ -1001,7 +1001,8 @@ string trStringQuestVarGet(string name="") {
 
 
 bool playerIsPlaying(int p = 0) {
-	return(kbIsPlayerHuman(p) == true && kbIsPlayerResigned(p) == false && trPlayerDefeated(p) == false);
+	//return(kbIsPlayerHuman(p) == true && kbIsPlayerResigned(p) == false && trPlayerDefeated(p) == false);
+	return(trPlayerDefeated(p) == false);
 }
 
 

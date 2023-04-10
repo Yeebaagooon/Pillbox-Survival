@@ -149,6 +149,7 @@ highFrequency
 	xCurrentMissile = xInitAddInt(dPlayerData, "current missile", 0);
 	xAmmo = xInitAddInt(dPlayerData, "ammo count", 0);
 	xLastShotTime = xInitAddInt(dPlayerData, "shoot time", 0);
+	xPlayerActive = xInitAddBool(dPlayerData, "active", true);
 	xsDisableSelf();
 	xsEnableRule("SetupProjTypes");
 	for(p=1; <= cNumberNonGaiaPlayers) {

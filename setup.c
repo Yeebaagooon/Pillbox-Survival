@@ -43,11 +43,6 @@ runImmediately
 		trSetCivAndCulture(p, 10, 3); //oranos
 	}
 	trSetFogAndBlackmap(false, false);
-	%
-	for(p=1; <= cNumberNonGaiaPlayers) {
-		code("trStringQuestVarSet(\"p"+p+"name\", \""+rmGetPlayerName(p)+"\");");
-	}
-	%
 	xsDisableSelf();
 }
 
@@ -88,6 +83,11 @@ highFrequency
 	map("w", "game", "trackInsert(); trackAddWaypoint();trackPlay(-1,27);");
 	map("e", "game", "trackInsert(); trackAddWaypoint();trackPlay(-1,28);");
 	*/
+	%
+	for(p=1; < cNumberNonGaiaPlayers) {
+		code("trStringQuestVarSet(\"p"+p+"name\", \""+rmGetPlayerName(p)+"\");");
+	}
+	%
 }
 
 rule load1
