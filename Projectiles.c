@@ -443,6 +443,157 @@ highFrequency
 	ProjRelicDecorate("Shockwave stun effect");
 	ProjTowerDecor("Cinematic Block");
 	
+	//--BUILD MISSILE --- 13
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(13);
+	ProjSetName("Blue bullet");
+	ProjSetDesc("50 damage with the passthrough ability");
+	ProjSetProto("Outpost");
+	ProjSetAnim(2);
+	ProjSetSize(0);
+	ProjSetDamage(50);
+	ProjRangeandLOS(22,22);
+	ProjSetAmmoCost(5);
+	ProjSetFireRate(1500);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("hitpointsmax.wav");
+	ProjAllowPassThrough();
+	//ProjDeathEffect();
+	//ProjNoShoot();
+	ProjRelicDecorate("Outpost" ,0, "0,0,0,0,0,0", 0.0);
+	ProjTowerDecor("Guardian XP", "0,0,0,0,0,0", 0);
+	
+	//--BUILD MISSILE --- 14
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(14);
+	ProjSetName("Double blue");
+	ProjSetDesc("Shoots 2 passthrough blue missiles");
+	ProjSetProto("Outpost");
+	ProjSetAnim(2);
+	ProjSetSize(0);
+	ProjSetDamage(50);
+	ProjRangeandLOS(22,22);
+	ProjSetAmmoCost(6);
+	ProjSetFireRate(1500);
+	ProjSetCount(2);
+	ProjSetAngle(5);
+	ProjSetBaseCosSin(0.996195, 0.087156);
+	ProjSetMoveCosSin(0.984808, -0.173648); //the incremental -cos/sin (-10 for +5,0,-5)
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("hitpointsmax.wav");
+	ProjAllowPassThrough();
+	//ProjDeathEffect();
+	//ProjNoShoot();
+	ProjRelicDecorate("Outpost" ,0, "0,0,0,0,0,0", 0.0);
+	ProjTowerDecor("Guardian XP", "0,0,0,0,0,0", 0);
+	
+	//--BUILD MISSILE --- 15
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(15);
+	ProjSetName("Triple blue");
+	ProjSetDesc("Shoots 3 passthrough blue missiles");
+	ProjSetProto("Outpost");
+	ProjSetAnim(2);
+	ProjSetSize(0);
+	ProjSetDamage(50);
+	ProjRangeandLOS(22,22);
+	ProjSetAmmoCost(15);
+	ProjSetFireRate(1500);
+	ProjSetCount(3);
+	ProjSetAngle(5);
+	ProjSetBaseCosSin(0.996195, 0.087156);
+	ProjSetMoveCosSin(0.996195, -0.087156); //the incremental -cos/sin (-10 for +5,0,-5)
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("hitpointsmax.wav");
+	ProjAllowPassThrough();
+	//ProjDeathEffect();
+	//ProjNoShoot();
+	ProjRelicDecorate("Outpost" ,0, "0,0,0,0,0,0", 0.0);
+	ProjTowerDecor("Guardian XP", "0,0,0,0,0,0", 0);
+	
+	//--BUILD MISSILE --- 16
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(16);
+	ProjSetName("Cursey");
+	ProjSetDesc("Turns nearby humans into pigs");
+	ProjSetProto("Spear");
+	ProjSetAnim(2);
+	ProjSetAnimPath("0,0,0,0,0,0");
+	ProjSetSize(0);
+	ProjSetDamage(0);
+	ProjRangeandLOS(16,18);
+	ProjSetAmmoCost(20);
+	ProjSetFireRate(5000);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("pigpower.wav");
+	//ProjAllowPassThrough();
+	//ProjDeathEffect();
+	ProjNoShoot();
+	ProjRelicDecorate("Pig");
+	ProjTowerDecor("Cinematic Block");
+	
+	//--BUILD MISSILE --- 17
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(17);
+	ProjSetName("Cursey Fast");
+	ProjSetDesc("A faster human curser");
+	ProjSetProto("Spear");
+	ProjSetAnim(2);
+	ProjSetAnimPath("0,0,0,0,0,0");
+	ProjSetSize(0);
+	ProjSetDamage(0);
+	ProjRangeandLOS(16,18);
+	ProjSetAmmoCost(30);
+	ProjSetFireRate(2000);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("pigpower.wav");
+	//ProjAllowPassThrough();
+	//ProjDeathEffect();
+	ProjNoShoot();
+	ProjRelicDecorate("Pig");
+	ProjTowerDecor("Cinematic Block");
+	
+	//--BUILD MISSILE --- 18
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(18);
+	ProjSetName("MK-18");
+	ProjSetDesc("Standard projectile");
+	ProjSetProto("Spear");
+	ProjSetAnim(2);
+	ProjSetAnimPath("0,0,0,0,0,0");
+	ProjSetSize(0.5);
+	ProjSetDamage(100);
+	ProjRangeandLOS(20,22);
+	ProjSetAmmoCost(10);
+	ProjSetFireRate(900);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("arrow" + iModulo(4, (trTime())+1) + ".wav");
+	//ProjAllowPassThrough();
+	//ProjDeathEffect();
+	//ProjNoShoot();
+	ProjRelicDecorate("Arkantos Boost SFX", 1);
+	ProjTowerDecor("Cinematic Block");
+	
 	//END
 	
 	//SET INDEX FOR ALL PLAYERS TO DEFAULT MISSILE

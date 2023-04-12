@@ -4,13 +4,17 @@ int QuickStart = 0;
 string MapVersion = "Test Version";
 string MapName = "Pillbox Survival";
 
+
 //---BUGS
 /*
 Pillboxes can attack other gaia pillboxes (only if player says so)
+playerIsPlaying - currently allows computers to exist ingame
 */
 
 //---Launch Codes
 bool Visible = true;
+bool AllowEnemies = true;
+int TestRelic = 18;
 
 //---Game Data
 int MapSkin = 0;
@@ -26,6 +30,8 @@ int CitiesToMake = 0;
 int CitiesCaptured = 0;
 int CartsCaptured = 0;
 int PlayersDead = 0;
+int NightInterval = 0;
+int NextNightAttack = 0;
 
 string TreeType = "";
 string ForestTerrain = "";

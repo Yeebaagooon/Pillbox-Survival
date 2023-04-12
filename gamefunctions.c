@@ -85,6 +85,28 @@ void CreatePillBox(int x = 0, int z = 0, int heading = 0){
 	xSetInt(dTowers, xTowerSFXID, temp+2);
 }
 
+void MakeThisAPillbox(int temp = -1){
+	int new = 0;
+	new = trGetNextUnitScenarioNameNumber();
+	xAddDatabaseBlock(dTowers, true);
+	xSetInt(dTowers, xUnitID, temp);
+	xSetVector(dTowers, xTowerPos, kbGetBlockPosition(""+temp));
+	xSetInt(dTowers, xOwner, 0);
+	trUnitSelectClear();
+	trUnitSelect(""+temp);
+	trUnitConvert(0);
+	trUnitSelectClear();
+	trUnitSelect(""+temp);
+	trUnitChangeProtoUnit("Titan Atlantean");
+	trUnitSelectClear();
+	trUnitSelect(""+temp);
+	trUnitChangeProtoUnit("Tower");
+	trUnitSelectClear();
+	trUnitSelect(""+(new+1));
+	trUnitChangeProtoUnit("Cinematic Block");
+	xSetInt(dTowers, xTowerSFXID, new+1);
+}
+
 rule CollisionDetection
 active
 highFrequency
@@ -112,7 +134,12 @@ highFrequency
 			xDatabaseNext(dEnemies);
 			if(rayCollision(prev, xGetVector(dMissiles, xMissileDir), dist, 1)){
 				xUnitSelect(dEnemies, xUnitID);
-				trDamageUnit(xGetInt(dProjectiles, xProjDamage));
+				if(xGetBool(dProjectiles, xProjPassthrough) == false){
+					trDamageUnit(xGetInt(dProjectiles, xProjDamage));
+				}
+				else{
+					trDamageUnit(xGetInt(dProjectiles, xProjDamage)*0.25);
+				}
 				/*if(xGetInt(dProjectiles, xProjSpecial) == 0){
 					trTechInvokeGodPower(0, "tremor", kbGetBlockPosition(""+xGetInt(dEnemies, xUnitID)), vector(0,0,0));
 				}*/

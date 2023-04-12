@@ -135,6 +135,9 @@ int dCarts = 0;
 int xFromCity = 0;
 int xHomeLocation = 0;
 
+//P Tower DB
+int dBuildTowers = 0;
+
 
 rule setup_first_databases
 active
@@ -272,6 +275,9 @@ highFrequency
 	xTimeStunned = xInitAddFloat(dStunned, "stuntime", 0.0);
 	xStunSpyID = xInitAddInt(dStunned, "stun spyunit id", -1);
 	xStunMutate = xInitAddInt(dStunned, "mutate to", -1);
+	
+	dBuildTowers = xInitDatabase("buildtowers");
+	xUnitID = xInitAddInt(dBuildTowers, "unitid", -1);
 }
 
 

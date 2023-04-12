@@ -40,11 +40,22 @@ void modifyBuildableProto(string proto = "", int p = 0) {
 	}
 }
 
+void SetEnemy(string proto = "", int hp = 1, float speed = 4.0, int attack = 1, int LOS = 0, int range = 1){
+	modifyProtounitAbsolute(proto, cNumberNonGaiaPlayers, 0, hp);
+	modifyProtounitAbsolute(proto, cNumberNonGaiaPlayers, 1, speed);
+	modifyProtounitAbsolute(proto, cNumberNonGaiaPlayers, 2, LOS);
+	modifyProtounitAbsolute(proto, cNumberNonGaiaPlayers, 11, range);
+	modifyProtounitAbsolute(proto, cNumberNonGaiaPlayers, 27, attack);
+	modifyProtounitAbsolute(proto, cNumberNonGaiaPlayers, 30, attack);
+}
+
 rule Stats
 inactive
 highFrequency
 {
 	trModifyProtounit("Dwarf", 0, 55, 4);
+	//SKIN 1
+	//---Class 1
 	for(p = 1; <= cNumberNonGaiaPlayers){
 		trModifyProtounit("Dwarf", p, 55, 4);
 		trModifyProtounit("Animal Attractor", p, 55, 4);
@@ -88,10 +99,29 @@ highFrequency
 		modifyProtounitAbsolute("Tower", p, 12, 0);
 		modifyProtounitAbsolute("Tower", p, 13, 0);
 		modifyProtounitAbsolute("Kronny Flying", p, 1, 30);
+		modifyProtounitAbsolute("Farm", p, 16, 0);
+		modifyProtounitAbsolute("Farm", p, 17, 0);
+		modifyProtounitAbsolute("Farm", p, 18, 50);
+		modifyProtounitAbsolute("Farm", p, 19, 0);
+		modifyProtounitAbsolute("Guild", p, 16, 0);
+		modifyProtounitAbsolute("Guild", p, 17, 500);
+		modifyProtounitAbsolute("Guild", p, 18, 0);
+		modifyProtounitAbsolute("Guild", p, 19, 0);
+		modifyProtounitAbsolute("Tower", p, 16, 0);
+		modifyProtounitAbsolute("Tower", p, 17, 1000);
+		modifyProtounitAbsolute("Tower", p, 18, 0);
+		modifyProtounitAbsolute("Tower", p, 19, 0);
+		modifyProtounitAbsolute("Temple", p, 16, 0);
+		modifyProtounitAbsolute("Temple", p, 17, 500);
+		modifyProtounitAbsolute("Temple", p, 18, 0);
+		modifyProtounitAbsolute("Temple", p, 19, 0);
+		modifyProtounitAbsolute("Temple", p, 10, 1);
 	}
 	modifyProtounitAbsolute("Bolt Strike", 0, 27, 0);
 	modifyProtounitAbsolute("Bolt Strike", 0, 28, 0);
 	modifyProtounitAbsolute("Bolt Strike", 0, 29, 0);
+	trRateConstruction(5);
+	trUnforbidProtounit(1, "Temple");
 	xsDisableSelf();
 }
 

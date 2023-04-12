@@ -42,12 +42,22 @@ highFrequency
 				}
 				break;
 			}
-			case kbGetProtoUnitID("Granary"):
+			case kbGetProtoUnitID("Tower"):
 			{
-				trPlayerGrantResources(kbUnitGetOwner(id), "Wood", 1);
 				trUnitSelectClear();
 				trUnitSelectByID(id);
-				trUnitDestroy();
+				if(trUnitIsOwnedBy(0) == false){
+					if(xGetDatabaseCount(dBuildTowers) > 0){
+						for(x = xGetDatabaseCount(dBuildTowers); > 0){
+							xDatabaseNext(dBuildTowers);
+							if(xGetInt(dBuildTowers, xUnitID) == i){
+								break;
+							}
+						}
+					}
+					xAddDatabaseBlock(dBuildTowers, true);
+					xSetInt(dBuildTowers, xUnitID, i);
+				}
 				break;
 			}
 		}

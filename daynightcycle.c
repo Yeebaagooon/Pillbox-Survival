@@ -54,8 +54,49 @@ highFrequency
 		trOverlayText("Night " + Date, 4.0);
 		playSound("\xpack\xcinematics\intro\magicvoice.mp3");
 		playSound("eclipsebirth.wav");
-		for(a = 0; < 20){
-			NightAttack("Militia");
+		if(NightInterval == 0){
+			NightInterval = 40;
+		}
+		NextNightAttack = trTime()+5;
+	}
+}
+
+rule NightAttacksLoop
+active
+highFrequency
+{
+	if(AllowEnemies){
+		if(trTime() > NextNightAttack){
+			if(Day == false){
+				NextNightAttack = trTime()+NightInterval;
+				debugLog("SPAWN");
+				if(Date == 1){
+					trQuestVarSetFromRand("temp", 1, 2);
+					if(1*trQuestVarGet("temp") == 1){
+						for(a = 0; < cNumberNonGaiaPlayers*5){
+							NightAttack("Militia");
+						}
+					}
+					else{
+						for(a = 0; < cNumberNonGaiaPlayers*5){
+							NightAttack("Toxotes");
+						}
+					}
+				}
+				if(Date == 2){
+					trQuestVarSetFromRand("temp", 1, 2);
+					if(1*trQuestVarGet("temp") == 1){
+						for(a = 0; < cNumberNonGaiaPlayers*5){
+							NightAttack("Hoplite");
+						}
+					}
+					else{
+						for(a = 0; < cNumberNonGaiaPlayers*5){
+							NightAttack("Toxotes");
+						}
+					}
+				}
+			}
 		}
 	}
 }

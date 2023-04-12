@@ -96,6 +96,18 @@ highFrequency
 				}
 			}
 		}
+		else if (trUnitGetIsContained("Temple")) {
+			for(p=1; < cNumberNonGaiaPlayers) {
+				xSetPointer(dPlayerData, p);
+				xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)+xGetInt(dProjectiles, xProjAmmoCost));
+			}
+			xUnitSelect(dFreeRelics, xUnitID);
+			trUnitChangeProtoUnit("Heavenlight");
+			xUnitSelect(dFreeRelics, xSFXID);
+			trUnitChangeProtoUnit("Heavenlight");
+			xFreeDatabaseBlock(dFreeRelics);
+			break;
+		}
 		xUnitSelect(dFreeRelics, xUnitID);
 		if (trUnitIsSelected()) {
 			uiClearSelection();
@@ -131,7 +143,20 @@ highFrequency
 		xSetPointer(dProjectiles, xGetInt(dHeldRelics, xProjPointer));
 		xUnitSelect(dHeldRelics, xUnitID);
 		//If relic is dropped
-		if (trUnitGetIsContained("Unit") == false) {
+		if (trUnitGetIsContained("Temple")) {
+			//Recycle relic - give every player the total ammo
+			for(p=1; < cNumberNonGaiaPlayers) {
+				xSetPointer(dPlayerData, p);
+				xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)+xGetInt(dProjectiles, xProjAmmoCost));
+			}
+			xUnitSelect(dHeldRelics, xUnitID);
+			trUnitChangeProtoUnit("Heavenlight");
+			xUnitSelect(dHeldRelics, xSFXID);
+			trUnitChangeProtoUnit("Heavenlight");
+			xFreeDatabaseBlock(dHeldRelics);
+			break;
+		}
+		else if (trUnitGetIsContained("Unit") == false) {
 			dropper = xGetInt(dHeldRelics, xHeldBy);
 			if (trCurrentPlayer() == dropper) {
 				ColouredChatToPlayer(dropper, "1,0.2,0", xGetString(dProjectiles, xProjName) + " dropped");
