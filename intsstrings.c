@@ -9,11 +9,13 @@ string MapName = "Pillbox Survival";
 /*
 Pillboxes can attack other gaia pillboxes (only if player says so)
 playerIsPlaying - currently allows computers to exist ingame
+
 */
 
 //---Launch Codes
-bool Visible = true;
+bool Visible = false;
 bool AllowEnemies = true;
+bool CineChoice = true;
 int TestRelic = 18;
 
 //---Game Data

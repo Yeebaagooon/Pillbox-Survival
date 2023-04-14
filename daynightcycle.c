@@ -72,16 +72,10 @@ highFrequency
 				debugLog("SPAWN");
 				if(Date == 1){
 					trQuestVarSetFromRand("temp", 1, 2);
-					if(1*trQuestVarGet("temp") == 1){
-						for(a = 0; < cNumberNonGaiaPlayers*5){
-							NightAttack("Militia");
-						}
+					for(a = 0; < cNumberNonGaiaPlayers*2){
+						NightAttack("Militia");
 					}
-					else{
-						for(a = 0; < cNumberNonGaiaPlayers*5){
-							NightAttack("Toxotes");
-						}
-					}
+					
 				}
 				if(Date == 2){
 					trQuestVarSetFromRand("temp", 1, 2);
@@ -93,6 +87,97 @@ highFrequency
 					else{
 						for(a = 0; < cNumberNonGaiaPlayers*5){
 							NightAttack("Toxotes");
+						}
+					}
+				}
+				if(Date == 3){
+					trQuestVarSetFromRand("temp", 1, 2);
+					if(1*trQuestVarGet("temp") == 1){
+						for(a = 0; < cNumberNonGaiaPlayers*2){
+							NightAttack("Minotaur");
+						}
+					}
+					else{
+						for(a = 0; < cNumberNonGaiaPlayers*2){
+							NightAttack("Centaur");
+						}
+					}
+				}
+				if(Date == 4){
+					trQuestVarSetFromRand("temp", 1, 2);
+					if(1*trQuestVarGet("temp") == 1){
+						for(a = 0; < cNumberNonGaiaPlayers*4){
+							NightAttack("Minotaur");
+						}
+					}
+					else{
+						for(a = 0; < cNumberNonGaiaPlayers*4){
+							NightAttack("Centaur");
+						}
+					}
+				}
+				if(Date == 5){
+					trQuestVarSetFromRand("temp", 1, 2);
+					if(1*trQuestVarGet("temp") == 1){
+						for(a = 0; < cNumberNonGaiaPlayers*4){
+							NightAttack("Cyclops");
+						}
+					}
+					else{
+						for(a = 0; < cNumberNonGaiaPlayers*4){
+							NightAttack("Manticore");
+						}
+					}
+				}
+				if(Date == 6){
+					trQuestVarSetFromRand("temp", 1, 2);
+					if(1*trQuestVarGet("temp") == 1){
+						for(a = 0; < cNumberNonGaiaPlayers*4){
+							NightAttack("Colossus");
+						}
+					}
+					else{
+						for(a = 0; < cNumberNonGaiaPlayers*4){
+							NightAttack("Medusa");
+						}
+					}
+				}
+				if(Date == 7){
+					trQuestVarSetFromRand("temp", 1, 2);
+					if(1*trQuestVarGet("temp") == 1){
+						for(a = 0; < cNumberNonGaiaPlayers*4){
+							NightAttack("Hero Greek Jason");
+						}
+					}
+					else{
+						for(a = 0; < cNumberNonGaiaPlayers*4){
+							NightAttack("Hero Greek Odysseus");
+						}
+					}
+				}
+				if(Date == 8){
+					trQuestVarSetFromRand("temp", 1, 2);
+					if(1*trQuestVarGet("temp") == 1){
+						for(a = 0; < cNumberNonGaiaPlayers*4){
+							NightAttack("Hero Greek Bellerophon");
+						}
+					}
+					else{
+						for(a = 0; < cNumberNonGaiaPlayers*4){
+							NightAttack("Hero Greek Hippolyta");
+						}
+					}
+				}
+				if(Date == 9){
+					trQuestVarSetFromRand("temp", 1, 2);
+					if(1*trQuestVarGet("temp") == 1){
+						for(a = 0; < cNumberNonGaiaPlayers*4){
+							NightAttack("Catapult");
+						}
+					}
+					else{
+						for(a = 0; < cNumberNonGaiaPlayers*4){
+							NightAttack("Hero Greek Polyphemus");
 						}
 					}
 				}

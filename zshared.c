@@ -1547,3 +1547,8 @@ void removeCamTracks(int eventID = -1) {
 	trackRemove();
 	trUnblockAllSounds();
 }
+
+void AddUnitToDB(int db = 0, int holder = 0, int unit = -1){
+	xAddDatabaseBlock(db, true);
+	xSetInt(db, holder, unit);
+}

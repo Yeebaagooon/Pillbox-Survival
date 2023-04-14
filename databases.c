@@ -138,6 +138,9 @@ int xHomeLocation = 0;
 //P Tower DB
 int dBuildTowers = 0;
 
+//Rocket unit DB
+int dRocket = 0;
+
 
 rule setup_first_databases
 active
@@ -278,6 +281,9 @@ highFrequency
 	
 	dBuildTowers = xInitDatabase("buildtowers");
 	xUnitID = xInitAddInt(dBuildTowers, "unitid", -1);
+	
+	dRocket = xInitDatabase("rocketdb");
+	xUnitID = xInitAddInt(dRocket, "unitid", -1);
 }
 
 

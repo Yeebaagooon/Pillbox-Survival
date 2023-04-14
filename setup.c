@@ -172,7 +172,12 @@ highFrequency
 		gadgetReal("ShowImageBox-BordersRightTop");
 		gadgetReal("ShowImageBox-CloseButton");
 		//startNPCDialog(1);
-		xsEnableRule("WorldCreate");
+		if(CineChoice){
+			xsEnableRule("CineJunction");
+		}
+		else{
+			xsEnableRule("WorldCreate");
+		}
 		xsEnableRule("ysearch");
 		//xsEnableRule("CustomContentChat");
 	}

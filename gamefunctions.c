@@ -121,6 +121,7 @@ highFrequency
 	bool ProjChange = false;
 	for(a = xsMin(xGetDatabaseCount(dMissiles), cNumberNonGaiaPlayers); > 0){
 		ProjDead = false;
+		ProjChange = true;
 		xDatabaseNext(dMissiles);
 		//Kronny SPeed = 30.0/1000 = 0.03
 		p = xGetInt(dMissiles, xOwner);
@@ -232,6 +233,12 @@ highFrequency
 				trDamageUnitPercent(-100);
 			}
 			xFreeDatabaseBlock(dMissiles);
+			if(ProjChange){
+				debugLog("Change true");
+			}
+			else{
+				debugLog("Change false");
+			}
 		}
 		else{
 			xSetInt(dMissiles, xMissilePrevTime, trTimeMS());
@@ -396,8 +403,44 @@ void CityPillbox(int c = 0){
 		if(xGetInt(dCity, xNumber) == c){
 			central = xGetVector(dCity, xLocation);
 			//---22 is edge of white tile, 24 set to lowest
-			CreatePillBox(xsVectorGetX(central)+dist,xsVectorGetZ(central));
-			CreatePillBox(xsVectorGetX(central),xsVectorGetZ(central)+dist);
+			if(iModulo(2, trTimeMS()) == 0){
+				CreatePillBox(xsVectorGetX(central)+dist,xsVectorGetZ(central));
+				CreatePillBox(xsVectorGetX(central),xsVectorGetZ(central)+dist);
+			}
+			else{
+				CreatePillBox(xsVectorGetX(central)-dist,xsVectorGetZ(central));
+				CreatePillBox(xsVectorGetX(central),xsVectorGetZ(central)-dist);
+			}
+		}
+	}
+}
+
+void AddCineText(string text="", int readtime = 3000){
+	trQuestVarModify("TotalStrings", "+", 1);
+	trStringQuestVarSet("Text"+1*trQuestVarGet("TotalStrings"), text);
+	trQuestVarSet("Text"+1*trQuestVarGet("TotalStrings")+"Time", readtime);
+	trQuestVarSet("Time"+1*trQuestVarGet("TotalStrings"), 99999999);
+}
+
+void PlayCineDialogue(){
+	trQuestVarSet("TotalStrings", 0);
+	xsEnableRule("PlayCineText");
+}
+
+rule PlayCineText
+inactive
+highFrequency
+{
+	if(trTimeMS() > 1*trQuestVarGet("NextText")){
+		trQuestVarModify("TotalStrings", "+", 1);
+		characterDialog("Yeebaagooon", trStringQuestVarGet("Text"+1*trQuestVarGet("TotalStrings")), "icons/special e son of osiris icon 64");
+		trQuestVarSet("NextText", trTimeMS()+1*trQuestVarGet("Text"+1*trQuestVarGet("TotalStrings")+"Time"));
+		trQuestVarSet("Time"+1*trQuestVarGet("TotalStrings"), 0);
+		if( 1*trQuestVarGet("Text"+1*trQuestVarGet("TotalStrings")+"Time") == 0){
+			xsEnableRule("WorldCreate");
+			trLetterBox(false);
+			characterDialog("  ");
+			xsDisableSelf();
 		}
 	}
 }

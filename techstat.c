@@ -121,7 +121,6 @@ highFrequency
 	modifyProtounitAbsolute("Bolt Strike", 0, 28, 0);
 	modifyProtounitAbsolute("Bolt Strike", 0, 29, 0);
 	trRateConstruction(5);
-	trUnforbidProtounit(1, "Temple");
 	xsDisableSelf();
 }
 

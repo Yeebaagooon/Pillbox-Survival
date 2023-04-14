@@ -111,18 +111,15 @@ inactive
 				debugLog("NO CONSEQUENCE SET");
 			}
 			case 1:
+			//Play cine
 			{
-				trTechGodPower(p, "Vision", 1);
+				xsEnableRule("SetupCine");
 			}
 			case 2:
+			//Skip cine
 			{
-				trTechGodPower(p, "Serpents", 1);
-			}
-			case 3:
-			{
-				trQuestVarSet("SkipVotes", 1*trQuestVarGet("SkipVotes")+1);
-				trClearCounterDisplay();
-				trSetCounterDisplay("<color={PlayerColor(0)}>Votes to skip: " + 1*trQuestVarGet("SkipVotes"));
+				trChatSend(0, "BUILDING MAP...");
+				trDelayedRuleActivation("WorldCreate");
 			}
 		}
 		trQuestVarSet("P"+ActionChoice+"YesAction", 0);

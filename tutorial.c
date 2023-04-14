@@ -1,8 +1,18 @@
 void CreateRocket(int x = 0, int z = 0){
 	int temp = 0;
+	if(xGetDatabaseCount(dRocket) > 0){
+		for(a = xGetDatabaseCount(dRocket); > 0){
+			xDatabaseNext(dRocket);
+			xUnitSelect(dRocket, xUnitID);
+			trUnitDestroy();
+			xFreeDatabaseBlock(dRocket);
+		}
+		xResetDatabase(dRocket);
+	}
 	temp = trGetNextUnitScenarioNameNumber();
 	UnitCreate(0, "Dwarf", x, z, 0);
 	trQuestVarSet("RocketUnit", temp);
+	AddUnitToDB(dRocket, xUnitID, temp);
 	temp = trGetNextUnitScenarioNameNumber()+3;
 	UnitCreate(0, "Dwarf", x, z, 0);
 	UnitCreate(0, "Dwarf", x, z, 0);
@@ -23,6 +33,7 @@ void CreateRocket(int x = 0, int z = 0){
 		trUnitSelectClear();
 		trUnitSelect(""+a);
 		trSetSelectedScale(2,10,2);
+		AddUnitToDB(dRocket, xUnitID, a);
 	}
 	trUnitSelectClear();
 	trUnitSelect(""+(temp-1));
@@ -35,7 +46,7 @@ void CreateRocket(int x = 0, int z = 0){
 	trUnitChangeProtoUnit("Spy Eye");
 	trUnitSelectClear();
 	trUnitSelect(""+(temp-2));
-	trMutateSelected(kbGetProtoUnitID("Wonder"));
+	trMutateSelected(kbGetProtoUnitID("Wonder SPC"));
 	trUnitSelectClear();
 	trUnitSelect(""+(temp-2));
 	trSetSelectedScale(0,0,0);
@@ -47,13 +58,19 @@ void CreateRocket(int x = 0, int z = 0){
 	trUnitSelect(""+(temp-3));
 	trUnitChangeProtoUnit("Revealer");
 	trUnitSelectByQV("RocketUnit");
-	trUnitChangeProtoUnit("Wonder");
+	trUnitChangeProtoUnit("Wonder SPC");
 	trUnitSelectByQV("RocketUnit");
 	trUnitConvert(1);
 	trUnitSelectByQV("RocketUnit");
 	trSetSelectedScale(1,0.1,1);
 	trUnitSelectByQV("RocketUnit");
 	trUnitSetAnimationPath("2,1,0,1,1,0");
+	AddUnitToDB(dRocket, xUnitID, temp-1);
+	AddUnitToDB(dRocket, xUnitID, temp-2);
+	AddUnitToDB(dRocket, xUnitID, temp-3);
+	if(x != 20){
+		//Function for main rocket only
+	}
 }
 
 void SpawnPlayers(){
@@ -90,6 +107,7 @@ void SpawnPlayers(){
 	CreatePillBox(getMapSize()/2+16,getMapSize()/2+16);
 	CreatePillBox(getMapSize()/2+16,getMapSize()/2-16);
 	paintCircleHeight(getMapSize()/4,getMapSize()/4, 11, "RiverGrassyB", 0);
+	trPaintTerrain(getMapSize()/4+7,getMapSize()/4-1,getMapSize()/4+8,getMapSize()/4,2,2);
 }
 
 void CaptureReward(int city = 1){
@@ -502,19 +520,23 @@ void CreateStartingRelics(int num = 1){
 					num = num-1;
 					if(dist < 80){
 						//FORCE LEVEL 1 RELICS
-						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn),1);
+						//DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn),1);
+						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn),);
 					}
 					if((dist < 120) && (dist >= 80)){
 						//FORCE LEVEL 2 RELICS
-						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn),3);
+						//DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn),3);
+						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn),);
 					}
 					if((dist < 160) && (dist >= 120)){
 						//FORCE LEVEL 3 RELICS
-						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn),4);
+						//DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn),4);
+						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn),);
 					}
 					else if(dist >= 160){
 						//FORCE LEVEL 4 RELICS
-						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn),5);
+						//DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn),5);
+						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn),);
 					}
 				}
 			}
@@ -837,7 +859,7 @@ active
 		resource = trPlayerResourceCount(p, "Gold");
 		if(resource > 0){
 			trPlayerGrantResources(p, "Gold", -1*resource);
-			xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)+5*resource);
+			xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)+1*resource);
 		}
 		xUnitSelect(dPlayerData, xUnitID);
 		trUnitChangeInArea(p,p,"Farm", "Villager Atlantean", 999);
@@ -1143,6 +1165,9 @@ highFrequency
 					xUnitSelect(dCarts, xUnitID);
 					trUnitSetAnimationPath("0,1,0,0,0,0");
 					xFreeDatabaseBlock(dCarts);
+					if(CartsCaptured < (CitiesToMake)-1){
+						CityPillbox(CartsCaptured+1);
+					}
 				}
 				xUnitSelect(dCarts, xUnitID);
 				if(trUnitIsOwnedBy(cNumberNonGaiaPlayers)){
