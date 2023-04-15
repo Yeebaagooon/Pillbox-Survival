@@ -1494,6 +1494,18 @@ int yFindLatestReverse(string qv = "", string proto = "", int p = 0) {
 	return(-1);
 }
 
+int yGetLatestReverse(string proto = "") {
+	int id = kbGetProtoUnitID(proto);
+	trUnitSelectClear();
+	for(x=trGetNextUnitScenarioNameNumber(); > 0) {
+		int i = kbGetBlockID(""+x, true);
+		if (kbGetUnitBaseTypeID(i) == id) {
+			return(x);
+		}
+	}
+	return(-1);
+}
+
 /*
 Starting from quest var 'qv' and going up until NextUnitScenarioNameNumber,
 looks for the specified protounit. If none found, returns -1. Otherwise, returns the

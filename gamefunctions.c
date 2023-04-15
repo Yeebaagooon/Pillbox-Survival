@@ -131,6 +131,7 @@ highFrequency
 		dist = 0.001*xGetFloat(dProjectiles, xProjSpeed)*(xGetInt(dMissiles, xMissilePrevTime)-xGetInt(dMissiles, xMissileStartTime));
 		prev = xGetVector(dMissiles, xMissilePos)+xGetVector(dMissiles, xMissileDir)*dist;
 		dist = 0.001*xGetFloat(dProjectiles, xProjSpeed)*(trTimeMS()-xGetInt(dMissiles, xMissilePrevTime))+1;
+		//DIST DEBUG speed 30 = 1.6 and then speed 45 = 1.9
 		for(b = xGetDatabaseCount(dEnemies); > 0){
 			xDatabaseNext(dEnemies);
 			if(rayCollision(prev, xGetVector(dMissiles, xMissileDir), dist, 1)){
@@ -159,7 +160,9 @@ highFrequency
 							trUnitChangeProtoUnit("Meteor Impact Ground");
 							xUnitSelect(dMissiles, xUnitID);
 							trDamageUnitPercent(-100);
-							playSound("meteorsmallhit.wav");
+							if(trUnitVisToPlayer()){
+								playSound("meteorsmallhit.wav");
+							}
 						}
 						if(xGetInt(dProjectiles, xProjSpecial) == 2){
 							//JusticE bullet kill human
@@ -174,6 +177,9 @@ highFrequency
 									trUnitSetAnimationPath(xGetString(dProjectiles, xProjRelicAnimPath));
 									xUnitSelect(dMissiles, xUnitID);
 									trDamageUnitPercent(-100);
+									if(trUnitVisToPlayer()){
+										playSound("hitpointsmax.wav");
+									}
 								}
 							}
 						}
@@ -194,6 +200,39 @@ highFrequency
 								trUnitChangeProtoUnit("Lightning Sparks Ground");
 								xUnitSelect(dMissiles, xUnitID);
 								trDamageUnitPercent(-100);
+							}
+						}
+						if(xGetInt(dProjectiles, xProjSpecial) == 5){
+							//Chicken explosion
+							xUnitSelect(dEnemies, xUnitID);
+							trDamageUnitsInArea(cNumberNonGaiaPlayers, "All", 5, xGetInt(dProjectiles, xProjDamage));
+							xUnitSelect(dMissiles, xUnitID);
+							trUnitChangeProtoUnit("Chicken Blood");
+							xUnitSelect(dMissiles, xUnitID);
+							trDamageUnitPercent(-100);
+							if(trUnitVisToPlayer()){
+								playSound("meteorsmallhit.wav");
+							}
+						}
+						if(xGetInt(dProjectiles, xProjSpecial) == 6){
+							//Add to Acid DB
+							xUnitSelect(dEnemies, xUnitID);
+							if(trUnitAlive()){
+								xAddDatabaseBlock(dOnFire, true);
+								xSetInt(dOnFire, xUnitID, xGetInt(dEnemies, xUnitID));
+								xSetFloat(dOnFire, xTimeToBurn, trTimeMS()+2000);
+								xSetFloat(dOnFire, xTotalBurnDamage, 400);
+								xSetFloat(dOnFire, xDamagePerTick, xGetFloat(dOnFire, xTotalBurnDamage)/xGetInt(dProjectiles, xProjFireRate));
+								xUnitSelect(dEnemies, xSpyBurn);
+								trMutateSelected(kbGetProtoUnitID("Acid Pool"));
+								xSetInt(dOnFire, xBurnSpyID, xGetInt(dEnemies, xSpyBurn));
+							}
+							xUnitSelect(dMissiles, xUnitID);
+							trUnitChangeProtoUnit("Lampades Blood");
+							xUnitSelect(dMissiles, xUnitID);
+							trDamageUnitPercent(-100);
+							if(trUnitVisToPlayer()){
+								playSound("lampadesblood.wav");
 							}
 						}
 					}
@@ -233,12 +272,6 @@ highFrequency
 				trDamageUnitPercent(-100);
 			}
 			xFreeDatabaseBlock(dMissiles);
-			if(ProjChange){
-				debugLog("Change true");
-			}
-			else{
-				debugLog("Change false");
-			}
 		}
 		else{
 			xSetInt(dMissiles, xMissilePrevTime, trTimeMS());
@@ -437,10 +470,39 @@ highFrequency
 		trQuestVarSet("NextText", trTimeMS()+1*trQuestVarGet("Text"+1*trQuestVarGet("TotalStrings")+"Time"));
 		trQuestVarSet("Time"+1*trQuestVarGet("TotalStrings"), 0);
 		if( 1*trQuestVarGet("Text"+1*trQuestVarGet("TotalStrings")+"Time") == 0){
-			xsEnableRule("WorldCreate");
+			xsEnableRule("CineEnd");
 			trLetterBox(false);
 			characterDialog("  ");
 			xsDisableSelf();
 		}
+	}
+}
+
+void HelpText(int p = 0){
+	if(trCurrentPlayer() == p){
+		trChatHistoryClear();
+		playSound("gamefound.wav");
+	}
+	ColouredChatToPlayer(p, "1,0.5,0", "<u>BUILDING HELP LIST:</u></color>");
+	ColouredChatToPlayer(p, "1,1,1", "Manor - Garrison units inside to heal them");
+	if(CartsCaptured == 0){
+		ColouredChatToPlayer(p, "1,0,1", "Kill enemies in City 1");
+		ColouredChatToPlayer(p, "1,0,1", "Then bring the rocket piece back to the rocket");
+		ColouredChatToPlayer(p, "1,0,1", "You will then unlock new buildings");
+	}
+	if(CartsCaptured >= 1){
+		ColouredChatToPlayer(p, "1,1,1", "Farm - Villager");
+	}
+	if(CartsCaptured >= 2){
+		ColouredChatToPlayer(p, "1,1,1", "Guild - Creates free ammo");
+	}
+	if(CartsCaptured >= 3){
+		ColouredChatToPlayer(p, "1,1,1", "Tower - Creates pillbox");
+	}
+	if(CartsCaptured >= 4){
+		ColouredChatToPlayer(p, "1,1,1", "Sky Passage - Normal function with attack");
+	}
+	if(CartsCaptured >= 5){
+		ColouredChatToPlayer(p, "1,1,1", "Palace - Armoured car that your citizen controls");
 	}
 }

@@ -60,6 +60,21 @@ highFrequency
 				}
 				break;
 			}
+			case kbGetProtoUnitID("Manor"):
+			{
+				xAddDatabaseBlock(dManor, true);
+				xSetInt(dManor, xUnitID, i);
+				xSetBool(dManor, xComplete, false);
+				break;
+			}
+			case kbGetProtoUnitID("Dock"):
+			{
+				trUnitSelectClear();
+				trUnitSelectByID(id);
+				trUnitDestroy();
+				HelpText(kbUnitGetOwner(id));
+				break;
+			}
 		}
 	}
 	if (xGetDatabaseCount(dSpyRequests) > 0) {

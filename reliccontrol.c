@@ -27,7 +27,7 @@ void DeployRelic(int x = 0, int z = 0, int force = 0){
 	//Force to gaias book
 	//Number of classes
 	if(force == 0){
-		trQuestVarSetFromRand("temp", 1, 18, true);
+		trQuestVarSetFromRand("temp", 1, 22, true);
 	}
 	else{
 		trQuestVarSet("temp", force);

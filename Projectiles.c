@@ -314,7 +314,7 @@ highFrequency
 	//ProjAllowPassThrough();
 	ProjDeathEffect();
 	//ProjNoShoot();
-	ProjRelicDecorate("Meteor Impact Ground", 1, "0,1,1,0,0,0");
+	ProjRelicDecorate("Meteor Impact Ground", 1, "0,0,1,0,1,0");
 	ProjTowerDecor("Cinematic Block");
 	
 	//--BUILD MISSILE --- 8
@@ -340,7 +340,7 @@ highFrequency
 	//ProjAllowPassThrough();
 	ProjDeathEffect();
 	//ProjNoShoot();
-	ProjRelicDecorate("Meteor Impact Ground", 1, "0,1,1,0,0,0");
+	ProjRelicDecorate("Meteor Impact Ground", 1, "0,0,1,0,1,0");
 	ProjTowerDecor("Cinematic Block");
 	
 	//--BUILD MISSILE --- 9
@@ -592,6 +592,140 @@ highFrequency
 	//ProjDeathEffect();
 	//ProjNoShoot();
 	ProjRelicDecorate("Arkantos Boost SFX", 1);
+	ProjTowerDecor("Cinematic Block");
+	
+	
+	//--BUILD MISSILE --- 19
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(19);
+	ProjSetName("Close Bolter");
+	ProjSetDesc("A fast but low range bolt attack");
+	ProjSetProto("Spear");
+	ProjSetAnim(2);
+	ProjSetAnimPath("0,0,0,0,0,0");
+	ProjSetSize(0.4);
+	ProjSetDamage(250);
+	ProjRangeandLOS(6,6);
+	ProjSetAmmoCost(30);
+	ProjSetFireRate(300);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("lightningstrike" + iModulo(4, (trTime())+1) + ".wav");
+	//ProjSetBaseCosSin(0.996195, 0.087156); //the initial +cos/sin (+5)
+	//ProjSetMoveCosSin(0.996195, -0.087156); //the incremental -cos/sin (-5 for +5,0,-5)
+	//ProjAllowPassThrough();
+	//ProjDeathEffect();
+	ProjNoShoot();
+	ProjRelicDecorate("Lightning Sparks Ground", 1);
+	ProjTowerDecor("Lightning Cloud");
+	
+	//--BUILD MISSILE --- 20
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(20);
+	ProjSetName("Chicken Grenade");
+	ProjSetDesc("Fires exploding chickens");
+	ProjSetProto("Chicken Exploding");
+	ProjSetAnim(2);
+	ProjSetAnimPath("0,0,0,0,0,0");
+	ProjSetSize(1);
+	ProjSetDamage(200);
+	ProjRangeandLOS(24,24);
+	ProjSetAmmoCost(25);
+	ProjSetFireRate(1800);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(5);
+	ProjSetSound("chickenambient.wav");
+	//ProjAllowPassThrough();
+	ProjDeathEffect();
+	//ProjNoShoot();
+	ProjRelicDecorate("Chicken");
+	ProjTowerDecor("Cinematic Block");
+	
+	//--BUILD MISSILE --- 21
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(21);
+	ProjSetName("Acidifier");
+	ProjSetDesc("Launches acid attacks, dealing 400 bonus damage");
+	ProjSetProto("Poison SFX");
+	ProjSetAnim(2);
+	ProjSetAnimPath("0,0,0,0,0,0");
+	ProjSetSize(2);
+	ProjSetDamage(100);
+	ProjRangeandLOS(18,20);
+	ProjSetAmmoCost(25);
+	ProjSetFireRate(2000);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(6);
+	ProjSetSound("argusfreezeattack.wav");
+	//ProjSetBaseCosSin(0.996195, 0.087156); //the initial +cos/sin (+5)
+	//ProjSetMoveCosSin(0.996195, -0.087156); //the incremental -cos/sin (-5 for +5,0,-5)
+	//ProjAllowPassThrough();
+	ProjDeathEffect();
+	//ProjNoShoot();
+	ProjRelicDecorate("Acid Pool",0, "0,0,1,0,0,0,0");
+	ProjTowerDecor("Acid Pool");
+	
+	//--BUILD MISSILE --- 22
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(22);
+	ProjSetName("Earth blaster");
+	ProjSetDesc("Creates shockwaves on enemies");
+	ProjSetProto("Poison SFX");
+	ProjSetAnim(2);
+	ProjSetAnimPath("0,0,0,0,0,0");
+	ProjSetSize(2);
+	ProjSetDamage(100);
+	ProjRangeandLOS(30,20);
+	ProjSetAmmoCost(15);
+	ProjSetFireRate(2000);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("shockwave.wav");
+	//ProjSetBaseCosSin(0.996195, 0.087156); //the initial +cos/sin (+5)
+	//ProjSetMoveCosSin(0.996195, -0.087156); //the incremental -cos/sin (-5 for +5,0,-5)
+	//ProjAllowPassThrough();
+	//ProjDeathEffect();
+	ProjNoShoot();
+	ProjRelicDecorate("Tremor",1);
+	ProjTowerDecor("Tremor");
+	
+	//--BUILD MISSILE --- 23
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(23);
+	ProjSetName("Sniper");
+	ProjSetDesc("Fast moving with a large range");
+	ProjSetProto("Lampades");
+	ProjSetAnim(2);
+	ProjSetAnimPath("0,0,0,0,0,0");
+	ProjSetSize(0);
+	ProjSetDamage(100);
+	ProjRangeandLOS(45,44);
+	ProjSetAmmoCost(25);
+	ProjSetFireRate(2000);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(45.0);
+	ProjSetSpecial(0);
+	ProjSetSound("genericheavyfall1.wav");
+	//ProjSetBaseCosSin(0.996195, 0.087156); //the initial +cos/sin (+5)
+	//ProjSetMoveCosSin(0.996195, -0.087156); //the incremental -cos/sin (-5 for +5,0,-5)
+	//ProjAllowPassThrough();
+	//ProjDeathEffect();
+	//ProjNoShoot();
+	ProjRelicDecorate("Moveto");
 	ProjTowerDecor("Cinematic Block");
 	
 	//END

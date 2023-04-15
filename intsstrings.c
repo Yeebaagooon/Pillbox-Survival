@@ -10,13 +10,19 @@ string MapName = "Pillbox Survival";
 Pillboxes can attack other gaia pillboxes (only if player says so)
 playerIsPlaying - currently allows computers to exist ingame
 
+Cine villie doesnt move
+Maybe a post night clearout, annoying to have enemies still on the map OOS WARNING
+Manor SFX
+
+Dock for building help
+Overlay text/ui helpers
 */
 
 //---Launch Codes
 bool Visible = false;
 bool AllowEnemies = true;
-bool CineChoice = true;
-int TestRelic = 18;
+bool CineChoice = false;
+int TestRelic = 23;
 
 //---Game Data
 int MapSkin = 0;

@@ -141,6 +141,12 @@ int dBuildTowers = 0;
 //Rocket unit DB
 int dRocket = 0;
 
+//Manor DB
+int dManor = 0;
+int xComplete = 0;
+int xHosting = 0;
+int xManorSFXID = 0;
+
 
 rule setup_first_databases
 active
@@ -284,6 +290,12 @@ highFrequency
 	
 	dRocket = xInitDatabase("rocketdb");
 	xUnitID = xInitAddInt(dRocket, "unitid", -1);
+	
+	dManor = xInitDatabase("manordb");
+	xUnitID = xInitAddInt(dManor, "unitid", -1);
+	xComplete = xInitAddBool(dManor, "completed", false);
+	xHosting = xInitAddBool(dManor, "hosting", false);
+	xManorSFXID = xInitAddInt(dManor, "sfxid", -1);
 }
 
 

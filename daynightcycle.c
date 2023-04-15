@@ -69,7 +69,6 @@ highFrequency
 		if(trTime() > NextNightAttack){
 			if(Day == false){
 				NextNightAttack = trTime()+NightInterval;
-				debugLog("SPAWN");
 				if(Date == 1){
 					trQuestVarSetFromRand("temp", 1, 2);
 					for(a = 0; < cNumberNonGaiaPlayers*2){

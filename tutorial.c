@@ -114,32 +114,34 @@ void CaptureReward(int city = 1){
 	if(city == 1){
 		for(p = 1; < cNumberNonGaiaPlayers){
 			trUnforbidProtounit(p, "Farm");
-			trOverlayText("Farm unlocked - creates extra villagers", 7);
 		}
+		trOverlayText("Farm unlocked - creates extra villagers", 7);
 	}
 	if(city == 2){
 		for(p = 1; < cNumberNonGaiaPlayers){
 			trUnforbidProtounit(p, "Guild");
-			trOverlayText("Guild unlocked - constantly creates free ammo", 7);
 		}
+		trOverlayText("Guild unlocked - constantly creates free ammo", 7);
 	}
 	if(city == 3){
 		for(p = 1; < cNumberNonGaiaPlayers){
 			trUnforbidProtounit(p, "Tower");
-			trOverlayText("Tower unlocked - build your own pillbox!", 7);
+			trUnforbidProtounit(p, "Sky Passage");
 		}
+		trOverlayText("Sky Passage and Tower unlocked", 7, -1, 200);
+		uiMessageBox("Towers will change to pillboxes when built, sky passages fire weak arrows.");
 	}
 	if(city == 4){
 		for(p = 1; < cNumberNonGaiaPlayers){
 			trUnforbidProtounit(p, "Temple");
-			trOverlayText("Temple unlocked - recycle unwanted relics into ammo here", 7);
 		}
+		trOverlayText("Temple unlocked - recycle unwanted relics into ammo here and research upgrades", 7);
 	}
 	if(city == 5){
 		for(p = 1; < cNumberNonGaiaPlayers){
 			trUnforbidProtounit(p, "Palace");
-			trOverlayText("Palace unlocked - build your own armoured car!", 7);
 		}
+		trOverlayText("Palace unlocked - build your own armoured car!", 7);
 	}
 }
 
@@ -291,7 +293,7 @@ void SetupCities(){
 			}
 			tempV = tempV/2;
 			//from metres to tiles
-			//---CITY 1 LAYOUT
+			//---CITY 2 LAYOUT
 			CreateUnitInAtlantisBox(xsVectorGetX(tempV)-6,xsVectorGetZ(tempV), 3, getTerrainType("GrassDirt50"), getTerrainSubType("GrassDirt50"), 0, "Academy", 0);
 			CreateUnitInAtlantisBox(xsVectorGetX(tempV)+6,xsVectorGetZ(tempV), 3, getTerrainType("GrassDirt50"), getTerrainSubType("GrassDirt50"), 0, "Archery Range", 0);
 			trQuestVarSet("temp1", trGetNextUnitScenarioNameNumber());
@@ -316,7 +318,7 @@ void SetupCities(){
 			trUnitChangeProtoUnit("Flowers");
 		}
 		if(xGetInt(dCity, xNumber) == 3){
-			//Populate City 2
+			//Populate City 3
 			tempV = xGetVector(dCity, xLocation);
 			SpawnEnemy("Medusa", xsVectorGetX(tempV),xsVectorGetZ(tempV)+4,true,3, 180);
 			SpawnEnemy("Colossus", xsVectorGetX(tempV)+6,xsVectorGetZ(tempV)-6,true,3, 0);
@@ -330,7 +332,7 @@ void SetupCities(){
 			}
 			tempV = tempV/2;
 			//from metres to tiles
-			//---CITY 1 LAYOUT
+			//---CITY 3 LAYOUT
 			CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)+7, 3, getTerrainType("GrassDirt50"), getTerrainSubType("GrassDirt50"), 0, "Temple", 90);
 			CreateUnitInAtlantisBox(xsVectorGetX(tempV)+7,xsVectorGetZ(tempV), 2, getTerrainType("GrassDirt50"), getTerrainSubType("GrassDirt50"), 0, "Shrine", 0);
 			CreateUnitInAtlantisBox(xsVectorGetX(tempV)-7,xsVectorGetZ(tempV), 2, getTerrainType("GrassDirt50"), getTerrainSubType("GrassDirt50"), 0, "Shrine", 0);
@@ -355,10 +357,51 @@ void SetupCities(){
 			trUnitSelectByQV("temp4");
 			trUnitChangeProtoUnit("Flowers");
 		}
-		else if(xGetInt(dCity, xNumber) > 3){
+		if(xGetInt(dCity, xNumber) == 4){
+			//Populate City 4
+			tempV = xGetVector(dCity, xLocation);
+			SpawnEnemy("Circe", xsVectorGetX(tempV),xsVectorGetZ(tempV)+4,true,4, 180);
+			SpawnEnemy("Fire Giant", xsVectorGetX(tempV)+6,xsVectorGetZ(tempV)-6,true,4, 0);
+			SpawnEnemy("Fire Giant", xsVectorGetX(tempV)+6,xsVectorGetZ(tempV)+6,true,4, 180);
+			SpawnEnemy("Fire Giant", xsVectorGetX(tempV)-6,xsVectorGetZ(tempV)+6,true,4, 180);
+			SpawnEnemy("Fire Giant", xsVectorGetX(tempV)-6,xsVectorGetZ(tempV)-6,true,4, 0);
+			
+			for(b = 1; < cNumberNonGaiaPlayers){
+				SpawnEnemy("Mountain Giant", xsVectorGetX(tempV)-8,(xsVectorGetZ(tempV)-(cNumberNonGaiaPlayers*2)+(b*4)),true,4, 90);
+				SpawnEnemy("Mountain Giant", xsVectorGetX(tempV)+8,(xsVectorGetZ(tempV)-(cNumberNonGaiaPlayers*2)+(b*4)),true,4, 270);
+			}
+			tempV = tempV/2;
+			//from metres to tiles
+			//---CITY 4 LAYOUT
+			CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)+7, 3, getTerrainType("GrassDirt50"), getTerrainSubType("GrassDirt50"), 0, "Fortress", 180);
+			CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)-7, 2, getTerrainType("GrassDirt50"), getTerrainSubType("GrassDirt50"), 0, "Shrine", 90);
+			CreateUnitInAtlantisBox(xsVectorGetX(tempV)+7,xsVectorGetZ(tempV), 3, getTerrainType("GrassDirt50"), getTerrainSubType("GrassDirt50"), 0, "Temple", 180);
+			CreateUnitInAtlantisBox(xsVectorGetX(tempV)-7,xsVectorGetZ(tempV), 3, getTerrainType("GrassDirt50"), getTerrainSubType("GrassDirt50"), 0, "Temple", 0);
+			trQuestVarSet("temp1", trGetNextUnitScenarioNameNumber());
+			UnitCreate(0, "Dwarf",(xsVectorGetX(tempV)+4)*2,(xsVectorGetZ(tempV)+5)*2);
+			trQuestVarSet("temp2", trGetNextUnitScenarioNameNumber());
+			UnitCreate(0, "Dwarf",(xsVectorGetX(tempV)-4)*2,(xsVectorGetZ(tempV)-5)*2);
+			trQuestVarSet("temp3", trGetNextUnitScenarioNameNumber());
+			UnitCreate(0, "Dwarf",(xsVectorGetX(tempV)+4)*2,(xsVectorGetZ(tempV)-5)*2);
+			trQuestVarSet("temp4", trGetNextUnitScenarioNameNumber());
+			UnitCreate(0, "Dwarf",(xsVectorGetX(tempV)-4)*2,(xsVectorGetZ(tempV)+5)*2);
+			CreateUnitInAtlantisBox(xsVectorGetX(tempV)+5,xsVectorGetZ(tempV)+5, 1,-1, -1, 0, "Columns", 0, "3,0,0,0,0,0");
+			CreateUnitInAtlantisBox(xsVectorGetX(tempV)-5,xsVectorGetZ(tempV)+5, 1,-1, -1, 0, "Columns", 0, "3,0,0,0,0,0");
+			CreateUnitInAtlantisBox(xsVectorGetX(tempV)+4,xsVectorGetZ(tempV)-5, 1,-1, -1, 0, "Columns", 0, "3,0,0,0,0,0");
+			CreateUnitInAtlantisBox(xsVectorGetX(tempV)-4,xsVectorGetZ(tempV)-5, 1,-1, -1, 0, "Columns", 0, "3,0,0,0,0,0");
+			trUnitSelectByQV("temp1");
+			trUnitChangeProtoUnit("Mist");
+			trUnitSelectByQV("temp2");
+			trUnitChangeProtoUnit("Mist");
+			trUnitSelectByQV("temp3");
+			trUnitChangeProtoUnit("Mist");
+			trUnitSelectByQV("temp4");
+			trUnitChangeProtoUnit("Mist");
+		}
+		else if(xGetInt(dCity, xNumber) == 5){
 			//Placeholder populate the rest
 			tempV = xGetVector(dCity, xLocation);
-			SpawnEnemy("Fire Giant", xsVectorGetX(tempV),xsVectorGetZ(tempV)+4,true,xGetInt(dCity, xNumber), 180);
+			SpawnEnemy("Titan Kronos", xsVectorGetX(tempV),xsVectorGetZ(tempV)+4,true,xGetInt(dCity, xNumber), 180);
 			SpawnEnemy("Fire Giant", xsVectorGetX(tempV)+2,xsVectorGetZ(tempV)+4,true,xGetInt(dCity, xNumber), 180);
 			SpawnEnemy("Fire Giant", xsVectorGetX(tempV)+4,xsVectorGetZ(tempV)+4,true,xGetInt(dCity, xNumber), 180);
 			SpawnEnemy("Fire Giant", xsVectorGetX(tempV)-2,xsVectorGetZ(tempV)+4,true,xGetInt(dCity, xNumber), 180);
@@ -708,19 +751,26 @@ inactive
 	xsEnableRule("GameMechanics");
 	NextDay = trTime();
 	vector spawn = vector(0,0,0);
-	trUnblockAllSounds();
 	//--Test relic
 	DeployRelic(getMapSize()/2+4,getMapSize()/2+10,TestRelic);
 	SpawnEnemy("Militia", getMapSize()/2-10,getMapSize()/2);
 	trPlayerResetBlackMapForAllPlayers();
 	xsEnableRule("BlackMap");
-	trTechGodPower(1, "Vision", 100);
-	trTechGodPower(1, "Sandstorm", 100);
 	CityPillbox(1);
 	xsEnableRule("RocketAttackWarn");
 	xsEnableRule("RocketAttack50Warn");
 	xsEnableRule("RocketDead");
 	xsEnableRule("PlayerDead");
+	
+	trUnblockAllSounds();
+	trChatHistoryClear();
+	
+	trTechGodPower(1, "Vision", 100);
+	trTechGodPower(1, "Sandstorm", 100);
+	trTechGodPower(1, "SPClightning storm", 100);
+	trMusicPlay();
+	trPlayNextMusicTrack();
+	
 }
 
 rule BlackMap
@@ -787,6 +837,7 @@ inactive
 					//dialog
 					missileclass = xGetInt(dPlayerData, xCurrentMissile);
 					xSetPointer(dProjectiles, missileclass);
+					modifyProtounitAbsolute("Kronny Flying", p, 1, xGetFloat(dProjectiles, xProjSpeed));
 					xUnitSelect(dTowers, xTowerSFXID);
 					trUnitChangeProtoUnit("Spy Eye");
 					xUnitSelect(dTowers, xTowerSFXID);
@@ -802,16 +853,22 @@ inactive
 							trClearCounterDisplay();
 							uiZoomToProto("Tower");
 							//uiLookAtProto("Tower");
-							characterDialog("Firing " + xGetString(dProjectiles, xProjName), "Ammo remaining - " + xGetInt(dPlayerData, xAmmo), "");
+							trSetCounterDisplay("<color={PlayerColor("+p+")}>Firing " + xGetString(dProjectiles, xProjName) + "| Ammo remaining - " + xGetInt(dPlayerData, xAmmo));
 						}
 					}
 					else{
 						//Not enough ammo
 						if(trCurrentPlayer() == p){
 							trClearCounterDisplay();
-							characterDialog("Not enough ammo to fire " + xGetString(dProjectiles, xProjName), "Ammo - " + xGetInt(dPlayerData, xAmmo) + "/" + xGetInt(dProjectiles, xProjAmmoCost), "");
+							trSetCounterDisplay("<color={PlayerColor(2)}>Not enough ammo to fire " + xGetString(dProjectiles, xProjName) + "| Ammo - " + xGetInt(dPlayerData, xAmmo) + "/" + xGetInt(dProjectiles, xProjAmmoCost));
 							playSound("cantdothat.wav");
 						}
+						if(trTime() > 1*trQuestVarGet("P"+p+"AmmoWarnMsg")){
+							if(trCurrentPlayer() == p){
+								uiMessageBox("You have run out of ammo so cannot fire. Mine gold to get more ammo.");
+							}
+						}
+						trQuestVarSet("P"+p+"AmmoWarnMsg", trTime()+60);
 					}
 					//If the unit is doing attack animation on a tower, garrison inside it
 				}
@@ -838,13 +895,26 @@ inactive
 						xUnitSelect(dTowers, xTowerSFXID);
 						trUnitChangeProtoUnit("Cinematic Block");
 						if(trCurrentPlayer() == p){
-							trLetterBox(false);
 							uiZoomToProto("Villager Atlantean Hero");
 							uiLookAtProto("Villager Atlantean Hero");
 						}
 					}
 				}
 			}
+		}
+		xUnitSelect(dPlayerData, xUnitID);
+		if(trUnitGetIsContained("Manor") == true){
+			xUnitSelect(dPlayerData, xUnitID);
+			if(trUnitPercentDamaged() == 0){
+				if(trTime() > 1*trQuestVarGet("P"+p+"ManorMsg")){
+					if(trCurrentPlayer() == p){
+						uiMessageBox("Your citizen is back to full health.");
+						playSound("herorevived.wav");
+					}
+				}
+				trQuestVarSet("P"+p+"ManorMsg", trTime()+15);
+			}
+			
 		}
 	}
 }
@@ -941,7 +1011,7 @@ active
 									FireMissile(dir, xGetPointer(dTowers), shotby);
 									xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)-xGetInt(dProjectiles, xProjAmmoCost));
 									if(trCurrentPlayer() == shotby){
-										characterDialog("Firing " + xGetString(dProjectiles, xProjName), "Ammo remaining - " + xGetInt(dPlayerData, xAmmo), "");
+										trSetCounterDisplay("<color={PlayerColor("+shotby+")}>Firing " + xGetString(dProjectiles, xProjName) + "| Ammo remaining - " + xGetInt(dPlayerData, xAmmo));
 									}
 								}
 								else{
@@ -953,13 +1023,13 @@ active
 									}
 									xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)-xGetInt(dProjectiles, xProjAmmoCost));
 									if(trCurrentPlayer() == shotby){
-										characterDialog("Firing " + xGetString(dProjectiles, xProjName), "Ammo remaining - " + xGetInt(dPlayerData, xAmmo), "");
+										trSetCounterDisplay("<color={PlayerColor("+shotby+")}>Firing " + xGetString(dProjectiles, xProjName) + "| Ammo remaining - " + xGetInt(dPlayerData, xAmmo));
 									}
 								}
 							}
 							else{
 								//NO PROJ SHOOTER
-								if(xGetInt(dProjectiles, xProjClass) == 3){
+								if((xGetInt(dProjectiles, xProjClass) == 3) || (xGetInt(dProjectiles, xProjClass) == 19)){
 									//Bolter
 									trUnitSelectClear();
 									trUnitSelect(""+targetid);
@@ -1032,9 +1102,18 @@ active
 										AttackAllowed = false;
 									}
 								}
+								if(xGetInt(dProjectiles, xProjClass) == 22){
+									//Tremor
+									trUnitSelectClear();
+									trUnitSelect(""+targetid);
+									trTechInvokeGodPower(0, "Tremor", kbGetBlockPosition(""+targetid), vector(0,0,0));
+									trUnitSelectClear();
+									trUnitSelect(""+targetid);
+									trDamageUnit(xGetInt(dProjectiles, xProjDamage));
+								}
 								xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)-xGetInt(dProjectiles, xProjAmmoCost));
 								if(trCurrentPlayer() == shotby){
-									characterDialog("Firing " + xGetString(dProjectiles, xProjName), "Ammo remaining - " + xGetInt(dPlayerData, xAmmo), "");
+									trSetCounterDisplay("<color={PlayerColor("+shotby+")}>Firing " + xGetString(dProjectiles, xProjName) + "| Ammo remaining - " + xGetInt(dPlayerData, xAmmo));
 								}
 							}
 							//[SOUND LOS]
@@ -1050,8 +1129,15 @@ active
 						else{
 							//NOT ENOUGH AMMO
 							if(trCurrentPlayer() == shotby){
-								characterDialog("Not enough ammo to fire " + xGetString(dProjectiles, xProjName), "Ammo - " + xGetInt(dPlayerData, xAmmo) + "/" + xGetInt(dProjectiles, xProjAmmoCost), "");
+								trSetCounterDisplay("<color={PlayerColor(2)}>Not enough ammo to fire " + xGetString(dProjectiles, xProjName) + "| Ammo - " + xGetInt(dPlayerData, xAmmo) + "/" + xGetInt(dProjectiles, xProjAmmoCost));
 							}
+							if(trTime() > 1*trQuestVarGet("P"+shotby+"AmmoWarnMsg")){
+								if(trCurrentPlayer() == shotby){
+									uiMessageBox("You have run out of ammo so cannot fire. Mine gold to get more ammo.");
+									playSound("cantdothat.wav");
+								}
+							}
+							trQuestVarSet("P"+shotby+"AmmoWarnMsg", trTime()+60);
 						}
 					}
 				}
@@ -1179,10 +1265,72 @@ highFrequency
 		}
 		//Resources
 		for(p = 1 ; < cNumberNonGaiaPlayers){
+			xSetPointer(dPlayerData, p);
 			trPlayerGrantResources(p, "Gold",trPlayerUnitCountSpecific(p, "Guild"));
+			//Citizen Damage
+			if(1*trQuestVarGet("P"+p+"DmgWarn") == 0){
+				xUnitSelect(dPlayerData, xUnitID);
+				if(trUnitPercentDamaged() > 0){
+					trQuestVarSet("P"+p+"DmgWarn", 1);
+					trUnforbidProtounit(p, "Manor");
+					if(trCurrentPlayer() == p){
+						trOverlayText("Manor unlocked - garrison inside to heal", 7);
+					}
+				}
+			}
+			
+		}
+		//Manor heal
+		if(xGetDatabaseCount(dManor) > 0){
+			for(a = xGetDatabaseCount(dManor); > 0){
+				xDatabaseNext(dManor);
+				if(xGetBool(dManor, xComplete) == false){
+					xUnitSelect(dManor, xUnitID);
+					if(trUnitPercentComplete() == 100){
+						xSetBool(dManor, xComplete, true);
+						xUnitSelect(dManor, xUnitID);
+						trUnitChangeProtoUnit("Titan Atlantean");
+						xSetInt(dManor, xManorSFXID, yGetLatestReverse("Titan Gate Dead"));
+						xUnitSelect(dManor, xUnitID);
+						trUnitChangeProtoUnit("Manor");
+						xUnitSelect(dManor, xManorSFXID);
+						trUnitChangeProtoUnit("Cinematic Block");
+					}
+				}
+				else{
+					xUnitSelect(dManor, xUnitID);
+					if(trUnitAlive() == false){
+						xFreeDatabaseBlock(dManor);
+						break;
+					}
+					xUnitSelect(dManor, xUnitID);
+					if(xGetBool(dManor, xHosting) == false){
+						if(trUnitGetContained() > 0){
+							xSetBool(dManor, xHosting, true);
+							xUnitSelect(dManor, xManorSFXID);
+							trUnitChangeProtoUnit("Implode Sphere Effect");
+							xUnitSelect(dManor, xManorSFXID);
+							trUnitOverrideAnimation(18,0,true,true,-1);
+							xUnitSelect(dManor, xManorSFXID);
+							trUnitSetAnimationPath("0,0,1,1,0,0");
+						}
+					}
+					else{
+						if(trUnitGetContained() == 0){
+							xSetBool(dManor, xHosting, false);
+							xUnitSelect(dManor, xManorSFXID);
+							trUnitChangeProtoUnit("Cinematic Block");
+						}
+					}
+					for(p = 1; < cNumberNonGaiaPlayers){
+						trDamageUnitsInArea(p, "Unit", 1, -50);
+					}
+				}
+			}
 		}
 	}
 }
+
 
 rule RocketAssembled
 inactive

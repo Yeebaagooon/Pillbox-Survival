@@ -19,6 +19,7 @@ highFrequency
 		trTechSetStatus(p, 30, 4);
 		trTechSetStatus(p, 350, 4);
 		trTechSetStatus(p, 27, 4);
+		trTechSetStatus(p, 447, 4);
 		for(n=930; > 0) {
 			trForbidProtounit(p,kbGetProtoUnitName(n));
 		}
@@ -116,10 +117,32 @@ highFrequency
 		modifyProtounitAbsolute("Temple", p, 18, 0);
 		modifyProtounitAbsolute("Temple", p, 19, 0);
 		modifyProtounitAbsolute("Temple", p, 10, 1);
+		modifyProtounitAbsolute("Sky Passage", p, 16, 0);
+		modifyProtounitAbsolute("Sky Passage", p, 17, 500);
+		modifyProtounitAbsolute("Sky Passage", p, 18, 0);
+		modifyProtounitAbsolute("Sky Passage", p, 19, 0);
+		modifyProtounitAbsolute("Sky Passage", p, 12, 0);
+		modifyProtounitAbsolute("Sky Passage", p, 31, 20);
+		modifyProtounitAbsolute("Villager Atlantean Hero", p, 0, 1000);
+		modifyProtounitAbsolute("Manor", p, 16, 0);
+		modifyProtounitAbsolute("Manor", p, 17, 100);
+		modifyProtounitAbsolute("Manor", p, 18, 0);
+		modifyProtounitAbsolute("Manor", p, 19, 0);
+		modifyProtounitAbsolute("Manor", p, 5, 10);
+		modifyProtounitAbsolute("Dock", p, 16, 0);
+		modifyProtounitAbsolute("Dock", p, 17, 0);
+		modifyProtounitAbsolute("Dock", p, 18, 0);
+		modifyProtounitAbsolute("Dock", p, 19, 0);
+		modifyProtounitAbsolute("Dock", p, 4, -1);
+		modifyProtounitAbsolute("Dock", p, 55, 4);
+		modifyProtounitAbsolute("Dock", p, 2, 0.0);
+		trUnforbidProtounit(p, "Dock");
 	}
 	modifyProtounitAbsolute("Bolt Strike", 0, 27, 0);
 	modifyProtounitAbsolute("Bolt Strike", 0, 28, 0);
 	modifyProtounitAbsolute("Bolt Strike", 0, 29, 0);
+	modifyProtounitAbsolute("Fortress", 0, 13, 0);
+	modifyProtounitAbsolute("Titan Atlantean", 0, 2, 1);
 	trRateConstruction(5);
 	xsDisableSelf();
 }
