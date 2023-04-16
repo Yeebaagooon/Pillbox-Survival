@@ -107,6 +107,33 @@ void ProjTowerDecor(string proto = "" ,string path = "0,0,0,0,0,0", float size =
 	xSetFloat(dProjectiles, xProjTowerProtoSize, size);
 }
 
+//ORDERING FOR PROJECTILES
+const int PROJ_Default = 0;
+const int PROJ_Default_Rapid1 = 1;
+const int PROJ_Default_C3A5 = 2;
+const int PROJ_Bolter = 3;
+const int PROJ_Burner = 4;
+const int PROJ_Justice = 5;
+const int PROJ_Rapture = 6;
+const int PROJ_MiniGrenade = 7;
+const int PROJ_MiniGrenade_C3A10 = 8;
+const int PROJ_Flammenwerfer = 9;
+const int PROJ_FlammenwerferC5A10 = 10;
+const int PROJ_Taser = 11;
+const int PROJ_Stun = 12;
+const int PROJ_Blue = 13;
+const int PROJ_BlueC2A5 = 14;
+const int PROJ_BlueC3A5 = 15;
+const int PROJ_Curse = 16;
+const int PROJ_CurseFast = 17;
+const int PROJ_100Dmg = 18;
+const int PROJ_BolterClose = 19;
+const int PROJ_ChickenGrenade = 20;
+const int PROJ_Acid = 21;
+const int PROJ_Tremor = 22;
+const int PROJ_Sniper = 23;
+
+
 rule SetupProjTypes
 inactive
 highFrequency
@@ -116,7 +143,7 @@ highFrequency
 	index = xAddDatabaseBlock(dProjectiles, true);
 	DefaultMissilePointer = index;
 	xSetInt(dProjectiles, xPointer, index);
-	ProjSetClass(0);
+	ProjSetClass(PROJ_Default);
 	ProjSetName("Standard bullet");
 	ProjSetDesc("Default projectile");
 	ProjSetProto("Spear");
@@ -141,7 +168,7 @@ highFrequency
 	//--BUILD MISSILE --- 1
 	index = xAddDatabaseBlock(dProjectiles, true);
 	xSetInt(dProjectiles, xPointer, index);
-	ProjSetClass(1);
+	ProjSetClass(PROJ_Default_Rapid1);
 	ProjSetName("Rapid fire");
 	ProjSetDesc("Shoots standard bullets at a faster rate");
 	ProjSetProto("Spear");
@@ -167,7 +194,7 @@ highFrequency
 	//--BUILD MISSILE --- 2
 	index = xAddDatabaseBlock(dProjectiles, true);
 	xSetInt(dProjectiles, xPointer, index);
-	ProjSetClass(2);
+	ProjSetClass(PROJ_Default_C3A5);
 	ProjSetName("Triple shot");
 	ProjSetDesc("Shoots 3 standard bullets at once with 5 degrees offset");
 	ProjSetProto("Spear");
@@ -194,7 +221,7 @@ highFrequency
 	//--BUILD MISSILE --- 3
 	index = xAddDatabaseBlock(dProjectiles, true);
 	xSetInt(dProjectiles, xPointer, index);
-	ProjSetClass(3);
+	ProjSetClass(PROJ_Bolter);
 	ProjSetName("Bolter");
 	ProjSetDesc("Rains lightning down on targets");
 	ProjSetProto("Spear");
@@ -221,7 +248,7 @@ highFrequency
 	//--BUILD MISSILE --- 4
 	index = xAddDatabaseBlock(dProjectiles, true);
 	xSetInt(dProjectiles, xPointer, index);
-	ProjSetClass(4);
+	ProjSetClass(PROJ_Burner);
 	ProjSetName("Burner");
 	ProjSetDesc("Sets nearby units ablaze");
 	ProjSetProto("Spear");
@@ -248,7 +275,7 @@ highFrequency
 	//--BUILD MISSILE --- 5
 	index = xAddDatabaseBlock(dProjectiles, true);
 	xSetInt(dProjectiles, xPointer, index);
-	ProjSetClass(5);
+	ProjSetClass(PROJ_Justice);
 	ProjSetName("Justice bullet");
 	ProjSetDesc("Kills a human if it has less than half HP");
 	ProjSetProto("Relic");
@@ -272,7 +299,7 @@ highFrequency
 	//--BUILD MISSILE --- 6
 	index = xAddDatabaseBlock(dProjectiles, true);
 	xSetInt(dProjectiles, xPointer, index);
-	ProjSetClass(6);
+	ProjSetClass(PROJ_Rapture);
 	ProjSetName("Rapture Tower");
 	ProjSetDesc("Raptures humans nearby, no effect on stronger units");
 	ProjSetProto("Spear");
@@ -296,7 +323,7 @@ highFrequency
 	//--BUILD MISSILE --- 7
 	index = xAddDatabaseBlock(dProjectiles, true);
 	xSetInt(dProjectiles, xPointer, index);
-	ProjSetClass(7);
+	ProjSetClass(PROJ_MiniGrenade);
 	ProjSetName("Mini grenade");
 	ProjSetDesc("Deals explosive damage on impact");
 	ProjSetProto("Implode Sphere");
@@ -320,7 +347,7 @@ highFrequency
 	//--BUILD MISSILE --- 8
 	index = xAddDatabaseBlock(dProjectiles, true);
 	xSetInt(dProjectiles, xPointer, index);
-	ProjSetClass(8);
+	ProjSetClass(PROJ_MiniGrenade_C3A10);
 	ProjSetName("Mini grenade triple");
 	ProjSetDesc("Fires three mini grenades");
 	ProjSetProto("Implode Sphere");
@@ -346,7 +373,7 @@ highFrequency
 	//--BUILD MISSILE --- 9
 	index = xAddDatabaseBlock(dProjectiles, true);
 	xSetInt(dProjectiles, xPointer, index);
-	ProjSetClass(9);
+	ProjSetClass(PROJ_Flammenwerfer);
 	ProjSetName("Flammenwerfer");
 	ProjSetDesc("Werfs flammen");
 	ProjSetProto("Fire Giant");
@@ -372,7 +399,7 @@ highFrequency
 	//--BUILD MISSILE --- 10
 	index = xAddDatabaseBlock(dProjectiles, true);
 	xSetInt(dProjectiles, xPointer, index);
-	ProjSetClass(10);
+	ProjSetClass(PROJ_FlammenwerferC5A10);
 	ProjSetName("Flammenwerfer Plus");
 	ProjSetDesc("Werfs more flammen");
 	ProjSetProto("Fire Giant");
@@ -398,7 +425,7 @@ highFrequency
 	//--BUILD MISSILE --- 11
 	index = xAddDatabaseBlock(dProjectiles, true);
 	xSetInt(dProjectiles, xPointer, index);
-	ProjSetClass(11);
+	ProjSetClass(PROJ_Taser);
 	ProjSetName("Taser");
 	ProjSetDesc("Deals damage and stuns humans for 1 second");
 	ProjSetProto("Lightning Sparks");
@@ -422,7 +449,7 @@ highFrequency
 	//--BUILD MISSILE --- 12
 	index = xAddDatabaseBlock(dProjectiles, true);
 	xSetInt(dProjectiles, xPointer, index);
-	ProjSetClass(12);
+	ProjSetClass(PROJ_Stun);
 	ProjSetName("Stun Gun");
 	ProjSetDesc("Stuns human units for 1 second");
 	ProjSetProto("Lightning Sparks");
@@ -446,7 +473,7 @@ highFrequency
 	//--BUILD MISSILE --- 13
 	index = xAddDatabaseBlock(dProjectiles, true);
 	xSetInt(dProjectiles, xPointer, index);
-	ProjSetClass(13);
+	ProjSetClass(PROJ_Blue);
 	ProjSetName("Blue bullet");
 	ProjSetDesc("50 damage with the passthrough ability");
 	ProjSetProto("Outpost");
@@ -470,7 +497,7 @@ highFrequency
 	//--BUILD MISSILE --- 14
 	index = xAddDatabaseBlock(dProjectiles, true);
 	xSetInt(dProjectiles, xPointer, index);
-	ProjSetClass(14);
+	ProjSetClass(PROJ_BlueC2A5);
 	ProjSetName("Double blue");
 	ProjSetDesc("Shoots 2 passthrough blue missiles");
 	ProjSetProto("Outpost");
@@ -496,7 +523,7 @@ highFrequency
 	//--BUILD MISSILE --- 15
 	index = xAddDatabaseBlock(dProjectiles, true);
 	xSetInt(dProjectiles, xPointer, index);
-	ProjSetClass(15);
+	ProjSetClass(PROJ_BlueC3A5);
 	ProjSetName("Triple blue");
 	ProjSetDesc("Shoots 3 passthrough blue missiles");
 	ProjSetProto("Outpost");
@@ -522,7 +549,7 @@ highFrequency
 	//--BUILD MISSILE --- 16
 	index = xAddDatabaseBlock(dProjectiles, true);
 	xSetInt(dProjectiles, xPointer, index);
-	ProjSetClass(16);
+	ProjSetClass(PROJ_Curse);
 	ProjSetName("Cursey");
 	ProjSetDesc("Turns nearby humans into pigs");
 	ProjSetProto("Spear");
@@ -547,7 +574,7 @@ highFrequency
 	//--BUILD MISSILE --- 17
 	index = xAddDatabaseBlock(dProjectiles, true);
 	xSetInt(dProjectiles, xPointer, index);
-	ProjSetClass(17);
+	ProjSetClass(PROJ_CurseFast);
 	ProjSetName("Cursey Fast");
 	ProjSetDesc("A faster human curser");
 	ProjSetProto("Spear");
@@ -572,7 +599,7 @@ highFrequency
 	//--BUILD MISSILE --- 18
 	index = xAddDatabaseBlock(dProjectiles, true);
 	xSetInt(dProjectiles, xPointer, index);
-	ProjSetClass(18);
+	ProjSetClass(PROJ_100Dmg);
 	ProjSetName("MK-18");
 	ProjSetDesc("Standard projectile");
 	ProjSetProto("Spear");
@@ -598,7 +625,7 @@ highFrequency
 	//--BUILD MISSILE --- 19
 	index = xAddDatabaseBlock(dProjectiles, true);
 	xSetInt(dProjectiles, xPointer, index);
-	ProjSetClass(19);
+	ProjSetClass(PROJ_BolterClose);
 	ProjSetName("Close Bolter");
 	ProjSetDesc("A fast but low range bolt attack");
 	ProjSetProto("Spear");
@@ -625,7 +652,7 @@ highFrequency
 	//--BUILD MISSILE --- 20
 	index = xAddDatabaseBlock(dProjectiles, true);
 	xSetInt(dProjectiles, xPointer, index);
-	ProjSetClass(20);
+	ProjSetClass(PROJ_ChickenGrenade);
 	ProjSetName("Chicken Grenade");
 	ProjSetDesc("Fires exploding chickens");
 	ProjSetProto("Chicken Exploding");
@@ -650,7 +677,7 @@ highFrequency
 	//--BUILD MISSILE --- 21
 	index = xAddDatabaseBlock(dProjectiles, true);
 	xSetInt(dProjectiles, xPointer, index);
-	ProjSetClass(21);
+	ProjSetClass(PROJ_Acid);
 	ProjSetName("Acidifier");
 	ProjSetDesc("Launches acid attacks, dealing 400 bonus damage");
 	ProjSetProto("Poison SFX");
@@ -677,7 +704,7 @@ highFrequency
 	//--BUILD MISSILE --- 22
 	index = xAddDatabaseBlock(dProjectiles, true);
 	xSetInt(dProjectiles, xPointer, index);
-	ProjSetClass(22);
+	ProjSetClass(PROJ_Tremor);
 	ProjSetName("Earth blaster");
 	ProjSetDesc("Creates shockwaves on enemies");
 	ProjSetProto("Poison SFX");
@@ -704,7 +731,7 @@ highFrequency
 	//--BUILD MISSILE --- 23
 	index = xAddDatabaseBlock(dProjectiles, true);
 	xSetInt(dProjectiles, xPointer, index);
-	ProjSetClass(23);
+	ProjSetClass(PROJ_Sniper);
 	ProjSetName("Sniper");
 	ProjSetDesc("Fast moving with a large range");
 	ProjSetProto("Lampades");

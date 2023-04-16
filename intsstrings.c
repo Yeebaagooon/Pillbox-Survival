@@ -19,8 +19,8 @@ playerIsPlaying - currently allows computers to exist ingame
 //---Launch Codes
 bool Visible = true;
 bool AllowEnemies = true;
-bool CineChoice = true;
-int TestRelic = 23;
+bool CineChoice = false;
+int TestRelic = 22;
 bool Helpers = true;
 
 //---Game Data

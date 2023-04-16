@@ -737,7 +737,7 @@ inactive
 	//---
 	CreateStartingPillBoxes(40);
 	//---
-	CreateStartingRelics(40);
+	CreateStartingRelics(50);
 	//---
 	CreateStartingAnimals(30);
 	CreateStartingBerries(30);
@@ -1036,7 +1036,7 @@ active
 							}
 							else{
 								//NO PROJ SHOOTER
-								if((xGetInt(dProjectiles, xProjClass) == 3) || (xGetInt(dProjectiles, xProjClass) == 19)){
+								if((xGetInt(dProjectiles, xProjClass) == PROJ_Bolter) || (xGetInt(dProjectiles, xProjClass) == PROJ_BolterClose)){
 									//Bolter
 									trUnitSelectClear();
 									trUnitSelect(""+targetid);
@@ -1045,7 +1045,7 @@ active
 									trUnitSelect(""+targetid);
 									trDamageUnit(xGetInt(dProjectiles, xProjDamage));
 								}
-								if(xGetInt(dProjectiles, xProjClass) == 4){
+								if(xGetInt(dProjectiles, xProjClass) == PROJ_Burner){
 									//Burner
 									trUnitSelectClear();
 									trUnitSelect(""+targetid);
@@ -1065,7 +1065,7 @@ active
 									trMutateSelected(kbGetProtoUnitID("Inferno Unit Flame"));
 									xSetInt(dOnFire, xBurnSpyID, xGetInt(dEnemies, xSpyBurn));
 								}
-								if(xGetInt(dProjectiles, xProjClass) == 6){
+								if(xGetInt(dProjectiles, xProjClass) == PROJ_Rapture){
 									//Rapture Human
 									
 									if(trCountUnitsInArea(""+targetid, cNumberNonGaiaPlayers, "HumanSoldier", 0) > 0){
@@ -1087,7 +1087,7 @@ active
 										AttackAllowed = false;
 									}
 								}
-								if((xGetInt(dProjectiles, xProjClass) == 16) || (xGetInt(dProjectiles, xProjClass) == 17)){
+								if((xGetInt(dProjectiles, xProjClass) == PROJ_Curse) || (xGetInt(dProjectiles, xProjClass) == PROJ_CurseFast)){
 									//Curse Human
 									
 									if(trCountUnitsInArea(""+targetid, cNumberNonGaiaPlayers, "HumanSoldier", 0) > 0){
@@ -1109,7 +1109,7 @@ active
 										AttackAllowed = false;
 									}
 								}
-								if(xGetInt(dProjectiles, xProjClass) == 22){
+								if(xGetInt(dProjectiles, xProjClass) == PROJ_Tremor){
 									//Tremor
 									trUnitSelectClear();
 									trUnitSelect(""+targetid);
@@ -1195,6 +1195,7 @@ inactive
 highFrequency
 {
 	int cityalive = 0;
+	vector MapMid = xsVectorSet(getMapSize()/2, 0, getMapSize()/2);
 	if(trTime() > citychecktime){
 		citychecktime = trTime();
 		//change city int
@@ -1244,7 +1245,7 @@ highFrequency
 		if(xGetDatabaseCount(dCarts) > 0){
 			for(a = xGetDatabaseCount(dCarts); > 0){
 				xDatabaseNext(dCarts);
-				if(unitOnTerrain(xGetInt(dCarts, xUnitID), "RiverGrassyB")){
+				if(distanceBetweenVectors(MapMid, kbGetBlockPosition(""+xGetInt(dCarts, xUnitID)), true) < 400){
 					//Cart home
 					//[THIS WILL CAUSE OOS IF TERRAIN CHANGES]
 					trOverlayText("Rocket part returned!", 4);
