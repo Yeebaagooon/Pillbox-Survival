@@ -484,25 +484,64 @@ void HelpText(int p = 0){
 		playSound("gamefound.wav");
 	}
 	ColouredChatToPlayer(p, "1,0.5,0", "<u>BUILDING HELP LIST:</u></color>");
-	ColouredChatToPlayer(p, "1,1,1", "Manor - Garrison units inside to heal them");
+	ColouredChatToPlayer(p, "1,1,1", "<icon=(20)(icons\building manor icons 32)> - Garrison units inside to heal them");
 	if(CartsCaptured == 0){
 		ColouredChatToPlayer(p, "1,0,1", "Kill enemies in City 1");
 		ColouredChatToPlayer(p, "1,0,1", "Then bring the rocket piece back to the rocket");
 		ColouredChatToPlayer(p, "1,0,1", "You will then unlock new buildings");
 	}
 	if(CartsCaptured >= 1){
-		ColouredChatToPlayer(p, "1,1,1", "Farm - Villager");
+		ColouredChatToPlayer(p, "1,1,1", "<icon=(20)(icons\icon building farm)> - Villager");
 	}
 	if(CartsCaptured >= 2){
-		ColouredChatToPlayer(p, "1,1,1", "Guild - Creates free ammo");
+		ColouredChatToPlayer(p, "1,1,1", "<icon=(20)(icons\building sentry tower icon 64)> - Creates pillbox");
+		ColouredChatToPlayer(p, "1,1,1", "<icon=(20)(icons\building skytemple icons 32)> - Normal function with attack");
 	}
 	if(CartsCaptured >= 3){
-		ColouredChatToPlayer(p, "1,1,1", "Tower - Creates pillbox");
+		ColouredChatToPlayer(p, "1,1,1", "<icon=(20)(icons\building guild icons 32)> - Creates free ammo");
 	}
 	if(CartsCaptured >= 4){
-		ColouredChatToPlayer(p, "1,1,1", "Sky Passage - Normal function with attack");
+		ColouredChatToPlayer(p, "1,1,1", "<icon=(20)(icons\icon building temple)> - Recycle relics and buy upgrades");
 	}
 	if(CartsCaptured >= 5){
-		ColouredChatToPlayer(p, "1,1,1", "Palace - Armoured car that your citizen controls");
+		ColouredChatToPlayer(p, "1,1,1", "<icon=(20)(icons\building palace icons 32)> - Armoured car that your citizen controls");
+	}
+}
+
+rule Helper01
+inactive
+highFrequency
+{
+	if((trTime()-cActivationTime) >= 40){
+		if(Helpers){
+			uiMessageBox("Remember, during the day you should aim to siege cities to recapture rocket parts.");
+		}
+		xsDisableSelf();
+	}
+}
+
+rule Helper02
+inactive
+highFrequency
+{
+	if((trTime()-cActivationTime) >= 8){
+		if(Helpers){
+			uiMessageBox("Hide! It's night time, expect to be attacked soon.");
+		}
+		xsDisableSelf();
+	}
+}
+
+rule Helper03
+inactive
+highFrequency
+{
+	if((trTime()-cActivationTime) >= 15){
+		if(CitiesCaptured == 0){
+			if(Helpers){
+				uiMessageBox("It's a new day, you really should take the first city. Enemies will keep getting stronger.");
+			}
+		}
+		xsDisableSelf();
 	}
 }

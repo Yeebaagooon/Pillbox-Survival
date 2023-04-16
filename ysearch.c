@@ -72,7 +72,8 @@ highFrequency
 				trUnitSelectClear();
 				trUnitSelectByID(id);
 				trUnitDestroy();
-				HelpText(kbUnitGetOwner(id));
+				temp = kbUnitGetOwner(id);
+				HelpText(temp);
 				break;
 			}
 		}

@@ -28,7 +28,7 @@ inactive
 	PlayCineDialogue();
 	CreateRocket(20,20);
 	int temp = trGetNextUnitScenarioNameNumber();
-	UnitCreate(0, "Villager Atlantean Hero", 30, 30, 0);
+	trArmyDispatch("1,1", "Villager Atlantean Hero", 1, 30, 0, 30, 0, true);
 	xSetPointer(dPlayerData, 1);
 	xSetInt(dPlayerData, xUnitID, temp);
 	CreatePillBox(40,40);
@@ -52,6 +52,7 @@ inactive
 	playSound("\cinematics\17_in\music.mp3");
 	trFadeOutMusic(10);
 	playSound("\xpack\xcinematics\6_a\music.mp3");
+	Helpers = true;
 }
 
 rule Cut1
@@ -60,7 +61,7 @@ highFrequency
 {
 	if(1*trQuestVarGet("Time1") == 0){
 		xsDisableSelf();
-		xUnitSelect(dPlayerData, xUnitID);
+		trArmySelect("1,1");
 		trUnitMoveToPoint(40,1,40,-1,false);
 		trSetLighting("Night", 3);
 	}
@@ -74,7 +75,7 @@ highFrequency
 		xsDisableSelf();
 		xUnitSelect(dTowers, xUnitID);
 		trUnitConvert(1);
-		xUnitSelect(dPlayerData, xUnitID);
+		trArmySelect("1,1");
 		trImmediateUnitGarrison(""+xGetInt(dTowers, xUnitID));
 	}
 }
@@ -115,7 +116,7 @@ highFrequency
 		trUnitConvert(0);
 		xUnitSelect(dTowers, xUnitID);
 		trUnitEjectContained();
-		xUnitSelect(dPlayerData, xUnitID);
+		trArmySelect("1,1");
 		trUnitMoveToPoint(44,1,44,-1,false);
 		DeployRelic(44,44,2);
 		createCameraTrack(9000);
@@ -150,7 +151,7 @@ highFrequency
 		trUnitSelectClear();
 		trUnitSelect(""+temp);
 		trUnitChangeProtoUnit("Gold Mine");
-		xUnitSelect(dPlayerData, xUnitID);
+		trArmySelect("1,1");
 		trUnitDoWorkOnUnit(""+temp);
 		trSetLighting("default", 10);
 	}

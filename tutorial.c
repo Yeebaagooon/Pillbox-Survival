@@ -117,13 +117,13 @@ void CaptureReward(int city = 1){
 		}
 		trOverlayText("Farm unlocked - creates extra villagers", 7);
 	}
-	if(city == 2){
+	if(city == 3){
 		for(p = 1; < cNumberNonGaiaPlayers){
 			trUnforbidProtounit(p, "Guild");
 		}
 		trOverlayText("Guild unlocked - constantly creates free ammo", 7);
 	}
-	if(city == 3){
+	if(city == 2){
 		for(p = 1; < cNumberNonGaiaPlayers){
 			trUnforbidProtounit(p, "Tower");
 			trUnforbidProtounit(p, "Sky Passage");
@@ -141,7 +141,8 @@ void CaptureReward(int city = 1){
 		for(p = 1; < cNumberNonGaiaPlayers){
 			trUnforbidProtounit(p, "Palace");
 		}
-		trOverlayText("Palace unlocked - build your own armoured car!", 7);
+		trOverlayText("Rocket assembled!", 4);
+		xsEnableRule("RocketAssembled");
 	}
 }
 
@@ -871,6 +872,12 @@ inactive
 						trQuestVarSet("P"+p+"AmmoWarnMsg", trTime()+60);
 					}
 					//If the unit is doing attack animation on a tower, garrison inside it
+					if(1*trQuestVarGet("P"+p+"FirstTower") == 0){
+						trQuestVarSet("P"+p+"FirstTower", 1);
+						if(trCurrentPlayer() == p){
+							trOverlayText("Your ammo is displayed here --> Mine gold to increase it", 8.0, 530, 130, 470);
+						}
+					}
 				}
 			}
 		}
@@ -1336,10 +1343,12 @@ rule RocketAssembled
 inactive
 highFrequency
 {
-	if(CartsCaptured == CitiesToMake){
-		trCounterAbort("rocketparts");
-		trOverlayText("Rocket assembled!", 4);
-		xsDisableSelf();
+	if((trTime()-cActivationTime) >= 4){
+		if(CartsCaptured == CitiesToMake){
+			trCounterAbort("rocketparts");
+			trOverlayText("Palace unlocked - build your own armoured car!", 7);
+			xsDisableSelf();
+		}
 	}
 }
 

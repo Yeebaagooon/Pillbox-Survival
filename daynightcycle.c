@@ -13,6 +13,14 @@ highFrequency
 		playSound("restorationbirth.wav");
 		playSound("recreation.wav");
 		playSound("herorevived.wav");
+		//[DIFFICULTY CHECK]
+		xsEnableRule("NightClearout");
+		if(Date == 1){
+			xsEnableRule("Helper01");
+		}
+		if(Date == 2){
+			xsEnableRule("Helper03");
+		}
 	}
 }
 
@@ -58,6 +66,9 @@ highFrequency
 			NightInterval = 40;
 		}
 		NextNightAttack = trTime()+5;
+		if(Date == 1){
+			xsEnableRule("Helper02");
+		}
 	}
 }
 
@@ -183,4 +194,22 @@ highFrequency
 			}
 		}
 	}
+}
+
+rule NightClearout
+inactive
+highFrequency
+{
+	int anim = 0;
+	for(a = xGetDatabaseCount(dEnemies); >0){
+		xDatabaseNext(dEnemies);
+		if(xGetBool(dEnemies, xStationary) == false){
+			anim = kbUnitGetAnimationActionType(kbGetBlockID(""+xGetInt(dEnemies, xUnitID)));
+			if(anim == 9){
+				xUnitSelect(dEnemies, xUnitID);
+				trUnitDestroy();
+			}
+		}
+	}
+	xsDisableSelf();
 }
