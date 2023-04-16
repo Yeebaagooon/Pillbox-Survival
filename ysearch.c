@@ -67,15 +67,6 @@ highFrequency
 				xSetBool(dManor, xComplete, false);
 				break;
 			}
-			case kbGetProtoUnitID("Dock"):
-			{
-				trUnitSelectClear();
-				trUnitSelectByID(id);
-				trUnitDestroy();
-				temp = kbUnitGetOwner(id);
-				HelpText(temp);
-				break;
-			}
 			case kbGetProtoUnitID("Palace"):
 			{
 				xAddDatabaseBlock(dCar, true);

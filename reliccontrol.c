@@ -27,7 +27,7 @@ void DeployRelic(int x = 0, int z = 0, int force = 0){
 	//Force to gaias book
 	//Number of classes
 	if(force == 0){
-		trQuestVarSetFromRand("temp", 1, 23, true);
+		trQuestVarSetFromRand("temp", 1, 27, true);
 	}
 	else{
 		trQuestVarSet("temp", force);
@@ -115,6 +115,13 @@ highFrequency
 			RelicDetailedHelp(trCurrentPlayer(), "0.8,0.8,0");
 		}
 		trUnitSelectClear();
+		//[anim changes special]
+		/*
+		if(xGetInt(dFreeRelics, xSFXExtra) == 2){
+			xUnitSelect(dFreeRelics, xSFXID);
+			trUnitOverrideAnimation(15,0,true,true,-1);
+		}*/
+		
 		if(time > timelast){
 			if(xGetInt(dFreeRelics, xSFXExtra) == 1){
 				xSetPointer(dProjectiles, xGetInt(dFreeRelics, xProjPointer));

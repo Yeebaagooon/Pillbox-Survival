@@ -268,6 +268,50 @@ highFrequency
 								}
 							}
 						}
+						if(xGetInt(dProjectiles, xProjSpecial) == 8){
+							//Rainbow explode
+							xUnitSelect(dEnemies, xUnitID);
+							if(trUnitPercentDamaged() > 99){
+								xUnitSelect(dEnemies, xUnitID);
+								trDamageUnitsInArea(cNumberNonGaiaPlayers,"All",5,100);
+								xUnitSelect(dEnemies, xUnitID);
+								trDamageUnitPercent(-100);
+								xUnitSelect(dEnemies, xUnitID);
+								trTechInvokeGodPower(0, "Tremor", kbGetBlockPosition(""+xGetInt(dEnemies, xUnitID)), vector(0,0,0));
+								xUnitSelect(dEnemies, xUnitID);
+								trDamageUnitPercent(100);
+								xUnitSelect(dMissiles, xUnitID);
+								trUnitChangeProtoUnit("Olympus Temple SFX");
+								xUnitSelect(dMissiles, xUnitID);
+								trUnitSetAnimationPath(xGetString(dProjectiles, xProjRelicAnimPath));
+								xUnitSelect(dMissiles, xUnitID);
+								trDamageUnitPercent(-100);
+								ProjChange = false;
+								if(trUnitVisToPlayer()){
+									playSound("meteorbighit.wav");
+								}
+							}
+						}
+						if(xGetInt(dProjectiles, xProjSpecial) == 9){
+							if((trCountUnitsInArea(""+xGetInt(dEnemies, xUnitID), cNumberNonGaiaPlayers, "HumanSoldier", 0) > 0) || (trCountUnitsInArea(""+xGetInt(dEnemies, xUnitID), cNumberNonGaiaPlayers, "MythUnit", 0) > 0)){
+								//Dimensional
+								trQuestVarSetFromRand("temp",1,90);
+								xUnitSelect(dEnemies, xUnitID);
+								trDamageUnitPercent(1*trQuestVarGet("temp"));
+								xUnitSelect(dEnemies, xUnitID);
+								trSetSelectedScale(0.5,0.5,0.5);
+								xUnitSelect(dMissiles, xUnitID);
+								trUnitChangeProtoUnit("Ragnorok SFX");
+								xUnitSelect(dMissiles, xUnitID);
+								trUnitSetAnimationPath(xGetString(dProjectiles, xProjRelicAnimPath));
+								xUnitSelect(dMissiles, xUnitID);
+								trDamageUnitPercent(-100);
+								ProjChange = false;
+								if(trUnitVisToPlayer()){
+									playSound("pigout.wav");
+								}
+							}
+						}
 					}
 					break; //if only hitting one enemy
 					//[DO NOT PUT DEATH EFFECTS FOR PASSTHROUGH HERE, IT GOES BELOW]
@@ -534,10 +578,10 @@ void HelpText(int p = 0){
 		ColouredChatToPlayer(p, "1,1,1", "<icon=(20)(icons\building guild icons 32)> - Creates free ammo");
 	}
 	if(CartsCaptured >= 4){
-		ColouredChatToPlayer(p, "1,1,1", "<icon=(20)(icons\icon building temple)> - Recycle relics and buy upgrades");
+		ColouredChatToPlayer(p, "1,1,1", "<icon=(20)(icons\building palace icons 32)> - Armoured car that your citizen controls");
 	}
 	if(CartsCaptured >= 5){
-		ColouredChatToPlayer(p, "1,1,1", "<icon=(20)(icons\building palace icons 32)> - Armoured car that your citizen controls");
+		ColouredChatToPlayer(p, "1,1,1", "<icon=(20)(icons\icon building temple)> - Recycle relics and buy upgrades");
 	}
 }
 

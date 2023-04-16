@@ -133,13 +133,13 @@ void CaptureReward(int city = 1){
 	}
 	if(city == 4){
 		for(p = 1; < cNumberNonGaiaPlayers){
-			trUnforbidProtounit(p, "Temple");
+			trUnforbidProtounit(p, "Palace");
 		}
-		trOverlayText("Temple unlocked - recycle unwanted relics into ammo here and research upgrades", 7);
+		trOverlayText("Palace unlocked - build your own armoured car!", 7);
 	}
 	if(city == 5){
 		for(p = 1; < cNumberNonGaiaPlayers){
-			trUnforbidProtounit(p, "Palace");
+			trUnforbidProtounit(p, "Temple");
 		}
 		trOverlayText("Rocket assembled!", 4);
 		xsEnableRule("RocketAssembled");
@@ -546,7 +546,7 @@ void CreateStartingRelics(int num = 1){
 		trQuestVarSetFromRand("z", 0, 200);
 		spawn = perlinRoll(myPerlin, 1*trQuestVarGet("x"),1*trQuestVarGet("z"), 1, -8,20, false) ;
 		dist = distanceBetweenVectors(spawn, MapMid, false);
-		if(dist > 26){
+		if(dist > 20){
 			temp = trGetNextUnitScenarioNameNumber();
 			UnitCreateV(0, "Victory Marker", spawn);
 			if(trCountUnitsInArea(""+temp, 0, "Victory Marker", 20) == 1){
@@ -564,23 +564,23 @@ void CreateStartingRelics(int num = 1){
 					num = num-1;
 					if(dist < 80){
 						//FORCE LEVEL 1 RELICS
-						//DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn),1);
-						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn),);
+						trQuestVarSetFromRand("temp", 1,9);
+						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
 					}
 					if((dist < 120) && (dist >= 80)){
 						//FORCE LEVEL 2 RELICS
-						//DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn),3);
-						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn),);
+						trQuestVarSetFromRand("temp", 10,20);
+						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
 					}
 					if((dist < 160) && (dist >= 120)){
 						//FORCE LEVEL 3 RELICS
-						//DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn),4);
-						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn),);
+						trQuestVarSetFromRand("temp", 21,28);
+						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
 					}
 					else if(dist >= 160){
 						//FORCE LEVEL 4 RELICS
-						//DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn),5);
-						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn),);
+						trQuestVarSetFromRand("temp", 21,28);
+						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
 					}
 				}
 			}
@@ -754,7 +754,9 @@ inactive
 	vector spawn = vector(0,0,0);
 	//--Test relic
 	DeployRelic(getMapSize()/2+4,getMapSize()/2+10,TestRelic);
-	SpawnEnemy("Militia", getMapSize()/2-10,getMapSize()/2);
+	if(aiIsMultiplayer() == false){
+		SpawnEnemy("Militia", getMapSize()/2-10,getMapSize()/2);
+	}
 	trPlayerResetBlackMapForAllPlayers();
 	xsEnableRule("BlackMap");
 	CityPillbox(1);
@@ -801,7 +803,7 @@ inactive
 	xsEnableRule("GameTowerGarrison");
 	trCounterAbort("rocketparts");
 	trCounterAddTime("rocketparts", -100, -20000, "Rocket Parts: " + CartsCaptured + "/" + CitiesToMake, -1);
-	trUnforbidProtounit(1, "Palace");
+	//trUnforbidProtounit(1, "Palace");
 	xsDisableSelf();
 }
 
@@ -836,6 +838,7 @@ inactive
 					//garrison inside
 					xUnitSelect(dPlayerData, xUnitID);
 					trImmediateUnitGarrison(""+xGetInt(dTowers, xUnitID));
+					xUnitSelect(dTowers, xUnitID);
 					//dialog
 					missileclass = xGetInt(dPlayerData, xCurrentMissile);
 					xSetPointer(dProjectiles, missileclass);
@@ -850,8 +853,10 @@ inactive
 					trSetSelectedScale(xGetFloat(dProjectiles, xProjTowerProtoSize),xGetFloat(dProjectiles, xProjTowerProtoSize),xGetFloat(dProjectiles, xProjTowerProtoSize));
 					modifyProtounitAbsolute("Tower", p, 11, xGetInt(dProjectiles, xProjRange));
 					modifyProtounitAbsolute("Tower", p, 2, xGetInt(dProjectiles, xProjLOS));
+					modifyProtounitAbsolute("Tower", p, 31, xGetInt(dProjectiles, xProjDamage));
 					modifyProtounitAbsolute("Helepolis", p, 11, xGetInt(dProjectiles, xProjRange));
 					modifyProtounitAbsolute("Helepolis", p, 2, xGetInt(dProjectiles, xProjLOS));
+					modifyProtounitAbsolute("Helepolis", p, 32, 0.95*xGetInt(dProjectiles, xProjDamage));
 					if(xGetInt(dProjectiles, xProjAmmoCost) <= xGetInt(dPlayerData, xAmmo)){
 						if(trCurrentPlayer() == p){
 							trClearCounterDisplay();
@@ -927,6 +932,10 @@ inactive
 				trQuestVarSet("P"+p+"ManorMsg", trTime()+15);
 			}
 			
+		}
+		if(trPlayerUnitCountSpecific(p, "Dock") != 0){
+			HelpText(p);
+			unitTransform("Dock", "Rocket");
 		}
 	}
 }
@@ -1148,6 +1157,19 @@ active
 									}
 									else{
 										AttackAllowed = false;
+									}
+								}
+								if(xGetInt(dProjectiles, xProjClass) == PROJ_Explosion){
+									xUnitSelect(dTowers, xUnitID);
+									trDamageUnitsInArea(cNumberNonGaiaPlayers, "All", 2, 1000);
+									trDamageUnitsInArea(cNumberNonGaiaPlayers, "All", 6, 500);
+									trDamageUnitsInArea(cNumberNonGaiaPlayers, "All", 10, 100);
+									trDamageUnitsInArea(cNumberNonGaiaPlayers, "All", 14, 50);
+									// FIRE MULTIPLE PROJECTILES
+									dir = rotationMatrix(dir, xGetFloat(dProjectiles, xProjBaseCos), xGetFloat(dProjectiles, xProjBaseSin));
+									for(shots = 0; < xGetInt(dProjectiles, xProjCount)){
+										FireMissile(dir, xGetPointer(dTowers), shotby);
+										dir = rotationMatrix(dir, xGetFloat(dProjectiles, xProjMoveCos), xGetFloat(dProjectiles, xProjMoveSin));
 									}
 								}
 								xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)-xGetInt(dProjectiles, xProjAmmoCost));
@@ -1384,6 +1406,8 @@ highFrequency
 						xSetVector(dTowers, xTowerPos, vector(-1,-1,-1));
 						xSetInt(dTowers, xTowerSFXID, -1);
 						xUnitSelect(dCar, xUnitID);
+						int index = xGetPointer(dTowers);
+						spyEffect(kbGetProtoUnitID("Cinematic Block"), 2, xsVectorSet(dTowers, xTowerSFXID, index), vector(1,1,1));
 						trUnitConvert(0);
 					}
 				}
@@ -1407,7 +1431,7 @@ highFrequency
 	if((trTime()-cActivationTime) >= 4){
 		if(CartsCaptured == CitiesToMake){
 			trCounterAbort("rocketparts");
-			trOverlayText("Palace unlocked - build your own armoured car!", 7);
+			trOverlayText("Temple unlocked - recycle unwanted relics into ammo here and research upgrades", 7);
 			xsDisableSelf();
 		}
 	}

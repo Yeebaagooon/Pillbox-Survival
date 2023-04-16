@@ -26,6 +26,7 @@ highFrequency
 	}
 	//      trUnforbidProtounit(p, "Outpost");
 	//  trUnforbidProtounit(1*p, "Oracle Hero");
+	trTechSetStatus(0, 91, 4);
 	xsDisableSelf();
 }
 
@@ -141,10 +142,13 @@ highFrequency
 		modifyProtounitAbsolute("Helepolis", p, 5, 1);
 		modifyProtounitAbsolute("Helepolis", p, 13, 0);
 		modifyProtounitAbsolute("Palace", p, 16, 0);
-		modifyProtounitAbsolute("Palace", p, 17, 1000);
+		modifyProtounitAbsolute("Palace", p, 17, 2000);
 		modifyProtounitAbsolute("Palace", p, 18, 0);
 		modifyProtounitAbsolute("Palace", p, 19, 0);
 		modifyProtounitAbsolute("Palace", p, 5, 0);
+		modifyProtounitAbsolute("Villager Atlantean", p, 1, 4);
+		modifyProtounitAbsolute("Villager Atlantean Hero", p, 1, 4);
+		modifyProtounitAbsolute("Great Box Cart", p, 1, 4);
 		trUnforbidProtounit(p, "Dock");
 	}
 	modifyProtounitAbsolute("Bolt Strike", 0, 27, 0);

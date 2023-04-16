@@ -109,31 +109,39 @@ void ProjTowerDecor(string proto = "" ,string path = "0,0,0,0,0,0", float size =
 
 //ORDERING FOR PROJECTILES
 const int PROJ_Default = 0;
+//---CLASS 1
 const int PROJ_Default_Rapid1 = 1;
 const int PROJ_Default_C3A5 = 2;
-const int PROJ_Bolter = 3;
-const int PROJ_Burner = 4;
-const int PROJ_Justice = 5;
-const int PROJ_Rapture = 6;
-const int PROJ_MiniGrenade = 7;
-const int PROJ_MiniGrenade_C3A10 = 8;
-const int PROJ_Flammenwerfer = 9;
-const int PROJ_FlammenwerferC5A10 = 10;
-const int PROJ_Taser = 11;
-const int PROJ_Stun = 12;
-const int PROJ_Blue = 13;
-const int PROJ_BlueC2A5 = 14;
-const int PROJ_BlueC3A5 = 15;
-const int PROJ_Curse = 16;
-const int PROJ_CurseFast = 17;
-const int PROJ_100Dmg = 18;
-const int PROJ_BolterClose = 19;
-const int PROJ_ChickenGrenade = 20;
-const int PROJ_Acid = 21;
-const int PROJ_Tremor = 22;
+const int PROJ_Taser = 3;
+const int PROJ_Stun = 4;
+const int PROJ_MiniGrenade = 5;
+const int PROJ_Blue = 6;
+const int PROJ_Bolter = 7;
+const int PROJ_Burner = 8;
+const int PROJ_Justice = 9;
+//---CLASS 2
+const int PROJ_BolterClose = 10;
+const int PROJ_Rapture = 11;
+const int PROJ_MiniGrenade_C3A10 = 12;
+const int PROJ_Flammenwerfer = 13;
+const int PROJ_FlammenwerferC5A10 = 14;
+const int PROJ_BlueC2A5 = 15;
+const int PROJ_BlueC3A5 = 16;
+const int PROJ_Curse = 17;
+const int PROJ_CurseFast = 18;
+const int PROJ_100Dmg = 19;
+const int PROJ_Tremor = 20;
+//---CLASS 3
+const int PROJ_ChickenGrenade = 21;
+const int PROJ_Acid = 22;
 const int PROJ_Sniper = 23;
 const int PROJ_RaptureMyth = 24;
 const int PROJ_JusticeMyth = 25;
+const int PROJ_Homo = 26;
+const int PROJ_Dimensional = 27;
+const int PROJ_Explosion = 28;
+
+//4 levels, maybe 5 if there's a reward only
 
 
 rule SetupProjTypes
@@ -804,6 +812,81 @@ highFrequency
 	//ProjNoShoot();
 	ProjRelicDecorate("Lighthouse", 0, "0,1,1,1,1,0,0", 0.0);
 	ProjTowerDecor("Increase Prosperity Small");
+	
+	//--BUILD MISSILE --- 26
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(PROJ_Homo);
+	ProjSetName("Rainbow bullet");
+	ProjSetDesc("Explodes any units killed by the projectile");
+	ProjSetProto("Flying Purple Hippo");
+	ProjSetAnim(15);
+	ProjSetSize(0);
+	ProjSetDamage(75);
+	ProjRangeandLOS(20,20);
+	ProjSetAmmoCost(10);
+	ProjSetFireRate(1000);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(40.0);
+	ProjSetSpecial(8);
+	ProjSetSound("restorationbirth.wav");
+	//ProjAllowPassThrough();
+	ProjDeathEffect();
+	//ProjNoShoot();
+	ProjRelicDecorate("Valkyrie", 0, "", 0.0);
+	ProjTowerDecor("Valkyrie");
+	
+	//--BUILD MISSILE --- 27
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(PROJ_Dimensional);
+	ProjSetName("Dimensional bullet");
+	ProjSetDesc("Does random dimensional damage to myth and human units");
+	ProjSetProto("Timeshift In");
+	ProjSetAnim(2);
+	ProjSetAnimPath("0,1,1,0,0,0,0");
+	ProjSetSize(0);
+	ProjSetDamage(0);
+	ProjRangeandLOS(26,26);
+	ProjSetAmmoCost(40);
+	ProjSetFireRate(2000);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(9);
+	ProjSetSound("\cinematics\31_in\sound 1.mp3");
+	//ProjAllowPassThrough();
+	ProjDeathEffect();
+	//ProjNoShoot();
+	ProjRelicDecorate("Timeshift In", 0, "0,1,1,0,0,0,0", 0.0);
+	ProjTowerDecor("Timeshift Out", "0,1,0,0,0,0,0");
+	
+	//--BUILD MISSILE --- 28
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(PROJ_Explosion);
+	ProjSetName("Explosion tower");
+	ProjSetDesc("Does damage to all units near tower");
+	ProjSetProto("Implode Shockwave");
+	ProjSetAnim(2);
+	ProjSetSize(0);
+	ProjSetDamage(150);
+	ProjRangeandLOS(14,13);
+	ProjSetAmmoCost(250);
+	ProjSetFireRate(7500);
+	ProjSetCount(8);
+	ProjSetAngle(45);
+	ProjSetSpeed(1.0);
+	ProjSetSpecial(10);
+	ProjSetSound("implode explode.wav");
+	ProjSetBaseCosSin(1, 0); //the initial +cos/sin (0)
+	ProjSetMoveCosSin(0.707107, 0.707107); //the incremental -cos/sin (+45)
+	//ProjAllowPassThrough();
+	//ProjDeathEffect();
+	ProjNoShoot();
+	ProjRelicDecorate("Osiris Box Glow", 0, "0,1,0,0,0,0,0", 1.0);
+	ProjTowerDecor("Osiris Box Glow", "0,1,0,0,0,0,0");
 	
 	
 	//END
