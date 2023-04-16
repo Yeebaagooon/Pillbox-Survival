@@ -76,6 +76,14 @@ highFrequency
 				HelpText(temp);
 				break;
 			}
+			case kbGetProtoUnitID("Palace"):
+			{
+				xAddDatabaseBlock(dCar, true);
+				xSetInt(dCar, xUnitID, i);
+				xSetBool(dCar, xComplete, false);
+				xSetInt(dCar, xCarOwner, kbUnitGetOwner(id));
+				break;
+			}
 		}
 	}
 	if (xGetDatabaseCount(dSpyRequests) > 0) {

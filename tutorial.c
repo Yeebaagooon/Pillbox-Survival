@@ -801,6 +801,7 @@ inactive
 	xsEnableRule("GameTowerGarrison");
 	trCounterAbort("rocketparts");
 	trCounterAddTime("rocketparts", -100, -20000, "Rocket Parts: " + CartsCaptured + "/" + CitiesToMake, -1);
+	trUnforbidProtounit(1, "Palace");
 	xsDisableSelf();
 }
 
@@ -849,11 +850,15 @@ inactive
 					trSetSelectedScale(xGetFloat(dProjectiles, xProjTowerProtoSize),xGetFloat(dProjectiles, xProjTowerProtoSize),xGetFloat(dProjectiles, xProjTowerProtoSize));
 					modifyProtounitAbsolute("Tower", p, 11, xGetInt(dProjectiles, xProjRange));
 					modifyProtounitAbsolute("Tower", p, 2, xGetInt(dProjectiles, xProjLOS));
+					modifyProtounitAbsolute("Helepolis", p, 11, xGetInt(dProjectiles, xProjRange));
+					modifyProtounitAbsolute("Helepolis", p, 2, xGetInt(dProjectiles, xProjLOS));
 					if(xGetInt(dProjectiles, xProjAmmoCost) <= xGetInt(dPlayerData, xAmmo)){
 						if(trCurrentPlayer() == p){
 							trClearCounterDisplay();
-							uiZoomToProto("Tower");
+							//uiZoomToProto("Tower");
+							//uiZoomToProto("Helepolis");
 							//uiLookAtProto("Tower");
+							uiLookAtUnitByName(""+xGetInt(dTowers, xUnitID));
 							trSetCounterDisplay("<color={PlayerColor("+p+")}>Firing " + xGetString(dProjectiles, xProjName) + "| Ammo remaining - " + xGetInt(dPlayerData, xAmmo));
 						}
 					}
@@ -882,7 +887,7 @@ inactive
 			}
 		}
 		xUnitSelect(dPlayerData, xUnitID);
-		if(trUnitGetIsContained("Tower") == false){
+		if((trUnitGetIsContained("Tower") == false) && (trUnitGetIsContained("Helepolis") == false)){
 			if(trCurrentPlayer() == p){
 				if(xGetInt(dPlayerData, xAmmo) == 0){
 					trSetCounterDisplay("<color={PlayerColor(2)}>Current ammo: " + xGetInt(dPlayerData, xAmmo));
@@ -1006,7 +1011,12 @@ active
 					trUnitSelect(""+targetid);
 					if(trUnitAlive()){
 						targetpos = kbGetBlockPosition(""+targetid);
-						startpos = xGetVector(dTowers, xTowerPos);
+						if(xGetVector(dTowers, xTowerPos) != vector(-1,-1,-1)){
+							startpos =  xGetVector(dTowers, xTowerPos);
+						}
+						else{
+							startpos =  kbGetBlockPosition(""+xGetInt(dTowers, xUnitID));
+						}
 						dir = xsVectorNormalize(xsVectorSetY(targetpos-startpos, 0));
 						xSetPointer(dPlayerData, shotby);
 						missileclass = xGetInt(dPlayerData, xCurrentMissile);
@@ -1117,6 +1127,28 @@ active
 									trUnitSelectClear();
 									trUnitSelect(""+targetid);
 									trDamageUnit(xGetInt(dProjectiles, xProjDamage));
+								}
+								if(xGetInt(dProjectiles, xProjClass) == PROJ_RaptureMyth){
+									//Rapture n
+									
+									if((trCountUnitsInArea(""+targetid, cNumberNonGaiaPlayers, "HumanSoldier", 0) > 0) || (trCountUnitsInArea(""+targetid, cNumberNonGaiaPlayers, "MythUnit", 0) > 0)){
+										//Human check
+										trUnitSelectClear();
+										trUnitSelect(""+targetid);
+										trUnitChangeProtoUnit("Titan Atlantean");
+										trUnitSelectClear();
+										trUnitSelect(""+targetid);
+										trUnitChangeProtoUnit("Dwarf");
+										trUnitSelectClear();
+										trUnitSelect(""+targetid);
+										trUnitChangeInArea(cNumberNonGaiaPlayers, cNumberNonGaiaPlayers, "Titan Gate Dead", "Hero Death", 1);
+										trUnitSelectClear();
+										trUnitSelect(""+targetid);
+										trUnitChangeProtoUnit("Ragnorok SFX");
+									}
+									else{
+										AttackAllowed = false;
+									}
 								}
 								xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)-xGetInt(dProjectiles, xProjAmmoCost));
 								if(trCurrentPlayer() == shotby){
@@ -1336,6 +1368,34 @@ highFrequency
 				}
 			}
 		}
+		//Car Stuff
+		if(xGetDatabaseCount(dCar) > 0){
+			for(a = xGetDatabaseCount(dCar); > 0){
+				xDatabaseNext(dCar);
+				if(xGetBool(dCar, xComplete) == false){
+					xUnitSelect(dCar, xUnitID);
+					if(trUnitPercentComplete() == 100){
+						xSetBool(dCar, xComplete, true);
+						xUnitSelect(dCar, xUnitID);
+						trUnitChangeProtoUnit("Helepolis");
+						xAddDatabaseBlock(dTowers, true);
+						xSetInt(dTowers, xUnitID, xGetInt(dCar, xUnitID));
+						xSetInt(dTowers, xOwner, xGetInt(dCar, xCarOwner));
+						xSetVector(dTowers, xTowerPos, vector(-1,-1,-1));
+						xSetInt(dTowers, xTowerSFXID, -1);
+						xUnitSelect(dCar, xUnitID);
+						trUnitConvert(0);
+					}
+				}
+				else{
+					xUnitSelect(dCar, xUnitID);
+					if(trUnitAlive() == false){
+						xFreeDatabaseBlock(dCar);
+						break;
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -1458,3 +1518,83 @@ minInterval 2
 		}
 	}
 }
+/*
+rule GameCarGarrison
+highFrequency
+inactive
+{
+	int temp = 0;
+	int missileclass = 0;
+	int targetid = 0;
+	int unit = 0;
+	for(p = 1; < cNumberNonGaiaPlayers){
+		xSetPointer(dPlayerData, p);
+		unit = xGetInt(dPlayerData, xUnitID);
+		xUnitSelect(dPlayerData, xUnitID);
+		if(trUnitGetIsContained("Helepolis") == true){
+			for(d = xGetDatabaseCount(dCar); > 0){
+				xDatabaseNext(dCar);
+				if(p == xGetInt(dCar, xCarOwner)){
+					xSetVector(dPlayerData, xUnitPos, kbGetBlockPosition(""+unit));
+					xSetBool(dPlayerData, xInTower, true);
+					//dialog
+					missileclass = xGetInt(dPlayerData, xCurrentMissile);
+					xSetPointer(dProjectiles, missileclass);
+					modifyProtounitAbsolute("Kronny Flying", p, 1, xGetFloat(dProjectiles, xProjSpeed));
+					modifyProtounitAbsolute("Helepolis", p, 11, xGetInt(dProjectiles, xProjRange));
+					modifyProtounitAbsolute("Helepolis", p, 2, xGetInt(dProjectiles, xProjLOS));
+					modifyProtounitAbsolute("Helepolis", p, 1, 9);
+					xAddDatabaseBlock(dTowers, true);
+					xSetInt(dTowers, xUnitID, xGetInt(dCar, xUnitID));
+					xSetInt(dTowers, xOwner, xGetInt(dCar, xCarOwner));
+					xSetVector(dTowers, xTowerPos, vector(-1,-1,-1));
+					xSetInt(dTowers, xTowerSFXID, -1);
+					if(xGetInt(dProjectiles, xProjAmmoCost) <= xGetInt(dPlayerData, xAmmo)){
+						if(trCurrentPlayer() == p){
+							trClearCounterDisplay();
+							trSetCounterDisplay("<color={PlayerColor("+p+")}>Firing " + xGetString(dProjectiles, xProjName) + "| Ammo remaining - " + xGetInt(dPlayerData, xAmmo));
+						}
+					}
+					else{
+						//Not enough ammo
+						if(trCurrentPlayer() == p){
+							trClearCounterDisplay();
+							trSetCounterDisplay("<color={PlayerColor(2)}>Not enough ammo to fire " + xGetString(dProjectiles, xProjName) + "| Ammo - " + xGetInt(dPlayerData, xAmmo) + "/" + xGetInt(dProjectiles, xProjAmmoCost));
+							playSound("cantdothat.wav");
+						}
+						if(trTime() > 1*trQuestVarGet("P"+p+"AmmoWarnMsg")){
+							if(trCurrentPlayer() == p){
+								uiMessageBox("You have run out of ammo so cannot fire. Mine gold to get more ammo.");
+							}
+						}
+						trQuestVarSet("P"+p+"AmmoWarnMsg", trTime()+60);
+					}
+					if(1*trQuestVarGet("P"+p+"FirstCar") == 0){
+						trQuestVarSet("P"+p+"FirstCar", 1);
+						if(trCurrentPlayer() == p){
+							trOverlayText("Have fun driving!", 6.0);
+						}
+					}
+				}
+			}
+		}
+		xUnitSelect(dPlayerData, xUnitID);
+		if(trUnitGetIsContained("Helepolis") == false){
+			if(xGetBool(dPlayerData, xInTower) == true){
+				for(c = xGetDatabaseCount(dCar); > 0){
+					xDatabaseNext(dCar);
+					if(xGetInt(dCar, xCarOwner) == p){
+						xSetBool(dPlayerData, xInTower, false);
+						modifyProtounitAbsolute("Helepolis", p, 11, 0);
+						modifyProtounitAbsolute("Helepolis", p, 2, 6);
+						modifyProtounitAbsolute("Helepolis", p, 1, 0);
+						if(trCurrentPlayer() == p){
+							uiZoomToProto("Villager Atlantean Hero");
+							uiLookAtProto("Villager Atlantean Hero");
+						}
+					}
+				}
+			}
+		}
+	}
+}*/

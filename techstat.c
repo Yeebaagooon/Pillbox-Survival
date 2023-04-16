@@ -136,6 +136,15 @@ highFrequency
 		modifyProtounitAbsolute("Dock", p, 4, -1);
 		modifyProtounitAbsolute("Dock", p, 55, 4);
 		modifyProtounitAbsolute("Dock", p, 2, 0.0);
+		modifyProtounitAbsolute("Helepolis", p, 0, 2000);
+		modifyProtounitAbsolute("Helepolis", p, 1, 9);
+		modifyProtounitAbsolute("Helepolis", p, 5, 1);
+		modifyProtounitAbsolute("Helepolis", p, 13, 0);
+		modifyProtounitAbsolute("Palace", p, 16, 0);
+		modifyProtounitAbsolute("Palace", p, 17, 1000);
+		modifyProtounitAbsolute("Palace", p, 18, 0);
+		modifyProtounitAbsolute("Palace", p, 19, 0);
+		modifyProtounitAbsolute("Palace", p, 5, 0);
 		trUnforbidProtounit(p, "Dock");
 	}
 	modifyProtounitAbsolute("Bolt Strike", 0, 27, 0);
@@ -143,6 +152,11 @@ highFrequency
 	modifyProtounitAbsolute("Bolt Strike", 0, 29, 0);
 	modifyProtounitAbsolute("Fortress", 0, 13, 0);
 	modifyProtounitAbsolute("Titan Atlantean", 0, 2, 1);
+	modifyProtounitAbsolute("Helepolis", 0, 1, 0);
+	modifyProtounitAbsolute("Helepolis", 0, 2, 0);
+	modifyProtounitAbsolute("Helepolis", 0, 0, 2000);
+	modifyProtounitAbsolute("Helepolis", 0, 5, 1);
+	modifyProtounitAbsolute("Helepolis", 0, 13, 0);
 	trRateConstruction(5);
 	xsDisableSelf();
 }

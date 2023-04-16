@@ -132,6 +132,8 @@ const int PROJ_ChickenGrenade = 20;
 const int PROJ_Acid = 21;
 const int PROJ_Tremor = 22;
 const int PROJ_Sniper = 23;
+const int PROJ_RaptureMyth = 24;
+const int PROJ_JusticeMyth = 25;
 
 
 rule SetupProjTypes
@@ -752,8 +754,57 @@ highFrequency
 	//ProjAllowPassThrough();
 	//ProjDeathEffect();
 	//ProjNoShoot();
-	ProjRelicDecorate("Moveto");
-	ProjTowerDecor("Cinematic Block");
+	ProjRelicDecorate("Mist");
+	ProjTowerDecor("Mist");
+	
+	//--BUILD MISSILE --- 24
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(PROJ_RaptureMyth);
+	ProjSetName("Rapture Tower (myth)");
+	ProjSetDesc("Raptures humans and myth units nearby, no effect on stronger units");
+	ProjSetProto("Spear");
+	ProjSetAnim(2);
+	ProjSetSize(0);
+	ProjSetDamage(0);
+	ProjRangeandLOS(20,22);
+	ProjSetAmmoCost(100);
+	ProjSetFireRate(1000);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("\xpack\xcinematics\8_in\krioschange.mp3");
+	//ProjAllowPassThrough();
+	//ProjDeathEffect();
+	ProjNoShoot();
+	ProjRelicDecorate("Ragnorok SFX", 1,);
+	ProjTowerDecor("Vortex Landing", "0,1,0,0,0,0");
+	
+	//--BUILD MISSILE --- 25
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(PROJ_JusticeMyth);
+	ProjSetName("Golden bullet");
+	ProjSetDesc("Kills a myth if it has less than half HP");
+	ProjSetProto("Petosuchus projectile");
+	ProjSetAnim(2);
+	ProjSetSize(1.5);
+	ProjSetDamage(75);
+	ProjRangeandLOS(18,20);
+	ProjSetAmmoCost(10);
+	ProjSetFireRate(1000);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(40.0);
+	ProjSetSpecial(7);
+	ProjSetSound("arrow" + iModulo(4, (trTime())+1) + ".wav");
+	//ProjAllowPassThrough();
+	ProjDeathEffect();
+	//ProjNoShoot();
+	ProjRelicDecorate("Lighthouse", 0, "0,1,1,1,1,0,0", 0.0);
+	ProjTowerDecor("Increase Prosperity Small");
+	
 	
 	//END
 	

@@ -1,6 +1,7 @@
 void FireMissile(vector dir = vector(0,0,0), int towerpointer = -1, int shotby = -1){
 	xSetPointer(dTowers, towerpointer);
 	trModifyProtounit("Tower", shotby, 5, 1);
+	trModifyProtounit("Helepolis", shotby, 5, 1);
 	xAddDatabaseBlock(dIncomingMissiles, true);
 	xSetInt(dIncomingMissiles, xUnitID, trGetNextUnitScenarioNameNumber());
 	UnitCreate(shotby, "Dwarf", 0,0,0);
@@ -16,8 +17,14 @@ void FireMissile(vector dir = vector(0,0,0), int towerpointer = -1, int shotby =
 	xUnitSelect(dIncomingMissiles, xUnitID);
 	trDamageUnitPercent(100);
 	trModifyProtounit("Tower", shotby, 5, -1);
+	trModifyProtounit("Helepolis", shotby, 5, -1);
 	xSetInt(dIncomingMissiles, xOwner, shotby);
-	xSetVector(dIncomingMissiles, xMissilePos, xGetVector(dTowers, xTowerPos));
+	if(xGetVector(dTowers, xTowerPos) != vector(-1,-1,-1)){
+		xSetVector(dIncomingMissiles, xMissilePos, xGetVector(dTowers, xTowerPos));
+	}
+	else{
+		xSetVector(dIncomingMissiles, xMissilePos, kbGetBlockPosition(""+xGetInt(dTowers, xUnitID)));
+	}
 	xSetVector(dIncomingMissiles, xMissileDir, dir);
 }
 
@@ -149,7 +156,6 @@ highFrequency
 				if(xGetBool(dProjectiles, xProjPassthrough) == false){
 					ProjDead = true;
 					if(xGetBool(dProjectiles, xProjDeathSpecial) == true){
-						ProjChange = false;
 						if(xGetInt(dProjectiles, xProjSpecial) == 1){
 							//Grenade explosion
 							xUnitSelect(dEnemies, xUnitID);
@@ -160,25 +166,29 @@ highFrequency
 							trUnitChangeProtoUnit("Meteor Impact Ground");
 							xUnitSelect(dMissiles, xUnitID);
 							trDamageUnitPercent(-100);
+							ProjChange = false;
 							if(trUnitVisToPlayer()){
 								playSound("meteorsmallhit.wav");
 							}
 						}
 						if(xGetInt(dProjectiles, xProjSpecial) == 2){
 							//JusticE bullet kill human
-							xUnitSelect(dEnemies, xUnitID);
-							if(trUnitPercentDamaged() >= 50){
-								trDamageUnitsInArea(cNumberNonGaiaPlayers,"HumanSoldier",0,100);
+							if(trCountUnitsInArea(""+xGetInt(dEnemies, xUnitID), cNumberNonGaiaPlayers, "HumanSoldier", 0) > 0){
 								xUnitSelect(dEnemies, xUnitID);
-								if(trUnitPercentDamaged() >= 100){
-									xUnitSelect(dMissiles, xUnitID);
-									trUnitChangeProtoUnit("Hero Birth");
-									xUnitSelect(dMissiles, xUnitID);
-									trUnitSetAnimationPath(xGetString(dProjectiles, xProjRelicAnimPath));
-									xUnitSelect(dMissiles, xUnitID);
-									trDamageUnitPercent(-100);
-									if(trUnitVisToPlayer()){
-										playSound("hitpointsmax.wav");
+								if(trUnitPercentDamaged() >= 50){
+									trDamageUnitsInArea(cNumberNonGaiaPlayers,"HumanSoldier",0,200);
+									xUnitSelect(dEnemies, xUnitID);
+									if(trUnitPercentDamaged() >= 100){
+										xUnitSelect(dMissiles, xUnitID);
+										trUnitChangeProtoUnit("Hero Birth");
+										xUnitSelect(dMissiles, xUnitID);
+										trUnitSetAnimationPath(xGetString(dProjectiles, xProjRelicAnimPath));
+										xUnitSelect(dMissiles, xUnitID);
+										trDamageUnitPercent(-100);
+										ProjChange = false;
+										if(trUnitVisToPlayer()){
+											playSound("hitpointsmax.wav");
+										}
 									}
 								}
 							}
@@ -194,12 +204,11 @@ highFrequency
 								xSetInt(dStunned, xStunSpyID, xGetInt(dEnemies, xSpyStun));
 								xUnitSelect(dEnemies, xSpyStun);
 								trMutateSelected(kbGetProtoUnitID("Shockwave stun effect"));
-								
-								
 								xUnitSelect(dMissiles, xUnitID);
 								trUnitChangeProtoUnit("Lightning Sparks Ground");
 								xUnitSelect(dMissiles, xUnitID);
 								trDamageUnitPercent(-100);
+								ProjChange = false;
 							}
 						}
 						if(xGetInt(dProjectiles, xProjSpecial) == 5){
@@ -210,6 +219,7 @@ highFrequency
 							trUnitChangeProtoUnit("Chicken Blood");
 							xUnitSelect(dMissiles, xUnitID);
 							trDamageUnitPercent(-100);
+							ProjChange = false;
 							if(trUnitVisToPlayer()){
 								playSound("meteorsmallhit.wav");
 							}
@@ -231,8 +241,31 @@ highFrequency
 							trUnitChangeProtoUnit("Lampades Blood");
 							xUnitSelect(dMissiles, xUnitID);
 							trDamageUnitPercent(-100);
+							ProjChange = false;
 							if(trUnitVisToPlayer()){
 								playSound("lampadesblood.wav");
+							}
+						}
+						if(xGetInt(dProjectiles, xProjSpecial) == 7){
+							//JusticE bullet kill myth
+							if(trCountUnitsInArea(""+xGetInt(dEnemies, xUnitID), cNumberNonGaiaPlayers, "MythUnit", 0) > 0){
+								xUnitSelect(dEnemies, xUnitID);
+								if(trUnitPercentDamaged() >= 50){
+									trDamageUnitsInArea(cNumberNonGaiaPlayers,"MythUnit",0,1000);
+									xUnitSelect(dEnemies, xUnitID);
+									if(trUnitPercentDamaged() >= 100){
+										xUnitSelect(dMissiles, xUnitID);
+										trUnitChangeProtoUnit("Qilin Heal");
+										xUnitSelect(dMissiles, xUnitID);
+										trUnitSetAnimationPath(xGetString(dProjectiles, xProjRelicAnimPath));
+										xUnitSelect(dMissiles, xUnitID);
+										trDamageUnitPercent(-100);
+										ProjChange = false;
+										if(trUnitVisToPlayer()){
+											playSound("\cinematics\a\lostsouls.mp3");
+										}
+									}
+								}
 							}
 						}
 					}

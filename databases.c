@@ -147,6 +147,9 @@ int xComplete = 0;
 int xHosting = 0;
 int xManorSFXID = 0;
 
+//Car DB
+int dCar = 0;
+int xCarOwner = 0;
 
 rule setup_first_databases
 active
@@ -296,6 +299,12 @@ highFrequency
 	xComplete = xInitAddBool(dManor, "completed", false);
 	xHosting = xInitAddBool(dManor, "hosting", false);
 	xManorSFXID = xInitAddInt(dManor, "sfxid", -1);
+	
+	dCar = xInitDatabase("manordb");
+	xUnitID = xInitAddInt(dCar, "unitid", -1);
+	xComplete = xInitAddBool(dCar, "completed", false);
+	xHosting = xInitAddBool(dCar, "hosting", false);
+	xCarOwner = xInitAddInt(dCar, "owner", 0);
 }
 
 
