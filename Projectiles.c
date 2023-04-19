@@ -140,6 +140,10 @@ const int PROJ_JusticeMyth = 25;
 const int PROJ_Homo = 26;
 const int PROJ_Dimensional = 27;
 const int PROJ_Explosion = 28;
+const int PROJ_SniperExplode = 29;
+const int PROJ_Sunstrike = 30;
+const int PROJ_Tesla = 31;
+const int PROJ_BolterDeluxe = 32;
 
 //4 levels, maybe 5 if there's a reward only
 
@@ -887,6 +891,111 @@ highFrequency
 	ProjNoShoot();
 	ProjRelicDecorate("Osiris Box Glow", 0, "0,1,0,0,0,0,0", 1.0);
 	ProjTowerDecor("Osiris Box Glow", "0,1,0,0,0,0,0");
+	
+	//--BUILD MISSILE --- 29
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(PROJ_SniperExplode);
+	ProjSetName("Sniper Grenade");
+	ProjSetDesc("Exploding sniper shot");
+	ProjSetProto("Lampades");
+	ProjSetAnim(2);
+	ProjSetAnimPath("0,0,0,0,0,0");
+	ProjSetSize(0);
+	ProjSetDamage(200);
+	ProjRangeandLOS(45,44);
+	ProjSetAmmoCost(50);
+	ProjSetFireRate(2000);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(45.0);
+	ProjSetSpecial(10);
+	ProjSetSound("genericheavyfall2.wav");
+	//ProjSetBaseCosSin(0.996195, 0.087156); //the initial +cos/sin (+5)
+	//ProjSetMoveCosSin(0.996195, -0.087156); //the incremental -cos/sin (-5 for +5,0,-5)
+	//ProjAllowPassThrough();
+	ProjDeathEffect();
+	//ProjNoShoot();
+	ProjRelicDecorate("Mist");
+	ProjTowerDecor("Mist");
+	
+	//--BUILD MISSILE --- 30
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(PROJ_Sunstrike);
+	ProjSetName("Sun Smiter");
+	ProjSetDesc("Rains holy fire down to purify enemies");
+	ProjSetProto("Poison SFX");
+	ProjSetAnim(2);
+	ProjSetAnimPath("0,0,0,0,0,0");
+	ProjSetSize(2);
+	ProjSetDamage(500);
+	ProjRangeandLOS(20,20);
+	ProjSetAmmoCost(60);
+	ProjSetFireRate(1600);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("restorationbirth.wav");
+	//ProjSetBaseCosSin(0.996195, 0.087156); //the initial +cos/sin (+5)
+	//ProjSetMoveCosSin(0.996195, -0.087156); //the incremental -cos/sin (-5 for +5,0,-5)
+	//ProjAllowPassThrough();
+	//ProjDeathEffect();
+	ProjNoShoot();
+	ProjRelicDecorate("Hero Birth",1, "0,0,0,0,0,0,0");
+	ProjTowerDecor("Hero Birth");
+	
+	//--BUILD MISSILE --- 31
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(PROJ_Tesla);
+	ProjSetName("Tesla gun");
+	ProjSetDesc("Bolts enemies in a line");
+	ProjSetProto("Arkantosman");
+	ProjSetAnim(18);
+	ProjSetSize(0);
+	ProjSetDamage(400);
+	ProjRangeandLOS(22,22);
+	ProjSetAmmoCost(150);
+	ProjSetFireRate(1500);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(11);
+	ProjSetSound("sonofosirisbolt.wav");
+	ProjAllowPassThrough();
+	//ProjDeathEffect();
+	//ProjNoShoot();
+	ProjRelicDecorate("Arkantos God" ,0, "0,0,0,0,0,0", 0.0);
+	ProjTowerDecor("Arkantosman", "0,0,0,0,0,0", 0);
+	
+	//--BUILD MISSILE --- 32
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(PROJ_BolterDeluxe);
+	ProjSetName("Bolter Deluxe");
+	ProjSetDesc("Stronger rapid bolting");
+	ProjSetProto("Spear");
+	ProjSetAnim(2);
+	ProjSetAnimPath("0,0,0,0,0,0");
+	ProjSetSize(0.4);
+	ProjSetDamage(400);
+	ProjRangeandLOS(25,26);
+	ProjSetAmmoCost(50);
+	ProjSetFireRate(250);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("lightningstrike" + iModulo(4, (trTime())+1) + ".wav");
+	//ProjSetBaseCosSin(0.996195, 0.087156); //the initial +cos/sin (+5)
+	//ProjSetMoveCosSin(0.996195, -0.087156); //the incremental -cos/sin (-5 for +5,0,-5)
+	//ProjAllowPassThrough();
+	//ProjDeathEffect();
+	ProjNoShoot();
+	ProjRelicDecorate("Lightning Sparks Ground", 1);
+	ProjTowerDecor("Lightning Cloud");
 	
 	
 	//END

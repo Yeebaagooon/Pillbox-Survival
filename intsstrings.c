@@ -9,15 +9,26 @@ string MapName = "Pillbox Survival";
 /*
 playerIsPlaying - currently allows computers to exist ingame
 
-Enemies need more LOS and aggro
+cine garrison relic
+
+?chicken kill player vills
+
+AGGRO
+you could have some code that when enemy takes damage it moves towards nearest ally unit?
+you could make it only trigger agro if the unit is idle?
+
+Have attached pheonix egg for bomber unit
+
+CATAPULT SHOT TAKEN
+CHICKEN BLOOD TAKEN
 */
 
 //---Launch Codes
-bool Visible = true;
+bool Visible = false;
 bool AllowEnemies = true;
 bool CineChoice = true;
-int TestRelic = 1;
-bool Helpers = false;
+int TestRelic = 2;
+bool Helpers = true;
 
 //---Game Data
 int MapSkin = 0;
@@ -35,6 +46,8 @@ int CartsCaptured = 0;
 int PlayersDead = 0;
 int NightInterval = 0;
 int NextNightAttack = 0;
+int Part = 0;
+int WonderHP = 9999;
 
 string TreeType = "";
 string ForestTerrain = "";

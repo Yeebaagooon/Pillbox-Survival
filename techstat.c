@@ -163,6 +163,16 @@ highFrequency
 	modifyProtounitAbsolute("Helepolis", 0, 13, 0);
 	trRateConstruction(5);
 	xsDisableSelf();
+	xsEnableRule("ChickenBlood");
+}
+
+rule ChickenBlood
+inactive
+highFrequency
+{
+	for(a = 1; < 100){
+		trTechSetStatus(cNumberNonGaiaPlayers, 451, 4);
+	}
 }
 
 

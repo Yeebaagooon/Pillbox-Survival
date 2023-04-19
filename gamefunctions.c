@@ -1,3 +1,13 @@
+void EndChats(){
+	ColouredIconChat("1,0.5,0", "icons/special e son of osiris icon 64", "<u>" + "Pillbox Survival by Yeebaagooon" + "</u>");
+	if(1*trQuestVarGet("CustomContent") == 0){
+		ColouredChat("1,0.5,0", "Subscribe on the steam workshop to enable custom content!");
+	}
+	else{
+		ColouredChat("1,0.5,0", "Thank you, noble subscriber!");
+	}
+}
+
 void FireMissile(vector dir = vector(0,0,0), int towerpointer = -1, int shotby = -1){
 	xSetPointer(dTowers, towerpointer);
 	trModifyProtounit("Tower", shotby, 5, 1);
@@ -138,7 +148,6 @@ highFrequency
 		dist = 0.001*xGetFloat(dProjectiles, xProjSpeed)*(xGetInt(dMissiles, xMissilePrevTime)-xGetInt(dMissiles, xMissileStartTime));
 		prev = xGetVector(dMissiles, xMissilePos)+xGetVector(dMissiles, xMissileDir)*dist;
 		dist = 0.001*xGetFloat(dProjectiles, xProjSpeed)*(trTimeMS()-xGetInt(dMissiles, xMissilePrevTime))+1;
-		//DIST DEBUG speed 30 = 1.6 and then speed 45 = 1.9
 		for(b = xGetDatabaseCount(dEnemies); > 0){
 			xDatabaseNext(dEnemies);
 			if(rayCollision(prev, xGetVector(dMissiles, xMissileDir), dist, 1)){
@@ -216,7 +225,7 @@ highFrequency
 							xUnitSelect(dEnemies, xUnitID);
 							trDamageUnitsInArea(cNumberNonGaiaPlayers, "All", 5, xGetInt(dProjectiles, xProjDamage));
 							xUnitSelect(dMissiles, xUnitID);
-							trUnitChangeProtoUnit("Chicken Blood");
+							trUnitChangeProtoUnit("Scarab Blood");
 							xUnitSelect(dMissiles, xUnitID);
 							trDamageUnitPercent(-100);
 							ProjChange = false;
@@ -312,12 +321,31 @@ highFrequency
 								}
 							}
 						}
+						if(xGetInt(dProjectiles, xProjSpecial) == 10){
+							//Sniper explosion
+							xUnitSelect(dEnemies, xUnitID);
+							trDamageUnit(-1*xGetInt(dProjectiles, xProjDamage));
+							xUnitSelect(dEnemies, xUnitID);
+							trDamageUnitsInArea(cNumberNonGaiaPlayers, "All", 6, xGetInt(dProjectiles, xProjDamage));
+							xUnitSelect(dMissiles, xUnitID);
+							trUnitChangeProtoUnit("Implode Sphere Effect");
+							xUnitSelect(dMissiles, xUnitID);
+							trDamageUnitPercent(100);
+							ProjChange = false;
+							if(trUnitVisToPlayer()){
+								playSound("meteorsmallhit.wav");
+							}
+						}
 					}
 					break; //if only hitting one enemy
 					//[DO NOT PUT DEATH EFFECTS FOR PASSTHROUGH HERE, IT GOES BELOW]
 				}
 				else{
-					//debugLog(""+dist);
+					if(xGetInt(dProjectiles, xProjSpecial) == 11){
+						xUnitSelect(dEnemies, xUnitID);
+						trTechInvokeGodPower(0, "Bolt", vector(0,0,0), vector(0,0,0));
+						break;
+					}
 					continue;
 					//[BUG, HITS ENEMY MULTIPLE TIMES]
 				}

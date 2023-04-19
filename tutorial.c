@@ -117,12 +117,6 @@ void CaptureReward(int city = 1){
 		}
 		trOverlayText("Farm unlocked - creates extra villagers", 7);
 	}
-	if(city == 3){
-		for(p = 1; < cNumberNonGaiaPlayers){
-			trUnforbidProtounit(p, "Guild");
-		}
-		trOverlayText("Guild unlocked - constantly creates free ammo", 7);
-	}
 	if(city == 2){
 		for(p = 1; < cNumberNonGaiaPlayers){
 			trUnforbidProtounit(p, "Tower");
@@ -130,6 +124,12 @@ void CaptureReward(int city = 1){
 		}
 		trOverlayText("Sky Passage and Tower unlocked", 7, -1, 200);
 		uiMessageBox("Towers will change to pillboxes when built, sky passages fire weak arrows.");
+	}
+	if(city == 3){
+		for(p = 1; < cNumberNonGaiaPlayers){
+			trUnforbidProtounit(p, "Guild");
+		}
+		trOverlayText("Guild unlocked - constantly creates free ammo", 7);
 	}
 	if(city == 4){
 		for(p = 1; < cNumberNonGaiaPlayers){
@@ -399,14 +399,46 @@ void SetupCities(){
 			trUnitSelectByQV("temp4");
 			trUnitChangeProtoUnit("Mist");
 		}
-		else if(xGetInt(dCity, xNumber) == 5){
-			//Placeholder populate the rest
+		if(xGetInt(dCity, xNumber) == 5){
+			//Populate City 5
 			tempV = xGetVector(dCity, xLocation);
-			SpawnEnemy("Titan Kronos", xsVectorGetX(tempV),xsVectorGetZ(tempV)+4,true,xGetInt(dCity, xNumber), 180);
-			SpawnEnemy("Fire Giant", xsVectorGetX(tempV)+2,xsVectorGetZ(tempV)+4,true,xGetInt(dCity, xNumber), 180);
-			SpawnEnemy("Fire Giant", xsVectorGetX(tempV)+4,xsVectorGetZ(tempV)+4,true,xGetInt(dCity, xNumber), 180);
-			SpawnEnemy("Fire Giant", xsVectorGetX(tempV)-2,xsVectorGetZ(tempV)+4,true,xGetInt(dCity, xNumber), 180);
-			SpawnEnemy("Fire Giant", xsVectorGetX(tempV)-4,xsVectorGetZ(tempV)+4,true,xGetInt(dCity, xNumber), 180);
+			SpawnEnemy("Catapult", xsVectorGetX(tempV),xsVectorGetZ(tempV)+4,true,5, 180);
+			SpawnEnemy("Circe", xsVectorGetX(tempV)+6,xsVectorGetZ(tempV)-6,true,5, 0);
+			SpawnEnemy("Circe", xsVectorGetX(tempV)+6,xsVectorGetZ(tempV)+6,true,5, 180);
+			SpawnEnemy("Circe", xsVectorGetX(tempV)-6,xsVectorGetZ(tempV)+6,true,5, 180);
+			SpawnEnemy("Circe", xsVectorGetX(tempV)-6,xsVectorGetZ(tempV)-6,true,5, 0);
+			
+			for(b = 1; < cNumberNonGaiaPlayers){
+				SpawnEnemy("Hero Greek Bellerophon", xsVectorGetX(tempV)-8,(xsVectorGetZ(tempV)-(cNumberNonGaiaPlayers*2)+(b*4)),true,5, 90);
+				SpawnEnemy("Hero Greek Bellerophon", xsVectorGetX(tempV)+8,(xsVectorGetZ(tempV)-(cNumberNonGaiaPlayers*2)+(b*4)),true,5, 270);
+			}
+			tempV = tempV/2;
+			//from metres to tiles
+			//---CITY 5 LAYOUT
+			CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)+8, 4, getTerrainType("GrassDirt50"), getTerrainSubType("GrassDirt50"), 0, "Wonder SPC", 180);
+			CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)-7, 2, getTerrainType("GrassDirt50"), getTerrainSubType("GrassDirt50"), 0, "Temple Underworld", 90);
+			CreateUnitInAtlantisBox(xsVectorGetX(tempV)+7,xsVectorGetZ(tempV), 3, getTerrainType("GrassDirt50"), getTerrainSubType("GrassDirt50"), 0, "Fortress", 270);
+			CreateUnitInAtlantisBox(xsVectorGetX(tempV)-7,xsVectorGetZ(tempV), 3, getTerrainType("GrassDirt50"), getTerrainSubType("GrassDirt50"), 0, "Fortress", 90);
+			trQuestVarSet("temp1", trGetNextUnitScenarioNameNumber());
+			UnitCreate(cNumberNonGaiaPlayers, "Dwarf",(xsVectorGetX(tempV)+6)*2,(xsVectorGetZ(tempV)+5)*2);
+			trQuestVarSet("temp2", trGetNextUnitScenarioNameNumber());
+			UnitCreate(cNumberNonGaiaPlayers, "Dwarf",(xsVectorGetX(tempV)-4)*2,(xsVectorGetZ(tempV)-5)*2);
+			trQuestVarSet("temp3", trGetNextUnitScenarioNameNumber());
+			UnitCreate(cNumberNonGaiaPlayers, "Dwarf",(xsVectorGetX(tempV)+4)*2,(xsVectorGetZ(tempV)-5)*2);
+			trQuestVarSet("temp4", trGetNextUnitScenarioNameNumber());
+			UnitCreate(cNumberNonGaiaPlayers, "Dwarf",(xsVectorGetX(tempV)-6)*2,(xsVectorGetZ(tempV)+5)*2);
+			CreateUnitInAtlantisBox(xsVectorGetX(tempV)+6,xsVectorGetZ(tempV)+5, 1,-1, -1, 0, "Mist", 0);
+			CreateUnitInAtlantisBox(xsVectorGetX(tempV)-6,xsVectorGetZ(tempV)+5, 1,-1, -1, 0, "Mist", 0);
+			CreateUnitInAtlantisBox(xsVectorGetX(tempV)+4,xsVectorGetZ(tempV)-5, 1,-1, -1, 0, "Mist", 0);
+			CreateUnitInAtlantisBox(xsVectorGetX(tempV)-4,xsVectorGetZ(tempV)-5, 1,-1, -1, 0, "Mist", 0);
+			trUnitSelectByQV("temp1");
+			trUnitChangeProtoUnit("Tower Mirror");
+			trUnitSelectByQV("temp2");
+			trUnitChangeProtoUnit("Tower Mirror");
+			trUnitSelectByQV("temp3");
+			trUnitChangeProtoUnit("Tower Mirror");
+			trUnitSelectByQV("temp4");
+			trUnitChangeProtoUnit("Tower Mirror");
 		}
 	}
 }
@@ -545,8 +577,8 @@ void CreateStartingRelics(int num = 1){
 		trQuestVarSetFromRand("x", 0, 200);
 		trQuestVarSetFromRand("z", 0, 200);
 		spawn = perlinRoll(myPerlin, 1*trQuestVarGet("x"),1*trQuestVarGet("z"), 1, -8,20, false) ;
-		dist = distanceBetweenVectors(spawn, MapMid, false);
-		if(dist > 20){
+		dist = distanceBetweenVectors(spawn, MapMid, true);
+		if(dist > 576){
 			temp = trGetNextUnitScenarioNameNumber();
 			UnitCreateV(0, "Victory Marker", spawn);
 			if(trCountUnitsInArea(""+temp, 0, "Victory Marker", 20) == 1){
@@ -562,24 +594,24 @@ void CreateStartingRelics(int num = 1){
 				}
 				if(allow == CitiesToMake){
 					num = num-1;
-					if(dist < 80){
+					if(dist < 6400){
 						//FORCE LEVEL 1 RELICS
 						trQuestVarSetFromRand("temp", 1,9);
 						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
 					}
-					if((dist < 120) && (dist >= 80)){
+					if((dist < 14400) && (dist >= 6400)){
 						//FORCE LEVEL 2 RELICS
 						trQuestVarSetFromRand("temp", 10,20);
 						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
 					}
-					if((dist < 160) && (dist >= 120)){
+					if((dist < 25600) && (dist >= 14400)){
 						//FORCE LEVEL 3 RELICS
 						trQuestVarSetFromRand("temp", 21,28);
 						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
 					}
-					else if(dist >= 160){
+					else if(dist >= 25600){
 						//FORCE LEVEL 4 RELICS
-						trQuestVarSetFromRand("temp", 21,28);
+						trQuestVarSetFromRand("temp", 21,32);
 						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
 					}
 				}
@@ -688,6 +720,7 @@ highFrequency
 inactive
 {
 	int temp = 0;
+	Part = 1;
 	xsDisableSelf();
 	xsEnableRule("DeployPlayers");
 	myPerlin = generatePerlinNoise(getMapSize()/2, 10);
@@ -747,7 +780,6 @@ inactive
 		trSetFogAndBlackmap(true, true);
 	}
 	xsEnableRule("CaptureCity");
-	xsEnableRule("RocketAssembled");
 	xsEnableRule("BeginDay");
 	xsEnableRule("GameMechanics");
 	NextDay = trTime();
@@ -816,6 +848,8 @@ inactive
 	int targetid = 0;
 	int anim = 0;
 	int unit = 0;
+	unitTransform("Catapult Shot", "Chicken Exploding");
+	unitTransform("Chicken Bloods", "Lampades Blood");
 	for(p = 1; < cNumberNonGaiaPlayers){
 		xSetPointer(dPlayerData, p);
 		unit = xGetInt(dPlayerData, xUnitID);
@@ -1055,7 +1089,7 @@ active
 							}
 							else{
 								//NO PROJ SHOOTER
-								if((xGetInt(dProjectiles, xProjClass) == PROJ_Bolter) || (xGetInt(dProjectiles, xProjClass) == PROJ_BolterClose)){
+								if((xGetInt(dProjectiles, xProjClass) == PROJ_Bolter) || (xGetInt(dProjectiles, xProjClass) == PROJ_BolterClose) || (xGetInt(dProjectiles, xProjClass) == PROJ_BolterDeluxe)){
 									//Bolter
 									trUnitSelectClear();
 									trUnitSelect(""+targetid);
@@ -1171,6 +1205,26 @@ active
 										FireMissile(dir, xGetPointer(dTowers), shotby);
 										dir = rotationMatrix(dir, xGetFloat(dProjectiles, xProjMoveCos), xGetFloat(dProjectiles, xProjMoveSin));
 									}
+								}
+								if(xGetInt(dProjectiles, xProjClass) == PROJ_Sunstrike){
+									//Holy burner
+									trUnitSelectClear();
+									trUnitSelect(""+targetid);
+									index = xAddDatabaseBlock(dOnFire, true);
+									xSetInt(dOnFire, xUnitID, targetid);
+									xSetFloat(dOnFire, xTimeToBurn, trTimeMS()+1000);
+									xSetFloat(dOnFire, xTotalBurnDamage, xGetInt(dProjectiles, xProjDamage));
+									xSetFloat(dOnFire, xDamagePerTick, xGetFloat(dOnFire, xTotalBurnDamage)/1000);
+									//select the burn spy id
+									for(u = xGetDatabaseCount(dEnemies); > 0){
+										xDatabaseNext(dEnemies);
+										if(xGetInt(dEnemies, xUnitID) == targetid){
+											break;
+										}
+									}
+									xUnitSelect(dEnemies, xSpyBurn);
+									trMutateSelected(kbGetProtoUnitID("Hero Birth"));
+									xSetInt(dOnFire, xBurnSpyID, xGetInt(dEnemies, xSpyBurn));
 								}
 								xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)-xGetInt(dProjectiles, xProjAmmoCost));
 								if(trCurrentPlayer() == shotby){
@@ -1429,11 +1483,14 @@ inactive
 highFrequency
 {
 	if((trTime()-cActivationTime) >= 4){
-		if(CartsCaptured == CitiesToMake){
-			trCounterAbort("rocketparts");
-			trOverlayText("Temple unlocked - recycle unwanted relics into ammo here and research upgrades", 7);
-			xsDisableSelf();
-		}
+		//if(CartsCaptured == CitiesToMake){
+		trCounterAbort("rocketparts");
+		trOverlayText("Temple unlocked - recycle unwanted relics into ammo here and research upgrades", 7);
+		xsEnableRule("Part2");
+		xsDisableSelf();
+		xsDisableRule("RocketAttackWarn");
+		xsDisableRule("RocketAttack50Warn");
+		//}
 	}
 }
 
@@ -1490,35 +1547,37 @@ rule PlayerDead
 inactive
 highFrequency
 {
-	for(p = 1 ; < cNumberNonGaiaPlayers){
-		xSetPointer(dPlayerData, p);
-		if(xGetBool(dPlayerData, xPlayerActive)){
-			if((playerIsPlaying(p) == false) || (trPlayerUnitCountSpecific(p, "Villager Atlantean Hero") == 0)){
-				trUnitSelectByQV("RocketUnit");
-				if(trUnitIsOwnedBy(p)){
-					for(q = 1 ; < cNumberNonGaiaPlayers){
-						if((playerIsPlaying(q) == true) && (trPlayerUnitCountSpecific(q, "Villager Atlantean Hero") > 0)){
-							trUnitConvert(q);
-							break;
+	if(Part != 3){
+		for(p = 1 ; < cNumberNonGaiaPlayers){
+			xSetPointer(dPlayerData, p);
+			if(xGetBool(dPlayerData, xPlayerActive)){
+				if((playerIsPlaying(p) == false) || (trPlayerUnitCountSpecific(p, "Villager Atlantean Hero") == 0)){
+					trUnitSelectByQV("RocketUnit");
+					if(trUnitIsOwnedBy(p)){
+						for(q = 1 ; < cNumberNonGaiaPlayers){
+							if((playerIsPlaying(q) == true) && (trPlayerUnitCountSpecific(q, "Villager Atlantean Hero") > 0)){
+								trUnitConvert(q);
+								break;
+							}
+							
 						}
-						
 					}
-				}
-				PlayersDead = PlayersDead+1;
-				xSetBool(dPlayerData, xPlayerActive, false);
-				trUnitSelectClear();
-				trSetPlayerDefeated(p);
-				trPlayerKillAllGodPowers(p);
-				trPlayerKillAllUnits(p);
-				trPlayerKillAllBuildings(p);
-				if(kbIsPlayerHuman(p)){
-					EvilLaugh();
-					PlayerColouredChat(p, trStringQuestVarGet("p"+p+"name") + " is dead!");
-				}
-				if(PlayersDead == (cNumberNonGaiaPlayers-1)){
-					xsDisableRule("RocketDead");
-					trShowWinLose("All players have been murdered");
-					trEndGame();
+					PlayersDead = PlayersDead+1;
+					xSetBool(dPlayerData, xPlayerActive, false);
+					trUnitSelectClear();
+					trSetPlayerDefeated(p);
+					trPlayerKillAllGodPowers(p);
+					trPlayerKillAllUnits(p);
+					trPlayerKillAllBuildings(p);
+					if(kbIsPlayerHuman(p)){
+						EvilLaugh();
+						PlayerColouredChat(p, trStringQuestVarGet("p"+p+"name") + " is dead!");
+					}
+					if(PlayersDead == (cNumberNonGaiaPlayers-1)){
+						xsDisableRule("RocketDead");
+						trShowWinLose("All players have been murdered");
+						trEndGame();
+					}
 				}
 			}
 		}
@@ -1529,96 +1588,18 @@ rule RocketDead
 inactive
 minInterval 2
 {
-	trUnitSelectByQV("RocketUnit");
-	if(trUnitAlive() == false){
-		if(PlayersDead != cNumberNonGaiaPlayers){
-			for(p = 1; < cNumberNonGaiaPlayers){
-				trSetPlayerDefeated(p);
+	if(Part != 3){
+		trUnitSelectByQV("RocketUnit");
+		if(trUnitAlive() == false){
+			if(PlayersDead != cNumberNonGaiaPlayers){
+				for(p = 1; < cNumberNonGaiaPlayers){
+					trSetPlayerDefeated(p);
+				}
+				trShowWinLose("The rocket has been destroyed");
+				trEndGame();
+				EvilLaugh();
+				xsDisableSelf();
 			}
-			trShowWinLose("The rocket has been destroyed");
-			trEndGame();
-			EvilLaugh();
-			xsDisableSelf();
 		}
 	}
 }
-/*
-rule GameCarGarrison
-highFrequency
-inactive
-{
-	int temp = 0;
-	int missileclass = 0;
-	int targetid = 0;
-	int unit = 0;
-	for(p = 1; < cNumberNonGaiaPlayers){
-		xSetPointer(dPlayerData, p);
-		unit = xGetInt(dPlayerData, xUnitID);
-		xUnitSelect(dPlayerData, xUnitID);
-		if(trUnitGetIsContained("Helepolis") == true){
-			for(d = xGetDatabaseCount(dCar); > 0){
-				xDatabaseNext(dCar);
-				if(p == xGetInt(dCar, xCarOwner)){
-					xSetVector(dPlayerData, xUnitPos, kbGetBlockPosition(""+unit));
-					xSetBool(dPlayerData, xInTower, true);
-					//dialog
-					missileclass = xGetInt(dPlayerData, xCurrentMissile);
-					xSetPointer(dProjectiles, missileclass);
-					modifyProtounitAbsolute("Kronny Flying", p, 1, xGetFloat(dProjectiles, xProjSpeed));
-					modifyProtounitAbsolute("Helepolis", p, 11, xGetInt(dProjectiles, xProjRange));
-					modifyProtounitAbsolute("Helepolis", p, 2, xGetInt(dProjectiles, xProjLOS));
-					modifyProtounitAbsolute("Helepolis", p, 1, 9);
-					xAddDatabaseBlock(dTowers, true);
-					xSetInt(dTowers, xUnitID, xGetInt(dCar, xUnitID));
-					xSetInt(dTowers, xOwner, xGetInt(dCar, xCarOwner));
-					xSetVector(dTowers, xTowerPos, vector(-1,-1,-1));
-					xSetInt(dTowers, xTowerSFXID, -1);
-					if(xGetInt(dProjectiles, xProjAmmoCost) <= xGetInt(dPlayerData, xAmmo)){
-						if(trCurrentPlayer() == p){
-							trClearCounterDisplay();
-							trSetCounterDisplay("<color={PlayerColor("+p+")}>Firing " + xGetString(dProjectiles, xProjName) + "| Ammo remaining - " + xGetInt(dPlayerData, xAmmo));
-						}
-					}
-					else{
-						//Not enough ammo
-						if(trCurrentPlayer() == p){
-							trClearCounterDisplay();
-							trSetCounterDisplay("<color={PlayerColor(2)}>Not enough ammo to fire " + xGetString(dProjectiles, xProjName) + "| Ammo - " + xGetInt(dPlayerData, xAmmo) + "/" + xGetInt(dProjectiles, xProjAmmoCost));
-							playSound("cantdothat.wav");
-						}
-						if(trTime() > 1*trQuestVarGet("P"+p+"AmmoWarnMsg")){
-							if(trCurrentPlayer() == p){
-								uiMessageBox("You have run out of ammo so cannot fire. Mine gold to get more ammo.");
-							}
-						}
-						trQuestVarSet("P"+p+"AmmoWarnMsg", trTime()+60);
-					}
-					if(1*trQuestVarGet("P"+p+"FirstCar") == 0){
-						trQuestVarSet("P"+p+"FirstCar", 1);
-						if(trCurrentPlayer() == p){
-							trOverlayText("Have fun driving!", 6.0);
-						}
-					}
-				}
-			}
-		}
-		xUnitSelect(dPlayerData, xUnitID);
-		if(trUnitGetIsContained("Helepolis") == false){
-			if(xGetBool(dPlayerData, xInTower) == true){
-				for(c = xGetDatabaseCount(dCar); > 0){
-					xDatabaseNext(dCar);
-					if(xGetInt(dCar, xCarOwner) == p){
-						xSetBool(dPlayerData, xInTower, false);
-						modifyProtounitAbsolute("Helepolis", p, 11, 0);
-						modifyProtounitAbsolute("Helepolis", p, 2, 6);
-						modifyProtounitAbsolute("Helepolis", p, 1, 0);
-						if(trCurrentPlayer() == p){
-							uiZoomToProto("Villager Atlantean Hero");
-							uiLookAtProto("Villager Atlantean Hero");
-						}
-					}
-				}
-			}
-		}
-	}
-}*/

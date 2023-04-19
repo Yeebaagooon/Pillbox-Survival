@@ -31,7 +31,7 @@ FILENAME = 'Pillbox Survival.xs'
 rmsFunc = 'rmsfunc.c'
 rmsMain = 'main.c'
 files = ['zshared.c', 'voids.c', 'globals.c', 'intsstrings.c', 'databases.c', 'perlin.c', 'gamefunctions.c', 'reliccontrol.c', 'nottud.c', 'choice.c', 'text.c', 
-'setup.c', 'techstat.c', 'projectiles.c','tutorial.c', 'ysearch.c', 'cinematic.c', 'daynightcycle.c']
+'setup.c', 'techstat.c', 'projectiles.c','tutorial.c', 'ysearch.c', 'cinematic.c', 'daynightcycle.c', 'part2.c']
 #########################################
 ####### CODE BELOW (DO NOT TOUCH) #######
 #########################################
