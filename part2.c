@@ -11,7 +11,7 @@ highFrequency
 		}
 		for(p = 1; < cNumberNonGaiaPlayers){
 			modifyProtounitAbsolute("Wonder SPC", p, 16, 0);
-			modifyProtounitAbsolute("Wonder SPC", p, 17, 50000);
+			modifyProtounitAbsolute("Wonder SPC", p, 17, 100000);
 			modifyProtounitAbsolute("Wonder SPC", p, 18, 0);
 			modifyProtounitAbsolute("Wonder SPC", p, 19, 0);
 		}

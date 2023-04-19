@@ -118,7 +118,7 @@ highFrequency
 		trUnitEjectContained();
 		trArmySelect("1,1");
 		trUnitMoveToPoint(44,1,44,-1,false);
-		DeployRelic(44,44,2);
+		WonderHP = DeployRelic(44,44,2);
 		createCameraTrack(9000);
 		trCameraCut(vector(27.210503,22.823849,76.236473), vector(0.248363,-0.390706,-0.886377), vector(0.105416,0.920515,-0.376216), vector(-0.962914,0.000000,-0.269809));
 		addCameraTrackWaypoint();
@@ -135,7 +135,8 @@ highFrequency
 {
 	if(1*trQuestVarGet("Time5") == 0){
 		xsDisableSelf();
-		xUnitSelect(dFreeRelics, xUnitID);
+		trUnitSelectClear();
+		trUnitSelect(""+WonderHP);
 		trImmediateUnitGarrison(""+xGetInt(dPlayerData, xUnitID));
 	}
 }

@@ -182,6 +182,19 @@ highFrequency
 					trQuestVarSetFromRand("temp", 1, 2);
 					if(1*trQuestVarGet("temp") == 1){
 						for(a = 0; < cNumberNonGaiaPlayers*4){
+							NightAttack("Circe");
+						}
+					}
+					else{
+						for(a = 0; < cNumberNonGaiaPlayers*4){
+							NightAttack("Hero Greek Polyphemus");
+						}
+					}
+				}
+				if(Date >= 10){
+					trQuestVarSetFromRand("temp", 1, 2);
+					if(1*trQuestVarGet("temp") == 1){
+						for(a = 0; < cNumberNonGaiaPlayers*4){
 							NightAttack("Catapult");
 						}
 					}

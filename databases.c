@@ -28,6 +28,7 @@ int dEnemies = 0;
 int xStationary = 0;
 int xSpyBurn = 0;
 int xSpyStun = 0;
+int xAggro = 0;
 
 int dMissiles = 0;
 int xMissilePos = 0;
@@ -183,6 +184,7 @@ highFrequency
 	xSpyBurn = xInitAddInt(dEnemies, "spy id for burn", -1);
 	xSpyStun = xInitAddInt(dEnemies, "spy id for stun", -1);
 	xCityGuard = xInitAddInt(dEnemies, "guard of city num", 0);
+	xAggro = xInitAddBool(dEnemies, "aggro", false);
 	
 	dMissiles = xInitDatabase("Missiles DB");
 	xUnitID = xInitAddInt(dMissiles, "missile unit id", -1);

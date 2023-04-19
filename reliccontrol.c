@@ -10,7 +10,7 @@ void RelicDetailedHelp(int p = 0, string coverride = ""){
 }
 
 
-void DeployRelic(int x = 0, int z = 0, int force = 0){
+int DeployRelic(int x = 0, int z = 0, int force = 0){
 	int old = xGetPointer(dProjectiles);
 	int temp = trGetNextUnitScenarioNameNumber();
 	int index = 0;
@@ -54,6 +54,7 @@ void DeployRelic(int x = 0, int z = 0, int force = 0){
 	xUnitSelect(dFreeRelics, xSFXID);
 	trUnitSetAnimationPath(xGetString(dProjectiles, xProjRelicAnimPath));
 	xSetPointer(dProjectiles, old);
+	return(temp);
 }
 
 rule ProcessFreeRelics

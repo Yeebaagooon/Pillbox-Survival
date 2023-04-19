@@ -461,11 +461,16 @@ void CreateUnitInAtlantisBox(int centrex = 0, int centrez = 0, int size = 1, int
 }
 
 int SpawnEnemy(string pname="", int x = 0, int z = 0, bool stationary = false, int cityid = 0, int heading = 0){
+	bool aggro = true;
+	if(stationary){
+		aggro = false;
+	}
 	int temp = trGetNextUnitScenarioNameNumber();
 	UnitCreate(cNumberNonGaiaPlayers, pname, x,z,heading);
 	int index = xAddDatabaseBlock(dEnemies, true);
 	xSetInt(dEnemies, xUnitID, temp);
 	xSetBool(dEnemies, xStationary, stationary);
+	xSetBool(dEnemies, xAggro, aggro);
 	xSetInt(dEnemies, xCityGuard, cityid);
 	xUnitSelect(dEnemies, xUnitID);
 	spyEffect(kbGetProtoUnitID("Cinematic Block"), 2, xsVectorSet(dEnemies, xSpyBurn, index), vector(1,1,1));

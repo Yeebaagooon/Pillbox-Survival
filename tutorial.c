@@ -70,6 +70,61 @@ void CreateRocket(int x = 0, int z = 0){
 	AddUnitToDB(dRocket, xUnitID, temp-3);
 	if(x != 20){
 		//Function for main rocket only
+		//trPaintTerrain(getMapSize()/4+7,getMapSize()/4-1,getMapSize()/4+8,getMapSize()/4,2,2);
+		temp = trGetNextUnitScenarioNameNumber();
+		UnitCreate(0, "Dwarf", x+14, z-2, 0);
+		UnitCreate(0, "Dwarf", x+14, z+2, 0);
+		UnitCreate(0, "Dwarf", x+18, z-2, 0);
+		UnitCreate(0, "Dwarf", x+18, z+2, 0);
+		for(a = temp; < temp+4){
+			trUnitSelectClear();
+			trUnitSelect(""+a);
+			trUnitChangeProtoUnit("Columns");
+			trSetSelectedScale(1,2,1);
+		}
+		temp = trGetNextUnitScenarioNameNumber();
+		UnitCreate(0, "Dwarf", x+16, z, 0);
+		trUnitSelectClear();
+		trUnitSelect(""+temp);
+		trUnitChangeProtoUnit("Revealer");
+		
+		//Shuttle body
+		//FloatingUnit("Great Box", getMapSize()/2-10, 10, getMapSize()/2, 0, 1,1,1);
+		FloatingUnitAnimIdle("Obelisk", x-4, 15, z, 0, 2,1,2);
+		
+		//STAGE 1 LAUNCH PAD
+		FloatingUnitAnimIdle("Columns", x+14, 8, z-2, 0, 1,2,1, "1,0,0,0,0,0");
+		FloatingUnitAnimIdle("Columns", x+14, 8, z+2, 0, 1,2,1, "1,0,0,0,0,0");
+		FloatingUnitAnimIdle("Columns", x+18, 8, z-2, 0, 1,2,1, "1,0,0,0,0,0");
+		FloatingUnitAnimIdle("Columns", x+18, 8, z+2, 0, 1,2,1, "1,0,0,0,0,0");
+		
+		//STAGE 2 LAUNCH PAD FALLEN
+		FloatingUnitAnimIdle("Columns Fallen", x+18, 7, z, 0, 1,1,1, "1,0,0,0,0,0");
+		FloatingUnitAnimIdle("Columns Fallen", x+16, 7, z-2, 90, 1,1,1, "1,0,0,0,0,0");
+		FloatingUnitAnimIdle("Columns Fallen", x+14, 7, z, 180, 1,1,1, "1,0,0,0,0,0");
+		FloatingUnitAnimIdle("Columns Fallen", x+16, 7, z+2, 270, 1,1,1, "1,0,0,0,0,0");
+		
+		//STAGE 3 LAUNCH PAD FALLEN
+		FloatingUnitAnimIdle("Columns Fallen", x+18, 15, z, 0, 1,1,1, "1,0,0,0,0,0");
+		FloatingUnitAnimIdle("Columns Fallen", x+16, 15, z-2, 90, 1,1,1, "1,0,0,0,0,0");
+		FloatingUnitAnimIdle("Columns Fallen", x+14, 15, z, 180, 1,1,1, "1,0,0,0,0,0");
+		FloatingUnitAnimIdle("Columns Fallen", x+16, 15, z+2, 270, 1,1,1, "1,0,0,0,0,0");
+		
+		//LAUNCH PAD TOP
+		FloatingUnitAnimIdle("Wall Connector", x+16, 0, z, 270, 1.8,2.8,1.8, "1,2,0,0,0,0");
+		FloatingUnitAnimIdle("Shrine", x+16, 15.5, z, 270, 1,1,1, "1,0,0,0,0,0");
+		
+		//LAUNCH PAD WALKWAY
+		for(a=0 ; < 8){
+			FloatingUnitAnimIdle("Wall Connector", x+16-a*2, 15, z, 270, 1,0.1,1, "1,1,0,0,0,0");
+		}
+		for(a=1 ; < 4){
+			FloatingUnitAnimIdle("Fence Stone", x+16-a*4, 15, z+1, 270, 1,1,1);
+			FloatingUnitAnimIdle("Fence Stone", x+16-a*4, 15, z-1, 270, 1,1,1);
+		}
+		
+		//DOOR
+		FloatingUnitAnimIdle("Sky Passage", x+2, 13, z, 0, 0.55,0.8,0.9, "0,1,1,0,0,0");
 	}
 }
 
@@ -107,7 +162,7 @@ void SpawnPlayers(){
 	CreatePillBox(getMapSize()/2+16,getMapSize()/2+16);
 	CreatePillBox(getMapSize()/2+16,getMapSize()/2-16);
 	paintCircleHeight(getMapSize()/4,getMapSize()/4, 11, "RiverGrassyB", 0);
-	trPaintTerrain(getMapSize()/4+7,getMapSize()/4-1,getMapSize()/4+8,getMapSize()/4,2,2);
+	trPaintTerrain(getMapSize()/4+7,getMapSize()/4-1,getMapSize()/4+9,getMapSize()/4+1,2,2);
 }
 
 void CaptureReward(int city = 1){
@@ -361,7 +416,8 @@ void SetupCities(){
 		if(xGetInt(dCity, xNumber) == 4){
 			//Populate City 4
 			tempV = xGetVector(dCity, xLocation);
-			SpawnEnemy("Circe", xsVectorGetX(tempV),xsVectorGetZ(tempV)+4,true,4, 180);
+			SpawnEnemy("Hero Greek Odysseus", xsVectorGetX(tempV)-1,xsVectorGetZ(tempV)+4,true,4, 180);
+			SpawnEnemy("Hero Greek Jason", xsVectorGetX(tempV)+1,xsVectorGetZ(tempV)+4,true,4, 180);
 			SpawnEnemy("Fire Giant", xsVectorGetX(tempV)+6,xsVectorGetZ(tempV)-6,true,4, 0);
 			SpawnEnemy("Fire Giant", xsVectorGetX(tempV)+6,xsVectorGetZ(tempV)+6,true,4, 180);
 			SpawnEnemy("Fire Giant", xsVectorGetX(tempV)-6,xsVectorGetZ(tempV)+6,true,4, 180);
@@ -411,6 +467,12 @@ void SetupCities(){
 			for(b = 1; < cNumberNonGaiaPlayers){
 				SpawnEnemy("Hero Greek Bellerophon", xsVectorGetX(tempV)-8,(xsVectorGetZ(tempV)-(cNumberNonGaiaPlayers*2)+(b*4)),true,5, 90);
 				SpawnEnemy("Hero Greek Bellerophon", xsVectorGetX(tempV)+8,(xsVectorGetZ(tempV)-(cNumberNonGaiaPlayers*2)+(b*4)),true,5, 270);
+				
+				SpawnEnemy("Hero Greek Polyphemus", xsVectorGetX(tempV)-14,(xsVectorGetZ(tempV)-(cNumberNonGaiaPlayers*2)+10),true,5, 90);
+				SpawnEnemy("Hero Greek Polyphemus", xsVectorGetX(tempV)+18,(xsVectorGetZ(tempV)-(cNumberNonGaiaPlayers*2)-10),true,5, 270);
+				
+				SpawnEnemy("Hero Greek Hippolyta", xsVectorGetX(tempV)+18,(xsVectorGetZ(tempV)-(cNumberNonGaiaPlayers*2)+10),true,5, 270);
+				SpawnEnemy("Hero Greek Hippolyta", xsVectorGetX(tempV)-14,(xsVectorGetZ(tempV)-(cNumberNonGaiaPlayers*2)-10),true,5, 90);
 			}
 			tempV = tempV/2;
 			//from metres to tiles
@@ -848,8 +910,8 @@ inactive
 	int targetid = 0;
 	int anim = 0;
 	int unit = 0;
-	unitTransform("Catapult Shot", "Chicken Exploding");
-	unitTransform("Chicken Bloods", "Lampades Blood");
+	unitTransform("Catapult Shot","Chicken Exploding");
+	unitTransform("Chicken Blood","Lampades Blood");
 	for(p = 1; < cNumberNonGaiaPlayers){
 		xSetPointer(dPlayerData, p);
 		unit = xGetInt(dPlayerData, xUnitID);
@@ -995,8 +1057,39 @@ rule RemoveEnemies
 highFrequency
 active
 {
+	float dist = 0.0;
+	float tempfloat = 0.0;
+	int target = -1;
+	int old = 0;
+	vector move = vector(0,0,0);
 	for(i = xsMin(xGetDatabaseCount(dEnemies), cNumberNonGaiaPlayers); > 0){
 		xDatabaseNext(dEnemies);
+		xUnitSelect(dEnemies, xUnitID);
+		if(trUnitPercentDamaged() > 0){
+			if(xGetBool(dEnemies, xAggro) == false){
+				xSetBool(dEnemies, xAggro, true);
+				//UNIT AGGRO
+				dist = 1000000.0;
+				for(p = 1; < cNumberNonGaiaPlayers){
+					xSetPointer(dPlayerData, p);
+					xUnitSelect(dEnemies, xUnitID);
+					tempfloat = trUnitDistanceToUnit(""+xGetInt(dPlayerData, xUnitID));
+					if(tempfloat < dist){
+						dist = tempfloat;
+						target = xGetInt(dPlayerData, xUnitID);
+					}
+				}
+				old = xsGetContextPlayer();
+				move = kbGetBlockPosition(""+xGetInt(dPlayerData, xUnitID));
+				xsSetContextPlayer(0);
+				xUnitSelect(dEnemies, xUnitID);
+				trUnitMoveFromArea(xsVectorGetX(move),1,xsVectorGetZ(move), -1, true, cNumberNonGaiaPlayers, "All", 10);
+				xsSetContextPlayer(old);
+				/*xUnitSelect(dEnemies, xUnitID);
+				trUnitHighlight(100, true);
+				debugLog(""+xGetInt(dEnemies, xUnitID));*/
+			}
+		}
 		xUnitSelect(dEnemies, xUnitID);
 		if(trUnitAlive() == false){
 			xFreeDatabaseBlock(dEnemies);

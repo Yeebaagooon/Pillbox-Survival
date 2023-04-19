@@ -13,22 +13,23 @@ cine garrison relic
 
 ?chicken kill player vills
 
-AGGRO
-you could have some code that when enemy takes damage it moves towards nearest ally unit?
-you could make it only trigger agro if the unit is idle?
+AGGRO - done
 
 Have attached pheonix egg for bomber unit
 
 CATAPULT SHOT TAKEN
 CHICKEN BLOOD TAKEN
+
+200k gold available
+700k wood available
 */
 
 //---Launch Codes
-bool Visible = false;
+bool Visible = true;
 bool AllowEnemies = true;
-bool CineChoice = true;
+bool CineChoice = false;
 int TestRelic = 2;
-bool Helpers = true;
+bool Helpers = false;
 
 //---Game Data
 int MapSkin = 0;
