@@ -68,6 +68,9 @@ void ProjSetDesc(string texts = ""){
 }
 
 void ProjSetAmmoCost(int num = 1){
+	if(num != 10){
+		num = num*1.5;
+	}
 	xSetInt(dProjectiles, xProjAmmoCost, num);
 }
 
@@ -97,6 +100,7 @@ void ProjRelicDecorate(string proto = "", int special = 0, string path = "0,0,0,
 	xSetString(dProjectiles, xProjRelicSFX, proto);
 	xSetInt(dProjectiles, xProjRelicSpecial, special);
 	//1 = refresh every 2000ms
+	//2 - birth anim
 	xSetString(dProjectiles, xProjRelicAnimPath, path);
 	xSetFloat(dProjectiles, xProjRelicSize, size);
 }
@@ -144,6 +148,8 @@ const int PROJ_SniperExplode = 29;
 const int PROJ_Sunstrike = 30;
 const int PROJ_Tesla = 31;
 const int PROJ_BolterDeluxe = 32;
+const int PROJ_Purple = 33;
+const int PROJ_Tsunami = 34;
 
 //4 levels, maybe 5 if there's a reward only
 
@@ -243,7 +249,7 @@ highFrequency
 	ProjSetAnimPath("0,0,0,0,0,0");
 	ProjSetSize(0.4);
 	ProjSetDamage(250);
-	ProjRangeandLOS(25,26);
+	ProjRangeandLOS(20,22);
 	ProjSetAmmoCost(25);
 	ProjSetFireRate(2000);
 	ProjSetCount(1);
@@ -270,7 +276,7 @@ highFrequency
 	ProjSetAnimPath("0,0,0,0,0,0");
 	ProjSetSize(0.4);
 	ProjSetDamage(150);
-	ProjRangeandLOS(16,18);
+	ProjRangeandLOS(14,16);
 	ProjSetAmmoCost(15);
 	ProjSetFireRate(2000);
 	ProjSetCount(1);
@@ -622,7 +628,7 @@ highFrequency
 	ProjSetSize(0.5);
 	ProjSetDamage(100);
 	ProjRangeandLOS(20,22);
-	ProjSetAmmoCost(10);
+	ProjSetAmmoCost(100);
 	ProjSetFireRate(900);
 	ProjSetCount(1);
 	ProjSetAngle(0);
@@ -675,7 +681,7 @@ highFrequency
 	ProjSetSize(1);
 	ProjSetDamage(200);
 	ProjRangeandLOS(24,24);
-	ProjSetAmmoCost(25);
+	ProjSetAmmoCost(35);
 	ProjSetFireRate(1800);
 	ProjSetCount(1);
 	ProjSetAngle(0);
@@ -700,7 +706,7 @@ highFrequency
 	ProjSetSize(2);
 	ProjSetDamage(100);
 	ProjRangeandLOS(18,20);
-	ProjSetAmmoCost(25);
+	ProjSetAmmoCost(40);
 	ProjSetFireRate(2000);
 	ProjSetCount(1);
 	ProjSetAngle(0);
@@ -727,7 +733,7 @@ highFrequency
 	ProjSetSize(2);
 	ProjSetDamage(100);
 	ProjRangeandLOS(30,20);
-	ProjSetAmmoCost(15);
+	ProjSetAmmoCost(20);
 	ProjSetFireRate(2000);
 	ProjSetCount(1);
 	ProjSetAngle(0);
@@ -754,7 +760,7 @@ highFrequency
 	ProjSetSize(0);
 	ProjSetDamage(100);
 	ProjRangeandLOS(45,44);
-	ProjSetAmmoCost(25);
+	ProjSetAmmoCost(30);
 	ProjSetFireRate(2000);
 	ProjSetCount(1);
 	ProjSetAngle(0);
@@ -804,7 +810,7 @@ highFrequency
 	ProjSetSize(1.5);
 	ProjSetDamage(75);
 	ProjRangeandLOS(18,20);
-	ProjSetAmmoCost(10);
+	ProjSetAmmoCost(40);
 	ProjSetFireRate(1000);
 	ProjSetCount(1);
 	ProjSetAngle(0);
@@ -828,7 +834,7 @@ highFrequency
 	ProjSetSize(0);
 	ProjSetDamage(75);
 	ProjRangeandLOS(20,20);
-	ProjSetAmmoCost(10);
+	ProjSetAmmoCost(100);
 	ProjSetFireRate(1000);
 	ProjSetCount(1);
 	ProjSetAngle(0);
@@ -853,13 +859,13 @@ highFrequency
 	ProjSetSize(0);
 	ProjSetDamage(0);
 	ProjRangeandLOS(26,26);
-	ProjSetAmmoCost(40);
+	ProjSetAmmoCost(90);
 	ProjSetFireRate(2000);
 	ProjSetCount(1);
 	ProjSetAngle(0);
 	ProjSetSpeed(30.0);
 	ProjSetSpecial(9);
-	ProjSetSound("\cinematics\31_in\sound 1.mp3");
+	ProjSetSound("vulturedeath.wav");
 	//ProjAllowPassThrough();
 	ProjDeathEffect();
 	//ProjNoShoot();
@@ -904,7 +910,7 @@ highFrequency
 	ProjSetSize(0);
 	ProjSetDamage(200);
 	ProjRangeandLOS(45,44);
-	ProjSetAmmoCost(50);
+	ProjSetAmmoCost(125);
 	ProjSetFireRate(2000);
 	ProjSetCount(1);
 	ProjSetAngle(0);
@@ -931,7 +937,7 @@ highFrequency
 	ProjSetSize(2);
 	ProjSetDamage(500);
 	ProjRangeandLOS(20,20);
-	ProjSetAmmoCost(60);
+	ProjSetAmmoCost(120);
 	ProjSetFireRate(1600);
 	ProjSetCount(1);
 	ProjSetAngle(0);
@@ -957,7 +963,7 @@ highFrequency
 	ProjSetSize(0);
 	ProjSetDamage(400);
 	ProjRangeandLOS(22,22);
-	ProjSetAmmoCost(150);
+	ProjSetAmmoCost(200);
 	ProjSetFireRate(1500);
 	ProjSetCount(1);
 	ProjSetAngle(0);
@@ -982,7 +988,7 @@ highFrequency
 	ProjSetSize(0.4);
 	ProjSetDamage(400);
 	ProjRangeandLOS(25,26);
-	ProjSetAmmoCost(50);
+	ProjSetAmmoCost(75);
 	ProjSetFireRate(250);
 	ProjSetCount(1);
 	ProjSetAngle(0);
@@ -996,6 +1002,56 @@ highFrequency
 	ProjNoShoot();
 	ProjRelicDecorate("Lightning Sparks Ground", 1);
 	ProjTowerDecor("Lightning Cloud");
+	
+	//--BUILD MISSILE --- 33
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(PROJ_Purple);
+	ProjSetName("Purple cloud of doom");
+	ProjSetDesc("Fires a purple cloud");
+	ProjSetProto("Kronny Birth SFX");
+	ProjSetAnim(2);
+	ProjSetSize(1);
+	ProjSetAnimPath("0,0,1,0,0,0,0");
+	ProjSetDamage(400);
+	ProjRangeandLOS(22,22);
+	ProjSetAmmoCost(200);
+	ProjSetFireRate(1500);
+	ProjSetCount(5);
+	ProjSetAngle(5);
+	ProjSetBaseCosSin(0.984808, 0.173648); //the initial +cos/sin (+10)
+	ProjSetMoveCosSin(0.996195, -0.087156); //the incremental -cos/sin (-5)
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("\cinematics\31_in\sound 1.mp3");
+	ProjAllowPassThrough();
+	//ProjDeathEffect();
+	//ProjNoShoot();
+	ProjRelicDecorate("Kronny Birth SFX" ,1, "0,0,1,0,0,0", 0.0);
+	ProjTowerDecor("Kronny Birth SFX", "0,0,1,0,0,0", 0);
+	
+	//--BUILD MISSILE --- 34
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(PROJ_Tsunami);
+	ProjSetName("Tsunami");
+	ProjSetDesc("Launches a tsunami at the target - long cooldown");
+	ProjSetProto("Tsunami");
+	ProjSetAnim(2);
+	ProjSetSize(1);
+	ProjSetDamage(900);
+	ProjRangeandLOS(24,24);
+	ProjSetAmmoCost(300);
+	ProjSetFireRate(7000);
+	ProjSetCount(1);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("meteorsplash.wav");
+	ProjAllowPassThrough();
+	//ProjDeathEffect();
+	//ProjNoShoot();
+	ProjRelicDecorate("Splash",1, "", 0.1);
+	ProjTowerDecor("Kronny Birth");
 	
 	
 	//END

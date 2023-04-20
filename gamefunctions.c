@@ -538,6 +538,85 @@ int NightAttack(string unit = ""){
 	}
 }
 
+int RocketAttack(string unit = ""){
+	int attempt = 50;
+	int nextUnitName = 0;
+	while(attempt > 0){
+		trQuestVarSetFromRand("temp", 1, xGetDatabaseCount(dLowTerrain));
+		xSetPointer(dLowTerrain, 1*trQuestVarGet("temp"));
+		vector spawn = xGetVector(dLowTerrain, xDeployLoc);
+		nextUnitName = trGetNextUnitScenarioNameNumber();
+		UnitCreateV(cNumberNonGaiaPlayers, "Victory Marker", spawn);
+		trUnitSelectClear();
+		trUnitSelect(""+nextUnitName);
+		bool inLOS = false;
+		for(p = 1; < cNumberNonGaiaPlayers){
+			if(trUnitHasLOS(p) && trPlayerDefeated(p) == false){
+				trUnitDestroy();
+				inLOS = true;
+			}
+		}
+		if(inLOS == false){
+			//UNIT CREATED - SET TARGET
+			nextUnitName = SpawnEnemy(unit, xsVectorGetX(spawn), xsVectorGetZ(spawn));
+			trUnitSelectClear();
+			trUnitSelect(""+nextUnitName);
+			trUnitMoveToUnit(""+1*trQuestVarGet("RocketUnit"),-1,false);
+			attempt = 0;
+			return(nextUnitName);
+			break;
+		}
+		attempt = attempt-1;
+	}
+}
+
+int SpawnBomber(string unit = ""){
+	int attempt = 50;
+	int nextUnitName = 0;
+	int relicname = -1;
+	while(attempt > 0){
+		trQuestVarSetFromRand("temp", 1, xGetDatabaseCount(dLowTerrain));
+		xSetPointer(dLowTerrain, 1*trQuestVarGet("temp"));
+		vector spawn = xGetVector(dLowTerrain, xDeployLoc);
+		nextUnitName = trGetNextUnitScenarioNameNumber();
+		UnitCreateV(cNumberNonGaiaPlayers, "Victory Marker", spawn);
+		trUnitSelectClear();
+		trUnitSelect(""+nextUnitName);
+		bool inLOS = false;
+		for(p = 1; < cNumberNonGaiaPlayers){
+			if(trUnitHasLOS(p) && trPlayerDefeated(p) == false){
+				trUnitDestroy();
+				inLOS = true;
+			}
+		}
+		if(inLOS == false){
+			//UNIT CREATED - SET TARGET
+			nextUnitName = SpawnEnemy("Hero Norse", xsVectorGetX(spawn), xsVectorGetZ(spawn));
+			relicname = trGetNextUnitScenarioNameNumber();
+			UnitCreate(0, "Relic", xsVectorGetX(spawn), xsVectorGetZ(spawn));
+			trUnitSelectClear();
+			trUnitSelect(""+relicname);
+			trImmediateUnitGarrison(""+nextUnitName);
+			trUnitSelectClear();
+			trUnitSelect(""+relicname);
+			trMutateSelected(kbGetProtoUnitID("Phoenix Egg"));
+			trUnitSelectClear();
+			trUnitSelect(""+nextUnitName);
+			trMutateSelected(kbGetProtoUnitID(""+unit));
+			trUnitSelectClear();
+			trUnitSelect(""+nextUnitName);
+			trUnitMoveToUnit(""+1*trQuestVarGet("RocketUnit"),-1,false);
+			xAddDatabaseBlock(dBomb, true);
+			xSetInt(dBomb, xUnitID, relicname);
+			xSetInt(dBomb, xExplodeTime, trTimeMS()+10000000);
+			attempt = 0;
+			return(nextUnitName);
+			break;
+		}
+		attempt = attempt-1;
+	}
+}
+
 void CityPillbox(int c = 0){
 	vector central = vector(0,0,0);
 	int dist = 24;

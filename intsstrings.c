@@ -9,10 +9,6 @@ string MapName = "Pillbox Survival";
 /*
 playerIsPlaying - currently allows computers to exist ingame
 
-cine garrison relic
-
-?chicken kill player vills
-
 AGGRO - done
 
 Have attached pheonix egg for bomber unit
@@ -20,16 +16,26 @@ Have attached pheonix egg for bomber unit
 CATAPULT SHOT TAKEN
 CHICKEN BLOOD TAKEN
 
+C5 too easy - more catapults
+
+maybe I need to have the stronger relics guarded
+
+Send strong enemies during rocket night time
+*Day time when >50% - direct to rocket
+*ROcket bombers
+
+RELIC GUARDS BUGGY AF AND TOO STRONG
+
 200k gold available
 700k wood available
 */
 
 //---Launch Codes
-bool Visible = true;
+bool Visible = false;
 bool AllowEnemies = true;
-bool CineChoice = false;
+bool CineChoice = true;
 int TestRelic = 2;
-bool Helpers = false;
+bool Helpers = true;
 
 //---Game Data
 int MapSkin = 0;
@@ -49,6 +55,7 @@ int NightInterval = 0;
 int NextNightAttack = 0;
 int Part = 0;
 int WonderHP = 9999;
+int Difficulty = 0;
 
 string TreeType = "";
 string ForestTerrain = "";

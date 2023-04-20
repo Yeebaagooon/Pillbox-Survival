@@ -152,6 +152,11 @@ int xManorSFXID = 0;
 int dCar = 0;
 int xCarOwner = 0;
 
+//BOMB DB
+int dBomb = 0;
+int xActive = 0;
+int xExplodeTime = 0;
+
 rule setup_first_databases
 active
 highFrequency
@@ -307,6 +312,11 @@ highFrequency
 	xComplete = xInitAddBool(dCar, "completed", false);
 	xHosting = xInitAddBool(dCar, "hosting", false);
 	xCarOwner = xInitAddInt(dCar, "owner", 0);
+	
+	dBomb = xInitDatabase("bombdb");
+	xUnitID = xInitAddInt(dBomb, "unitid", -1);
+	xActive = xInitAddBool(dBomb, "dropped", false);
+	xExplodeTime = xInitAddInt(dBomb, "explodetime", -1);
 }
 
 

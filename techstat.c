@@ -20,6 +20,13 @@ highFrequency
 		trTechSetStatus(p, 350, 4);
 		trTechSetStatus(p, 27, 4);
 		trTechSetStatus(p, 447, 4);
+		
+		trTechSetStatus(p, 9, 0);
+		trTechSetStatus(p, 101, 0);
+		trTechSetStatus(p, 34, 0);
+		trTechSetStatus(p, 10, 0);
+		trTechSetStatus(p, 35, 0);
+		
 		for(n=930; > 0) {
 			trForbidProtounit(p,kbGetProtoUnitName(n));
 		}

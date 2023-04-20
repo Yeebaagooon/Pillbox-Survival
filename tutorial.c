@@ -88,15 +88,26 @@ void CreateRocket(int x = 0, int z = 0){
 		trUnitSelect(""+temp);
 		trUnitChangeProtoUnit("Revealer");
 		
-		//Shuttle body
-		//FloatingUnit("Great Box", getMapSize()/2-10, 10, getMapSize()/2, 0, 1,1,1);
+		//	Shuttle body
+		FloatingUnit("Great Box", getMapSize()/2-10, 10, getMapSize()/2, 0, 1,1,1);
 		FloatingUnitAnimIdle("Obelisk", x-4, 15, z, 0, 2,1,2);
+		trQuestVarSet("ShuttleEC1", 1*trQuestVarGet("QVRelic"));
+		trUnitSelectByQV("QVRelic");
+		trMutateSelected(kbGetProtoUnitID("Cinematic Block"));
 		
 		//STAGE 1 LAUNCH PAD
 		FloatingUnitAnimIdle("Columns", x+14, 8, z-2, 0, 1,2,1, "1,0,0,0,0,0");
+		trQuestVarSet("LaunchPadEC1", 1*trQuestVarGet("QVRelic"));
 		FloatingUnitAnimIdle("Columns", x+14, 8, z+2, 0, 1,2,1, "1,0,0,0,0,0");
+		trQuestVarSet("LaunchPadEC2", 1*trQuestVarGet("QVRelic"));
 		FloatingUnitAnimIdle("Columns", x+18, 8, z-2, 0, 1,2,1, "1,0,0,0,0,0");
+		trQuestVarSet("LaunchPadEC3", 1*trQuestVarGet("QVRelic"));
 		FloatingUnitAnimIdle("Columns", x+18, 8, z+2, 0, 1,2,1, "1,0,0,0,0,0");
+		trQuestVarSet("LaunchPadEC4", 1*trQuestVarGet("QVRelic"));
+		for(a = 1; <= 4){
+			trUnitSelectByQV("LaunchPadEC"+a);
+			trMutateSelected(kbGetProtoUnitID("Cinematic Block"));
+		}
 		
 		//STAGE 2 LAUNCH PAD FALLEN
 		FloatingUnitAnimIdle("Columns Fallen", x+18, 7, z, 0, 1,1,1, "1,0,0,0,0,0");
@@ -106,21 +117,44 @@ void CreateRocket(int x = 0, int z = 0){
 		
 		//STAGE 3 LAUNCH PAD FALLEN
 		FloatingUnitAnimIdle("Columns Fallen", x+18, 15, z, 0, 1,1,1, "1,0,0,0,0,0");
+		trQuestVarSet("LaunchPadEC5", 1*trQuestVarGet("QVRelic"));
 		FloatingUnitAnimIdle("Columns Fallen", x+16, 15, z-2, 90, 1,1,1, "1,0,0,0,0,0");
+		trQuestVarSet("LaunchPadEC6", 1*trQuestVarGet("QVRelic"));
 		FloatingUnitAnimIdle("Columns Fallen", x+14, 15, z, 180, 1,1,1, "1,0,0,0,0,0");
+		trQuestVarSet("LaunchPadEC7", 1*trQuestVarGet("QVRelic"));
 		FloatingUnitAnimIdle("Columns Fallen", x+16, 15, z+2, 270, 1,1,1, "1,0,0,0,0,0");
+		trQuestVarSet("LaunchPadEC8", 1*trQuestVarGet("QVRelic"));
+		for(a = 5; <= 8){
+			trUnitSelectByQV("LaunchPadEC"+a);
+			trMutateSelected(kbGetProtoUnitID("Cinematic Block"));
+		}
 		
 		//LAUNCH PAD TOP
 		FloatingUnitAnimIdle("Wall Connector", x+16, 0, z, 270, 1.8,2.8,1.8, "1,2,0,0,0,0");
+		trQuestVarSet("LaunchPadEC9", 1*trQuestVarGet("QVRelic"));
 		FloatingUnitAnimIdle("Shrine", x+16, 15.5, z, 270, 1,1,1, "1,0,0,0,0,0");
+		trQuestVarSet("LaunchPadEC10", 1*trQuestVarGet("QVRelic"));
+		for(a = 9; <= 10){
+			trUnitSelectByQV("LaunchPadEC"+a);
+			trMutateSelected(kbGetProtoUnitID("Cinematic Block"));
+		}
 		
 		//LAUNCH PAD WALKWAY
 		for(a=0 ; < 8){
 			FloatingUnitAnimIdle("Wall Connector", x+16-a*2, 15, z, 270, 1,0.1,1, "1,1,0,0,0,0");
+			trQuestVarSet("LaunchPadEC"+(a+11)+"", 1*trQuestVarGet("QVRelic"));
 		}
+		//EC11-18
 		for(a=1 ; < 4){
 			FloatingUnitAnimIdle("Fence Stone", x+16-a*4, 15, z+1, 270, 1,1,1);
+			trQuestVarSet("LaunchPadEC"+(a+18)+"", 1*trQuestVarGet("QVRelic"));
 			FloatingUnitAnimIdle("Fence Stone", x+16-a*4, 15, z-1, 270, 1,1,1);
+			trQuestVarSet("LaunchPadEC"+(a+21)+"", 1*trQuestVarGet("QVRelic"));
+		}
+		//EC19-24
+		for(a = 11; <= 24){
+			trUnitSelectByQV("LaunchPadEC"+a);
+			trMutateSelected(kbGetProtoUnitID("Cinematic Block"));
 		}
 		
 		//DOOR
@@ -166,11 +200,18 @@ void SpawnPlayers(){
 }
 
 void CaptureReward(int city = 1){
+	int x = getMapSize()/2;
+	int z = getMapSize()/2;
 	if(city == 1){
 		for(p = 1; < cNumberNonGaiaPlayers){
 			trUnforbidProtounit(p, "Farm");
 		}
 		trOverlayText("Farm unlocked - creates extra villagers", 7);
+		//STAGE 1 LAUNCH PAD
+		for(a = 1; <= 4){
+			trUnitSelectByQV("LaunchPadEC"+a);
+			trMutateSelected(kbGetProtoUnitID("Columns"));
+		}
 	}
 	if(city == 2){
 		for(p = 1; < cNumberNonGaiaPlayers){
@@ -179,18 +220,36 @@ void CaptureReward(int city = 1){
 		}
 		trOverlayText("Sky Passage and Tower unlocked", 7, -1, 200);
 		uiMessageBox("Towers will change to pillboxes when built, sky passages fire weak arrows.");
+		//STAGE 3 LAUNCH PAD FALLEN
+		for(a = 5; <= 8){
+			trUnitSelectByQV("LaunchPadEC"+a);
+			trMutateSelected(kbGetProtoUnitID("Columns Fallen"));
+		}
+		
 	}
 	if(city == 3){
 		for(p = 1; < cNumberNonGaiaPlayers){
 			trUnforbidProtounit(p, "Guild");
 		}
 		trOverlayText("Guild unlocked - constantly creates free ammo", 7);
+		trUnitSelectByQV("LaunchPadEC9");
+		trMutateSelected(kbGetProtoUnitID("Wall Connector"));
+		trUnitSelectByQV("LaunchPadEC10");
+		trMutateSelected(kbGetProtoUnitID("Shrine"));
 	}
 	if(city == 4){
 		for(p = 1; < cNumberNonGaiaPlayers){
 			trUnforbidProtounit(p, "Palace");
 		}
 		trOverlayText("Palace unlocked - build your own armoured car!", 7);
+		for(a = 11; <= 18){
+			trUnitSelectByQV("LaunchPadEC"+a);
+			trMutateSelected(kbGetProtoUnitID("Wall Connector"));
+		}
+		for(a = 19; <= 24){
+			trUnitSelectByQV("LaunchPadEC"+a);
+			trMutateSelected(kbGetProtoUnitID("Fence Stone"));
+		}
 	}
 	if(city == 5){
 		for(p = 1; < cNumberNonGaiaPlayers){
@@ -198,6 +257,8 @@ void CaptureReward(int city = 1){
 		}
 		trOverlayText("Rocket assembled!", 4);
 		xsEnableRule("RocketAssembled");
+		trUnitSelectByQV("ShuttleEC1");
+		trMutateSelected(kbGetProtoUnitID("Obelisk"));
 	}
 }
 
@@ -463,6 +524,7 @@ void SetupCities(){
 			SpawnEnemy("Circe", xsVectorGetX(tempV)+6,xsVectorGetZ(tempV)+6,true,5, 180);
 			SpawnEnemy("Circe", xsVectorGetX(tempV)-6,xsVectorGetZ(tempV)+6,true,5, 180);
 			SpawnEnemy("Circe", xsVectorGetX(tempV)-6,xsVectorGetZ(tempV)-6,true,5, 0);
+			SpawnEnemy("Catapult", xsVectorGetX(tempV),xsVectorGetZ(tempV)-4,true,5, 180);
 			
 			for(b = 1; < cNumberNonGaiaPlayers){
 				SpawnEnemy("Hero Greek Bellerophon", xsVectorGetX(tempV)-8,(xsVectorGetZ(tempV)-(cNumberNonGaiaPlayers*2)+(b*4)),true,5, 90);
@@ -481,26 +543,15 @@ void SetupCities(){
 			CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)-7, 2, getTerrainType("GrassDirt50"), getTerrainSubType("GrassDirt50"), 0, "Temple Underworld", 90);
 			CreateUnitInAtlantisBox(xsVectorGetX(tempV)+7,xsVectorGetZ(tempV), 3, getTerrainType("GrassDirt50"), getTerrainSubType("GrassDirt50"), 0, "Fortress", 270);
 			CreateUnitInAtlantisBox(xsVectorGetX(tempV)-7,xsVectorGetZ(tempV), 3, getTerrainType("GrassDirt50"), getTerrainSubType("GrassDirt50"), 0, "Fortress", 90);
-			trQuestVarSet("temp1", trGetNextUnitScenarioNameNumber());
-			UnitCreate(cNumberNonGaiaPlayers, "Dwarf",(xsVectorGetX(tempV)+6)*2,(xsVectorGetZ(tempV)+5)*2);
-			trQuestVarSet("temp2", trGetNextUnitScenarioNameNumber());
-			UnitCreate(cNumberNonGaiaPlayers, "Dwarf",(xsVectorGetX(tempV)-4)*2,(xsVectorGetZ(tempV)-5)*2);
-			trQuestVarSet("temp3", trGetNextUnitScenarioNameNumber());
-			UnitCreate(cNumberNonGaiaPlayers, "Dwarf",(xsVectorGetX(tempV)+4)*2,(xsVectorGetZ(tempV)-5)*2);
-			trQuestVarSet("temp4", trGetNextUnitScenarioNameNumber());
-			UnitCreate(cNumberNonGaiaPlayers, "Dwarf",(xsVectorGetX(tempV)-6)*2,(xsVectorGetZ(tempV)+5)*2);
 			CreateUnitInAtlantisBox(xsVectorGetX(tempV)+6,xsVectorGetZ(tempV)+5, 1,-1, -1, 0, "Mist", 0);
 			CreateUnitInAtlantisBox(xsVectorGetX(tempV)-6,xsVectorGetZ(tempV)+5, 1,-1, -1, 0, "Mist", 0);
 			CreateUnitInAtlantisBox(xsVectorGetX(tempV)+4,xsVectorGetZ(tempV)-5, 1,-1, -1, 0, "Mist", 0);
 			CreateUnitInAtlantisBox(xsVectorGetX(tempV)-4,xsVectorGetZ(tempV)-5, 1,-1, -1, 0, "Mist", 0);
-			trUnitSelectByQV("temp1");
-			trUnitChangeProtoUnit("Tower Mirror");
-			trUnitSelectByQV("temp2");
-			trUnitChangeProtoUnit("Tower Mirror");
-			trUnitSelectByQV("temp3");
-			trUnitChangeProtoUnit("Tower Mirror");
-			trUnitSelectByQV("temp4");
-			trUnitChangeProtoUnit("Tower Mirror");
+			tempV = tempV*2;
+			SpawnEnemy("Tower Mirror", xsVectorGetX(tempV)+6*2,(xsVectorGetZ(tempV)+5*2),true,5, 0);
+			SpawnEnemy("Tower Mirror", xsVectorGetX(tempV)-6*2,(xsVectorGetZ(tempV)+5*2),true,5, 0);
+			SpawnEnemy("Tower Mirror", xsVectorGetX(tempV)+4*2,(xsVectorGetZ(tempV)-5*2),true,5, 0);
+			SpawnEnemy("Tower Mirror", xsVectorGetX(tempV)-4*2,(xsVectorGetZ(tempV)-5*2),true,5, 0);
 		}
 	}
 }
@@ -670,11 +721,13 @@ void CreateStartingRelics(int num = 1){
 						//FORCE LEVEL 3 RELICS
 						trQuestVarSetFromRand("temp", 21,28);
 						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
+						SpawnEnemy("Centaur",xsVectorGetX(spawn), xsVectorGetZ(spawn),true,0);
 					}
 					else if(dist >= 25600){
 						//FORCE LEVEL 4 RELICS
-						trQuestVarSetFromRand("temp", 21,32);
+						trQuestVarSetFromRand("temp", 21,34);
 						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
+						SpawnEnemy("Circe",xsVectorGetX(spawn), xsVectorGetZ(spawn),true,0);
 					}
 				}
 			}
@@ -850,6 +903,7 @@ inactive
 	DeployRelic(getMapSize()/2+4,getMapSize()/2+10,TestRelic);
 	if(aiIsMultiplayer() == false){
 		SpawnEnemy("Militia", getMapSize()/2-10,getMapSize()/2);
+		SpawnBomber("Huskarl");
 	}
 	trPlayerResetBlackMapForAllPlayers();
 	xsEnableRule("BlackMap");
@@ -1114,6 +1168,93 @@ active
 				xFreeDatabaseBlock(dBuildTowers);
 			}
 		}
+	}
+	if(xGetDatabaseCount(dBomb) > 0){
+		for(i = xsMin(xGetDatabaseCount(dBomb), cNumberNonGaiaPlayers); > 0){
+			xDatabaseNext(dBomb);
+			if(xGetBool(dBomb, xActive) == false){
+				xUnitSelect(dBomb, xUnitID);
+				if(trUnitGetIsContained("All") == false){
+					xSetBool(dBomb, xActive, true);
+					xSetInt(dBomb, xExplodeTime, trTimeMS()+3000);
+					trUnitHighlight(3, true);
+					xAddDatabaseBlock(dEnemies, true);
+					xSetInt(dEnemies, xUnitID, xGetInt(dBomb, xUnitID));
+				}
+				xUnitSelect(dBomb, xUnitID);
+				//EXPLODE IF CLOSE TO ROCKET
+				if(trUnitDistanceToUnit(""+1*trQuestVarGet("RocketUnit")) < 10){
+					for(p = 1 ; < cNumberNonGaiaPlayers){
+						xUnitSelect(dBomb, xUnitID);
+						trDamageUnitsInArea(p, "All", 16, 500);
+						if(trCountUnitsInArea(""+xGetInt(dBomb, xUnitID),p,"Villager Atlantean Hero", 16) == 1){
+							xSetPointer(dPlayerData, p);
+							xUnitSelect(dPlayerData, xUnitID);
+							if(trUnitGetIsContained("All")){
+								xUnitSelect(dPlayerData, xUnitID);
+								trDamageUnit(-500);
+							}
+							
+						}
+					}
+					xUnitSelect(dBomb, xUnitID);
+					if(trUnitVisToPlayer()){
+						playSound("meteorbighit.wav");
+						playSound("meteordustcloud.wav");
+					}
+					xUnitSelect(dBomb, xUnitID);
+					trDamageUnitsInArea(cNumberNonGaiaPlayers, "All", 1, 500);
+					xUnitSelect(dBomb, xUnitID);
+					if(trUnitVisToPlayer()){
+						playSound("meteorbighit.wav");
+						playSound("meteordustcloud.wav");
+					}
+					xUnitSelect(dBomb, xUnitID);
+					trUnitChangeProtoUnit("Titan Atlantean");
+					xUnitSelect(dBomb, xUnitID);
+					trUnitDestroy();
+					trUnitSelectClear();
+					trUnitSelect(""+yGetLatestReverse("Titan Gate Dead"));
+					trUnitChangeProtoUnit("Meteor Impact Ground");
+					trUnitSelectByQV("RocketUnit");
+					trDamageUnit(500);
+				}
+			}
+			else{
+				if(trTimeMS() > xGetInt(dBomb, xExplodeTime)){
+					for(p = 1 ; < cNumberNonGaiaPlayers){
+						xUnitSelect(dBomb, xUnitID);
+						trDamageUnitsInArea(p, "All", 16, 500);
+						if(trCountUnitsInArea(""+xGetInt(dBomb, xUnitID),p,"Villager Atlantean Hero", 16) == 1){
+							xSetPointer(dPlayerData, p);
+							xUnitSelect(dPlayerData, xUnitID);
+							if(trUnitGetIsContained("All")){
+								xUnitSelect(dPlayerData, xUnitID);
+								trDamageUnit(-500);
+							}
+							
+						}
+					}
+					xUnitSelect(dBomb, xUnitID);
+					if(trUnitVisToPlayer()){
+						playSound("meteorbighit.wav");
+						playSound("meteordustcloud.wav");
+					}
+					xUnitSelect(dBomb, xUnitID);
+					trUnitChangeProtoUnit("Titan Atlantean");
+					xUnitSelect(dBomb, xUnitID);
+					trUnitDestroy();
+					trUnitSelectClear();
+					trUnitSelect(""+yGetLatestReverse("Titan Gate Dead"));
+					trUnitChangeProtoUnit("Meteor Impact Ground");
+				}
+			}
+			xUnitSelect(dBomb, xUnitID);
+			if(trUnitAlive() == false){
+				xFreeDatabaseBlock(dBomb);
+			}
+		}
+		
 	}
 	
 }
