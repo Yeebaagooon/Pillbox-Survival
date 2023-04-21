@@ -24,18 +24,16 @@ Send strong enemies during rocket night time
 *Day time when >50% - direct to rocket
 *ROcket bombers
 
-RELIC GUARDS BUGGY AF AND TOO STRONG
-
 200k gold available
 700k wood available
 */
 
 //---Launch Codes
-bool Visible = false;
+bool Visible = true;
 bool AllowEnemies = true;
-bool CineChoice = true;
+bool CineChoice = false;
 int TestRelic = 2;
-bool Helpers = true;
+bool Helpers = false;
 
 //---Game Data
 int MapSkin = 0;

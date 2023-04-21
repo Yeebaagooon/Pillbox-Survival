@@ -721,13 +721,24 @@ void CreateStartingRelics(int num = 1){
 						//FORCE LEVEL 3 RELICS
 						trQuestVarSetFromRand("temp", 21,28);
 						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
-						SpawnEnemy("Centaur",xsVectorGetX(spawn), xsVectorGetZ(spawn),true,0);
+							if(1*trQuestVarGet("temp2") == 1){
+							SpawnEnemy("Centaur",xsVectorGetX(spawn), xsVectorGetZ(spawn),false);
+						}
+						else if(1*trQuestVarGet("temp2") == 2){
+							SpawnEnemy("Minotaur",xsVectorGetX(spawn), xsVectorGetZ(spawn),false);
+						}
 					}
 					else if(dist >= 25600){
 						//FORCE LEVEL 4 RELICS
 						trQuestVarSetFromRand("temp", 21,34);
 						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
-						SpawnEnemy("Circe",xsVectorGetX(spawn), xsVectorGetZ(spawn),true,0);
+						trQuestVarSetFromRand("temp2", 1,3);
+						if(1*trQuestVarGet("temp2") == 1){
+							SpawnEnemy("Fire Giant",xsVectorGetX(spawn), xsVectorGetZ(spawn),false);
+						}
+						else if(1*trQuestVarGet("temp2") == 2){
+							SpawnEnemy("Circe",xsVectorGetX(spawn), xsVectorGetZ(spawn),false);
+						}
 					}
 				}
 			}

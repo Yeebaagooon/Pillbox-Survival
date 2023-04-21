@@ -21,7 +21,21 @@ highFrequency
 		trUnitSelectByQV("RocketUnit");
 		trUnitHighlight(10, false);
 		trRateConstruction(1);
+		xsEnableRule("Part2Text");
 	}
+}
+
+rule Part2Text
+inactive
+highFrequency
+{
+		if((trTime()-cActivationTime) >= 7){
+			if(Day){
+		trOverlayText("Watch out for bomber attacks during the day!", 7);
+		xsDisableSelf();
+	}
+	}
+
 }
 
 rule RocketHPCounter
@@ -47,7 +61,6 @@ highFrequency
 		trCounterAbort("rockethealth");
 		vector MapMid = xsVectorSet(getMapSize()/2, 0, getMapSize()/2);
 		trOverlayText("The rocket is ready for launch!", 4);
-		playSound("x_win.wav");
 		xsDisableSelf();
 		trPlayerKillAllUnits(cNumberNonGaiaPlayers);
 		trPlayerKillAllBuildings(cNumberNonGaiaPlayers);
