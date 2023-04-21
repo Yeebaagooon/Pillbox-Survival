@@ -29,13 +29,13 @@ rule Part2Text
 inactive
 highFrequency
 {
-		if((trTime()-cActivationTime) >= 7){
-			if(Day){
-		trOverlayText("Watch out for bomber attacks during the day!", 7);
-		xsDisableSelf();
+	if((trTime()-cActivationTime) >= 7){
+		if(Day){
+			trOverlayText("Watch out for bomber attacks during the day!", 7);
+			xsDisableSelf();
+		}
 	}
-	}
-
+	
 }
 
 rule RocketHPCounter

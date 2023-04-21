@@ -156,8 +156,6 @@ highFrequency
 {
 	if((trTime()-cActivationTime) >= 1){
 		//fade out when loaded
-		trLetterBox(false);
-		trUIFadeToColor(31,28,26,1000,1,false);
 		trOverlayTextColour(255, 125, 0);
 		gadgetUnreal("ShowImageBox");
 		trOverlayText(MapName, 8.0, 574, 28, 1000);
@@ -175,6 +173,8 @@ highFrequency
 		//startNPCDialog(1);
 		if(CineChoice){
 			xsEnableRule("CineJunction");
+			trLetterBox(false);
+			trUIFadeToColor(31,28,26,1000,1,false);
 		}
 		else{
 			xsEnableRule("WorldCreate");

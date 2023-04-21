@@ -282,6 +282,7 @@ highFrequency
 		trCameraCut(vector(153.227936,36.560440,103.891312), vector(-0.882865,-0.421772,-0.206536), vector(-0.410684,0.906702,-0.096075), vector(-0.227789,0.000000,0.973710));
 		addCameraTrackWaypoint();
 		playCameraTrack();
+		trUIFadeToColor(31,28,26,200,5800,true);
 	}
 }
 
@@ -291,7 +292,7 @@ highFrequency
 {
 	xsDisableSelf();
 	trBlockAllSounds();
-	trLetterBox(false);
+	trLetterBox(true);
 	trCameraCut(vector(-61.896255,123.743729,-61.896255), vector(0.500000,-0.707107,0.500000), vector(0.500000,0.707107,0.500000), vector(0.707107,0.000000,-0.707107));
 	xsEnableRule("WorldCreate");
 	xResetDatabase(dTowers);

@@ -118,7 +118,8 @@ inactive
 			case 2:
 			//Skip cine
 			{
-				trChatSend(0, "BUILDING MAP...");
+				trLetterBox(true);
+				trUIFadeToColor(31,28,26,1,1,true);
 				trDelayedRuleActivation("WorldCreate");
 			}
 		}

@@ -668,6 +668,8 @@ highFrequency
 }
 
 void HelpText(int p = 0){
+	string extra = "Then transport the rocket piece back to the rocket.";
+	vector flare = vector(0,0,0);
 	if(trCurrentPlayer() == p){
 		trChatHistoryClear();
 		playSound("gamefound.wav");
@@ -675,25 +677,128 @@ void HelpText(int p = 0){
 	ColouredChatToPlayer(p, "1,0.5,0", "<u>BUILDING HELP LIST:</u></color>");
 	ColouredChatToPlayer(p, "1,1,1", "<icon=(20)(icons\building manor icons 32)> - Garrison units inside to heal them");
 	if(CartsCaptured == 0){
-		ColouredChatToPlayer(p, "1,0,1", "Kill enemies in City 1");
-		ColouredChatToPlayer(p, "1,0,1", "Then bring the rocket piece back to the rocket");
-		ColouredChatToPlayer(p, "1,0,1", "You will then unlock new buildings");
+		if(CitiesCaptured == 0){
+			for(a = xGetDatabaseCount(dCity); > 0){
+				xDatabaseNext(dCity);
+				if(xGetInt(dCity, xNumber) == (CartsCaptured+1)){
+					flare = xGetVector(dCity, xLocation);
+					if(trCurrentPlayer() == p){
+						trMinimapFlare(p, 10, flare, true);
+					}
+				}
+			}
+			if(trCurrentPlayer() == p){
+				trMessageSetText("OBJECTIVE: Kill all guards in the first city to capture it. " + extra, 10000);
+			}
+		}
+		else{
+			if(trCurrentPlayer() == p){
+				trMessageSetText("OBJECTIVE: Bring the rocket piece you captured back to the rocket.", 10000);
+			}
+		}
 	}
 	if(CartsCaptured >= 1){
 		ColouredChatToPlayer(p, "1,1,1", "<icon=(20)(icons\icon building farm)> - Villager");
+		if(CartsCaptured == 1){
+			if(CitiesCaptured == 1){
+				for(a = xGetDatabaseCount(dCity); > 0){
+					xDatabaseNext(dCity);
+					if(xGetInt(dCity, xNumber) == (CartsCaptured+1)){
+						flare = xGetVector(dCity, xLocation);
+						if(trCurrentPlayer() == p){
+							trMinimapFlare(p, 10, flare, true);
+						}
+					}
+				}
+				if(trCurrentPlayer() == p){
+					trMessageSetText("OBJECTIVE: Kill all guards in the second city to capture it. " + extra, 10000);
+				}
+			}
+			else{
+				if(trCurrentPlayer() == p){
+					trMessageSetText("OBJECTIVE: Bring the rocket piece you captured back to the rocket.", 10000);
+				}
+			}
+		}
 	}
 	if(CartsCaptured >= 2){
 		ColouredChatToPlayer(p, "1,1,1", "<icon=(20)(icons\building sentry tower icon 64)> - Creates pillbox");
 		ColouredChatToPlayer(p, "1,1,1", "<icon=(20)(icons\building skytemple icons 32)> - Normal function with attack");
+		if(CartsCaptured == 2){
+			if(CitiesCaptured == 2){
+				for(a = xGetDatabaseCount(dCity); > 0){
+					xDatabaseNext(dCity);
+					if(xGetInt(dCity, xNumber) == (CartsCaptured+1)){
+						flare = xGetVector(dCity, xLocation);
+						if(trCurrentPlayer() == p){
+							trMinimapFlare(p, 10, flare, true);
+						}
+					}
+				}
+				if(trCurrentPlayer() == p){
+					trMessageSetText("OBJECTIVE: Kill all guards in the third city to capture it. " + extra, 10000);
+				}
+			}
+			else{
+				if(trCurrentPlayer() == p){
+					trMessageSetText("OBJECTIVE: Bring the rocket piece you captured back to the rocket.", 10000);
+				}
+			}
+		}
 	}
 	if(CartsCaptured >= 3){
 		ColouredChatToPlayer(p, "1,1,1", "<icon=(20)(icons\building guild icons 32)> - Creates free ammo");
+		if(CartsCaptured == 3){
+			if(CitiesCaptured == 3){
+				for(a = xGetDatabaseCount(dCity); > 0){
+					xDatabaseNext(dCity);
+					if(xGetInt(dCity, xNumber) == (CartsCaptured+1)){
+						flare = xGetVector(dCity, xLocation);
+						if(trCurrentPlayer() == p){
+							trMinimapFlare(p, 10, flare, true);
+						}
+					}
+				}
+				if(trCurrentPlayer() == p){
+					trMessageSetText("OBJECTIVE: Kill all guards in the fourth city to capture it. " + extra, 10000);
+				}
+			}
+			else{
+				if(trCurrentPlayer() == p){
+					trMessageSetText("OBJECTIVE: Bring the rocket piece you captured back to the rocket.", 10000);
+				}
+			}
+		}
 	}
 	if(CartsCaptured >= 4){
 		ColouredChatToPlayer(p, "1,1,1", "<icon=(20)(icons\building palace icons 32)> - Armoured car that your citizen controls");
+		if(CartsCaptured == 4){
+			if(CitiesCaptured == 4){
+				for(a = xGetDatabaseCount(dCity); > 0){
+					xDatabaseNext(dCity);
+					if(xGetInt(dCity, xNumber) == (CartsCaptured+1)){
+						flare = xGetVector(dCity, xLocation);
+						if(trCurrentPlayer() == p){
+							trMinimapFlare(p, 10, flare, true);
+						}
+					}
+				}
+				if(trCurrentPlayer() == p){
+					trMessageSetText("OBJECTIVE: Kill all guards in the final city to capture it. " + extra, 10000);
+				}
+			}
+			else{
+				if(trCurrentPlayer() == p){
+					trMessageSetText("OBJECTIVE: Bring the final rocket piece you captured back to the rocket.", 10000);
+				}
+			}
+		}
 	}
 	if(CartsCaptured >= 5){
-		ColouredChatToPlayer(p, "1,1,1", "<icon=(20)(icons\icon building temple)> - Recycle relics and buy upgrades");
+		//ColouredChatToPlayer(p, "1,1,1", "<icon=(20)(icons\icon building temple)> - Recycle relics and buy upgrades");
+		if(trCurrentPlayer() == p){
+			trMessageSetText("OBJECTIVE: Defend and repair the rocket with wood to win.", 10000);
+		}
 	}
 }
 

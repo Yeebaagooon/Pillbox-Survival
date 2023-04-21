@@ -109,7 +109,7 @@ highFrequency
 				if(Date == 1){
 					trQuestVarSetFromRand("temp", 1, 2);
 					for(a = 0; < cNumberNonGaiaPlayers*2){
-						NightAttack("Militia");
+						NightAttack(Enemy0);
 					}
 					
 				}
@@ -117,12 +117,12 @@ highFrequency
 					trQuestVarSetFromRand("temp", 1, 2);
 					if(1*trQuestVarGet("temp") == 1){
 						for(a = 0; < cNumberNonGaiaPlayers*5){
-							NightAttack("Hoplite");
+							NightAttack(Enemy1);
 						}
 					}
 					else{
 						for(a = 0; < cNumberNonGaiaPlayers*5){
-							NightAttack("Toxotes");
+							NightAttack(Enemy2);
 						}
 					}
 				}
@@ -130,15 +130,15 @@ highFrequency
 					trQuestVarSetFromRand("temp", 1, 2);
 					if(1*trQuestVarGet("temp") == 1){
 						for(a = 0; < cNumberNonGaiaPlayers*2){
-							NightAttack("Minotaur");
+							NightAttack(Enemy3);
 						}
 					}
 					else{
 						for(a = 0; < cNumberNonGaiaPlayers*2){
-							NightAttack("Centaur");
+							NightAttack(Enemy4);
 						}
 					}
-					SpawnBomber("Hoplite");
+					SpawnBomber(Enemy1);
 					if(Part == 2){
 						for(a = 1; <= cNumberNonGaiaPlayers*2){
 							SpawnBomber("Hero Norse");
@@ -149,16 +149,16 @@ highFrequency
 					trQuestVarSetFromRand("temp", 1, 2);
 					if(1*trQuestVarGet("temp") == 1){
 						for(a = 0; < cNumberNonGaiaPlayers*4){
-							NightAttack("Minotaur");
+							NightAttack(Enemy3);
 						}
 					}
 					else{
 						for(a = 0; < cNumberNonGaiaPlayers*4){
-							NightAttack("Centaur");
+							NightAttack(Enemy4);
 						}
 					}
-					SpawnBomber("Hoplite");
-					SpawnBomber("Hoplite");
+					SpawnBomber(Enemy1);
+					SpawnBomber(Enemy1);
 					if(Part == 2){
 						for(a = 1; <= cNumberNonGaiaPlayers*2){
 							SpawnBomber("Hero Norse");
@@ -169,12 +169,12 @@ highFrequency
 					trQuestVarSetFromRand("temp", 1, 2);
 					if(1*trQuestVarGet("temp") == 1){
 						for(a = 0; < cNumberNonGaiaPlayers*5){
-							NightAttack("Cyclops");
+							NightAttack(Enemy5);
 						}
 					}
 					else{
 						for(a = 0; < cNumberNonGaiaPlayers*4){
-							NightAttack("Manticore");
+							NightAttack(Enemy6);
 						}
 					}
 					if(Part == 2){
@@ -187,12 +187,12 @@ highFrequency
 					trQuestVarSetFromRand("temp", 1, 2);
 					if(1*trQuestVarGet("temp") == 1){
 						for(a = 0; < cNumberNonGaiaPlayers*6){
-							NightAttack("Colossus");
+							NightAttack(Enemy7);
 						}
 					}
 					else{
 						for(a = 0; < cNumberNonGaiaPlayers*6){
-							NightAttack("Medusa");
+							NightAttack(Enemy8);
 						}
 					}
 					if(Part == 2){

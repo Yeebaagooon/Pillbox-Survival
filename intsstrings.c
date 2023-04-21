@@ -9,20 +9,11 @@ string MapName = "Pillbox Survival";
 /*
 playerIsPlaying - currently allows computers to exist ingame
 
-AGGRO - done
-
 Have attached pheonix egg for bomber unit
 
 CATAPULT SHOT TAKEN
 CHICKEN BLOOD TAKEN
-
-C5 too easy - more catapults
-
-maybe I need to have the stronger relics guarded
-
-Send strong enemies during rocket night time
-*Day time when >50% - direct to rocket
-*ROcket bombers
+tEMPLE DISABLED
 
 200k gold available
 700k wood available
@@ -36,7 +27,8 @@ int TestRelic = 2;
 bool Helpers = false;
 
 //---Game Data
-int MapSkin = 0;
+int MapSkin = 4;
+//1, greek, 2 is eggy, 3 is norse, 4 is hades
 bool Day = true;
 int Date = 0;
 int NextDay = 1000;
@@ -55,10 +47,30 @@ int Part = 0;
 int WonderHP = 9999;
 int Difficulty = 0;
 
+//SKIN DATA
 string TreeType = "";
-string ForestTerrain = "";
-string UnderForestTerrain = "";
-string LowestTerrain = "";
+string TreeTerrain = "";
+string TreeBorderTerrain = "";
+string Terrain1 = "";
+string Terrain2 = "";
+string Terrain3 = "";
+string Terrain4 = "";
+string Terrain5 = "";
+string RoadTerrain = "";
+
+string Huntable = "";
+string Berry = "";
+
+//---Enemy skin
+string Enemy0 = "";
+string Enemy1 = "";
+string Enemy2 = "";
+string Enemy3 = "";
+string Enemy4 = "";
+string Enemy5 = "";
+string Enemy6 = "";
+string Enemy7 = "";
+string Enemy8 = "";
 
 //---
 int timelast = 0;

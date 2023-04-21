@@ -145,7 +145,7 @@ highFrequency
 		modifyProtounitAbsolute("Dock", p, 55, 4);
 		modifyProtounitAbsolute("Dock", p, 2, 0.0);
 		modifyProtounitAbsolute("Helepolis", p, 0, 2000);
-		modifyProtounitAbsolute("Helepolis", p, 1, 9);
+		modifyProtounitAbsolute("Helepolis", p, 1, 6);
 		modifyProtounitAbsolute("Helepolis", p, 5, 1);
 		modifyProtounitAbsolute("Helepolis", p, 13, 0);
 		modifyProtounitAbsolute("Palace", p, 16, 0);
@@ -156,6 +156,10 @@ highFrequency
 		modifyProtounitAbsolute("Villager Atlantean", p, 1, 4);
 		modifyProtounitAbsolute("Villager Atlantean Hero", p, 1, 4);
 		modifyProtounitAbsolute("Great Box Cart", p, 1, 4);
+		modifyProtounitAbsolute("Palace", p, 4, 1);
+		modifyProtounitAbsolute("Manor", p, 4, 1);
+		modifyProtounitAbsolute("Farm", p, 4, 1);
+		modifyProtounitAbsolute("Guild", p, 4, 1);
 		trUnforbidProtounit(p, "Dock");
 	}
 	modifyProtounitAbsolute("Bolt Strike", 0, 27, 0);
@@ -188,6 +192,7 @@ highFrequency
 	trModifyProtounit("Hero Greek Polyphemus", cNumberNonGaiaPlayers, 27, 100);
 	trModifyProtounit("Hero Greek Polyphemus", cNumberNonGaiaPlayers, 29, 100);
 	trModifyProtounit("Circe", cNumberNonGaiaPlayers, 0, 750);
+	trModifyProtounit("Minion", cNumberNonGaiaPlayers,8, 1000);
 	trRateConstruction(5);
 	xsDisableSelf();
 	xsEnableRule("ChickenBlood");
