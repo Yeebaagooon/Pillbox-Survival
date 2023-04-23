@@ -22,12 +22,12 @@ tEMPLE DISABLED
 //---Launch Codes
 bool Visible = true;
 bool AllowEnemies = true;
-bool CineChoice = false;
-int TestRelic = 2;
+bool CineChoice = true;
+int TestRelic = 1;
 bool Helpers = false;
 
 //---Game Data
-int MapSkin = 4;
+int MapSkin = 1;
 //1, greek, 2 is eggy, 3 is norse, 4 is hades
 bool Day = true;
 int Date = 0;

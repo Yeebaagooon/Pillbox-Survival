@@ -721,25 +721,25 @@ void CreateStartingRelics(int num = 1){
 						//FORCE LEVEL 3 RELICS
 						trQuestVarSetFromRand("temp", 21,28);
 						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
-						trQuestVarSetFromRand("temp2", 1,3);
+						/*trQuestVarSetFromRand("temp2", 1,3);
 						if(1*trQuestVarGet("temp2") == 1){
 							SpawnEnemy("Centaur", xsVectorGetX(spawn), xsVectorGetZ(spawn));
 						}
 						else if(1*trQuestVarGet("temp2") == 1){
 							SpawnEnemy("Minotaur", xsVectorGetX(spawn), xsVectorGetZ(spawn));
-						}
+						}*/
 					}
 					else if(dist >= 25600){
 						//FORCE LEVEL 4 RELICS
 						trQuestVarSetFromRand("temp", 21,34);
 						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
-						trQuestVarSetFromRand("temp2", 1,3);
+						/*trQuestVarSetFromRand("temp2", 1,3);
 						if(1*trQuestVarGet("temp2") == 1){
 							SpawnEnemy("Circe", xsVectorGetX(spawn), xsVectorGetZ(spawn));
 						}
 						else if(1*trQuestVarGet("temp2") == 1){
 							SpawnEnemy("Fire Giant", xsVectorGetX(spawn), xsVectorGetZ(spawn));
-						}
+						}*/
 					}
 				}
 			}
@@ -934,7 +934,7 @@ inactive
 		Enemy8 = "Fire Giant";
 		//---
 		Huntable = "Elk";
-		Berry = "Goat";
+		Berry = "Arctic Wolf";
 	}
 	if(MapSkin == 4){
 		TreeTerrain = "HadesCliff";

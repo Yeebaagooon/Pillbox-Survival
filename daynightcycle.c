@@ -108,7 +108,7 @@ highFrequency
 				NextNightAttack = trTime()+NightInterval;
 				if(Date == 1){
 					trQuestVarSetFromRand("temp", 1, 2);
-					for(a = 0; < cNumberNonGaiaPlayers*2){
+					for(a = 0; < (cNumberNonGaiaPlayers-PlayersDead)*2){
 						NightAttack(Enemy0);
 					}
 					
@@ -116,12 +116,12 @@ highFrequency
 				if(Date == 2){
 					trQuestVarSetFromRand("temp", 1, 2);
 					if(1*trQuestVarGet("temp") == 1){
-						for(a = 0; < cNumberNonGaiaPlayers*5){
+						for(a = 0; < (cNumberNonGaiaPlayers-PlayersDead)*5){
 							NightAttack(Enemy1);
 						}
 					}
 					else{
-						for(a = 0; < cNumberNonGaiaPlayers*5){
+						for(a = 0; < (cNumberNonGaiaPlayers-PlayersDead)*5){
 							NightAttack(Enemy2);
 						}
 					}
@@ -129,18 +129,18 @@ highFrequency
 				if(Date == 3){
 					trQuestVarSetFromRand("temp", 1, 2);
 					if(1*trQuestVarGet("temp") == 1){
-						for(a = 0; < cNumberNonGaiaPlayers*2){
+						for(a = 0; < (cNumberNonGaiaPlayers-PlayersDead)*2){
 							NightAttack(Enemy3);
 						}
 					}
 					else{
-						for(a = 0; < cNumberNonGaiaPlayers*2){
+						for(a = 0; < (cNumberNonGaiaPlayers-PlayersDead)*2){
 							NightAttack(Enemy4);
 						}
 					}
 					SpawnBomber(Enemy1);
 					if(Part == 2){
-						for(a = 1; <= cNumberNonGaiaPlayers*2){
+						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)*2){
 							SpawnBomber("Hero Norse");
 						}
 					}
@@ -148,19 +148,19 @@ highFrequency
 				if(Date == 4){
 					trQuestVarSetFromRand("temp", 1, 2);
 					if(1*trQuestVarGet("temp") == 1){
-						for(a = 0; < cNumberNonGaiaPlayers*4){
+						for(a = 0; < (cNumberNonGaiaPlayers-PlayersDead)*4){
 							NightAttack(Enemy3);
 						}
 					}
 					else{
-						for(a = 0; < cNumberNonGaiaPlayers*4){
+						for(a = 0; < (cNumberNonGaiaPlayers-PlayersDead)*4){
 							NightAttack(Enemy4);
 						}
 					}
 					SpawnBomber(Enemy1);
 					SpawnBomber(Enemy1);
 					if(Part == 2){
-						for(a = 1; <= cNumberNonGaiaPlayers*2){
+						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)*2){
 							SpawnBomber("Hero Norse");
 						}
 					}
@@ -168,17 +168,17 @@ highFrequency
 				if(Date == 5){
 					trQuestVarSetFromRand("temp", 1, 2);
 					if(1*trQuestVarGet("temp") == 1){
-						for(a = 0; < cNumberNonGaiaPlayers*5){
+						for(a = 0; < (cNumberNonGaiaPlayers-PlayersDead)*5){
 							NightAttack(Enemy5);
 						}
 					}
 					else{
-						for(a = 0; < cNumberNonGaiaPlayers*4){
+						for(a = 0; < (cNumberNonGaiaPlayers-PlayersDead)*4){
 							NightAttack(Enemy6);
 						}
 					}
 					if(Part == 2){
-						for(a = 1; <= cNumberNonGaiaPlayers*2){
+						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)*2){
 							SpawnBomber("Hero Norse");
 						}
 					}
@@ -186,17 +186,17 @@ highFrequency
 				if(Date == 6){
 					trQuestVarSetFromRand("temp", 1, 2);
 					if(1*trQuestVarGet("temp") == 1){
-						for(a = 0; < cNumberNonGaiaPlayers*6){
+						for(a = 0; < (cNumberNonGaiaPlayers-PlayersDead)*6){
 							NightAttack(Enemy7);
 						}
 					}
 					else{
-						for(a = 0; < cNumberNonGaiaPlayers*6){
+						for(a = 0; < (cNumberNonGaiaPlayers-PlayersDead)*6){
 							NightAttack(Enemy8);
 						}
 					}
 					if(Part == 2){
-						for(a = 1; <= cNumberNonGaiaPlayers*2){
+						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)*2){
 							SpawnBomber("Hero Norse");
 						}
 					}
@@ -204,17 +204,17 @@ highFrequency
 				if(Date == 7){
 					trQuestVarSetFromRand("temp", 1, 2);
 					if(1*trQuestVarGet("temp") == 1){
-						for(a = 0; < cNumberNonGaiaPlayers*5){
+						for(a = 0; < (cNumberNonGaiaPlayers-PlayersDead)*5){
 							NightAttack("Hero Greek Jason");
 						}
 					}
 					else{
-						for(a = 0; < cNumberNonGaiaPlayers*6){
+						for(a = 0; < (cNumberNonGaiaPlayers-PlayersDead)*6){
 							NightAttack("Hero Greek Odysseus");
 						}
 					}
 					if(Part == 2){
-						for(a = 1; <= cNumberNonGaiaPlayers*2){
+						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)*2){
 							SpawnBomber("Hero Norse");
 						}
 					}
@@ -222,17 +222,17 @@ highFrequency
 				if(Date == 8){
 					trQuestVarSetFromRand("temp", 1, 2);
 					if(1*trQuestVarGet("temp") == 1){
-						for(a = 0; < cNumberNonGaiaPlayers*7){
+						for(a = 0; < (cNumberNonGaiaPlayers-PlayersDead)*7){
 							NightAttack("Hero Greek Bellerophon");
 						}
 					}
 					else{
-						for(a = 0; < cNumberNonGaiaPlayers*8){
+						for(a = 0; < (cNumberNonGaiaPlayers-PlayersDead)*8){
 							NightAttack("Hero Greek Hippolyta");
 						}
 					}
 					if(Part == 2){
-						for(a = 1; <= cNumberNonGaiaPlayers*3){
+						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)*3){
 							SpawnBomber("Hero Norse");
 						}
 					}
@@ -240,17 +240,17 @@ highFrequency
 				if(Date == 9){
 					trQuestVarSetFromRand("temp", 1, 2);
 					if(1*trQuestVarGet("temp") == 1){
-						for(a = 0; < cNumberNonGaiaPlayers*10){
+						for(a = 0; < (cNumberNonGaiaPlayers-PlayersDead)*10){
 							NightAttack("Circe");
 						}
 					}
 					else{
-						for(a = 0; < cNumberNonGaiaPlayers*10){
+						for(a = 0; < (cNumberNonGaiaPlayers-PlayersDead)*10){
 							NightAttack("Hero Greek Polyphemus");
 						}
 					}
 					if(Part == 2){
-						for(a = 1; <= cNumberNonGaiaPlayers*3){
+						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)*3){
 							SpawnBomber("Hero Norse");
 						}
 					}
@@ -258,18 +258,18 @@ highFrequency
 				if(Date >= 10){
 					trQuestVarSetFromRand("temp", 1, 2);
 					if(1*trQuestVarGet("temp") == 1){
-						for(a = 0; < cNumberNonGaiaPlayers*4){
+						for(a = 0; < (cNumberNonGaiaPlayers-PlayersDead)*4){
 							NightAttack("Catapult");
 						}
 					}
 					else{
-						for(a = 0; < cNumberNonGaiaPlayers*12){
+						for(a = 0; < (cNumberNonGaiaPlayers-PlayersDead)*12){
 							NightAttack("Hero Greek Polyphemus");
 							NightAttack("Circe");
 						}
 					}
 					if(Part == 2){
-						for(a = 1; <= cNumberNonGaiaPlayers*4){
+						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)*4){
 							SpawnBomber("Hero Norse");
 						}
 					}
