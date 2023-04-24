@@ -166,6 +166,10 @@ int xTenSpyID = 0;
 //TEMPLE
 int dTemple = 0;
 
+//POWER RELICS
+int dPowerRelics = 0;
+int xPowerRelicSFX = 0;
+
 rule setup_first_databases
 active
 highFrequency
@@ -334,6 +338,12 @@ highFrequency
 	
 	dTemple = xInitDatabase("temple");
 	xUnitID = xInitAddInt(dTemple, "unitid", -1);
+	
+	dPowerRelics = xInitDatabase("powerelics");
+	xUnitID = xInitAddInt(dPowerRelics, "unitid", -1);
+	xPowerRelicSFX = xInitAddInt(dPowerRelics, "sfxid", -1);
+	
+	
 }
 
 

@@ -857,6 +857,51 @@ void CreateStartingRelics(int num = 1){
 	}
 }
 
+void CreatePowerRelics(int num = 1){
+	vector spawn = vector(0,0,0);
+	vector MapMid = xsVectorSet(getMapSize()/2, 0, getMapSize()/2);
+	int temp = 0;
+	int allow = 0;
+	float dist = 0.0;
+	while(num > 0){
+		trQuestVarSetFromRand("x", 0, 200);
+		trQuestVarSetFromRand("z", 0, 200);
+		spawn = perlinRoll(myPerlin, 1*trQuestVarGet("x"),1*trQuestVarGet("z"), 1, -8,20, false) ;
+		dist = distanceBetweenVectors(spawn, MapMid, true);
+		if(dist > 576){
+			temp = trGetNextUnitScenarioNameNumber();
+			UnitCreateV(0, "Victory Marker", spawn);
+			if(trCountUnitsInArea(""+temp, 0, "Victory Marker", 20) == 1){
+				//No clustering
+				
+				//no city
+				allow = 0;
+				for(b = xGetDatabaseCount(dCity); > 0){
+					xDatabaseNext(dCity);
+					if(distanceBetweenVectors(spawn, xGetVector(dCity, xLocation)) > 2000){
+						allow = allow+1;
+					}
+				}
+				if(allow == CitiesToMake){
+					num = num-1;
+					DeployPowerRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn));
+				}
+			}
+			else{
+				trUnitSelectClear();
+				trUnitSelect(""+temp);
+				trUnitDestroy();
+			}
+		}
+	}
+	if(num == 0){
+		//Destroy unused victory markers
+		trUnitSelectClear();
+		trUnitSelect(""+temp);
+		trUnitChangeInArea(0, 0, "Victory Marker", "Rocket", 999.0);
+	}
+}
+
 void CreateStartingAnimals(int num = 1){
 	vector spawn = vector(0,0,0);
 	vector MapMid = xsVectorSet(getMapSize()/2, 0, getMapSize()/2);
@@ -1147,7 +1192,7 @@ inactive
 		Enemy8 = "Fire Giant";
 		//---
 		Huntable = "Elk";
-		Berry = "Wolf Arctic";
+		Berry = "Walrus";
 		//---
 		City1Building = "Longhouse";
 		City2Building = "Longhouse";
@@ -1314,6 +1359,7 @@ inactive
 {
 	CreateStartingPillBoxes(40);
 	CreateStartingRelics(50);
+	CreatePowerRelics(cNumberNonGaiaPlayers*2);
 	CreateStartingAnimals(30);
 	CreateStartingBerries(30);
 	CreateTemple();
@@ -1632,6 +1678,66 @@ active
 			xUnitSelect(dTemple, xUnitID);
 			if(trUnitAlive() == false){
 				xFreeDatabaseBlock(dTemple);
+			}
+		}
+	}
+	if(xGetDatabaseCount(dPowerRelics) > 0){
+		for(i = xsMin(xGetDatabaseCount(dPowerRelics), cNumberNonGaiaPlayers); > 0){
+			xDatabaseNext(dPowerRelics);
+			xUnitSelect(dPowerRelics, xUnitID);
+			if (trUnitIsSelected()) {
+				uiClearSelection();
+				ColouredChat("1,0.5,0", "<u>Power Relic</u>");
+				ColouredChat("1,1,1", "Pick this up to gain a random god power");
+			}
+			xUnitSelect(dPowerRelics, xUnitID);
+			if(trUnitAlive() == false){
+				xFreeDatabaseBlock(dPowerRelics);
+			}
+			if(trUnitGetIsContained() == true){
+				for(p=1; < cNumberNonGaiaPlayers) {
+					if (trUnitIsOwnedBy(p)) {
+						//GOD POWER
+						trQuestVarSetFromRand("temp", 1, 7);
+						if(1*trQuestVarGet("temp") == 1){
+							grantGodPowerNoRechargeNextPosition(p, "Journey" ,1);
+							ColouredChat("1,0,1", "Great Journey granted");
+						}
+						if(1*trQuestVarGet("temp") == 2){
+							grantGodPowerNoRechargeNextPosition(p, "Vision" ,1);
+							ColouredChat("1,0,1", "Vision granted");
+						}
+						if(1*trQuestVarGet("temp") == 3){
+							grantGodPowerNoRechargeNextPosition(p, "Sandstorm" ,1);
+							ColouredChat("1,0,1", "Shifting Sands granted");
+						}
+						if(1*trQuestVarGet("temp") == 4){
+							grantGodPowerNoRechargeNextPosition(p, "Bolt" , 5);
+							ColouredChat("1,0,1", "5x Bolt granted");
+						}
+						if(1*trQuestVarGet("temp") == 5){
+							grantGodPowerNoRechargeNextPosition(p, "Gaia Forest" ,1);
+							ColouredChat("1,0,1", "Gaia Forest granted");
+						}
+						if(1*trQuestVarGet("temp") == 6){
+							grantGodPowerNoRechargeNextPosition(p, "Prosperity" ,1);
+							ColouredChat("1,0,1", "Prosperity granted");
+						}
+						if(1*trQuestVarGet("temp") == 7){
+							grantGodPowerNoRechargeNextPosition(p, "Timber Harvest" ,1);
+							ColouredChat("1,0,1", "Timber Harvest granted");
+						}
+						if(trCurrentPlayer() == p){
+							playSound("\cinematics\17_in\weirdthing.mp3");
+						}
+					}
+				}
+				xUnitSelect(dPowerRelics, xPowerRelicSFX);
+				trUnitChangeProtoUnit("Forest Fire SFX");
+				xUnitSelect(dPowerRelics, xUnitID);
+				trUnitChangeProtoUnit("Cinematic Block");
+				xUnitSelect(dPowerRelics, xUnitID);
+				trUnitDestroy();
 			}
 		}
 	}

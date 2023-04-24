@@ -57,6 +57,31 @@ int DeployRelic(int x = 0, int z = 0, int force = 0){
 	return(temp);
 }
 
+int DeployPowerRelic(int x = 0, int z = 0, int force = 0){
+	int old = xGetPointer(dProjectiles);
+	int temp = trGetNextUnitScenarioNameNumber();
+	int index = 0;
+	UnitCreate(0, "Dwarf", x, z);
+	trUnitSelectClear();
+	trUnitSelect(""+temp);
+	trUnitChangeProtoUnit("Titan Atlantean");
+	trUnitSelectClear();
+	trUnitSelect(""+temp);
+	trUnitChangeProtoUnit("Relic");
+	trUnitSelectClear();
+	trUnitSelect(""+temp);
+	trSetRelicType(364);
+	//Force to harter folly
+	xAddDatabaseBlock(dPowerRelics, true);
+	xSetInt(dPowerRelics, xUnitID, temp);
+	xSetInt(dPowerRelics, xPowerRelicSFX, temp+2);
+	xUnitSelect(dPowerRelics, xPowerRelicSFX);
+	trUnitChangeProtoUnit("Spy Eye");
+	xUnitSelect(dPowerRelics, xPowerRelicSFX);
+	trMutateSelected(kbGetProtoUnitID("UI Range Indicator Chinese SFX"));
+	return(temp);
+}
+
 rule ProcessFreeRelics
 active
 highFrequency

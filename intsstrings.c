@@ -33,13 +33,17 @@ Auto = Building HP
 Satyr = Sky passage damage
 Argus = Human speed
 
+enemy DATABASE IS BROKEN WITH POWER RELICS
+bomber half dmg
+
+
 Redo cine
 */
 
 //---Launch Codes
 bool Visible = false;
 bool AllowEnemies = true;
-bool CineChoice = false;
+bool CineChoice = true;
 int TestRelic = 1;
 bool Helpers = true;
 
@@ -63,8 +67,8 @@ int NextNightAttack = 0;
 int Part = 0;
 int WonderHP = 9999;
 int Difficulty = 0;
-float yc = 0.1;
-bool TempleUnlocked = false;
+	float yc = 0.1;
+	bool TempleUnlocked = false;
 
 //SKIN DATA
 string TreeType = "";
