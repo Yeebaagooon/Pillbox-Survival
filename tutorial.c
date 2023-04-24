@@ -830,7 +830,7 @@ void CreateStartingRelics(int num = 1){
 					}
 					else if(dist >= 25600){
 						//FORCE LEVEL 4 RELICS
-						trQuestVarSetFromRand("temp", 30,38);
+						trQuestVarSetFromRand("temp", 30,41);
 						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
 						/*trQuestVarSetFromRand("temp2", 1,3);
 						if(1*trQuestVarGet("temp2") == 1){
@@ -1168,7 +1168,7 @@ inactive
 		Berry = "Dust Devil";
 		//---
 		City1Building = "Barracks";
-		City2Building = "Mounument 4";
+		City2Building = "Siege Camp";
 	}
 	if(MapSkin == 3){
 		TreeTerrain = "ForestFloorPineSnow";
@@ -1627,6 +1627,11 @@ active
 	for(i = xsMin(xGetDatabaseCount(dEnemies), cNumberNonGaiaPlayers); > 0){
 		xDatabaseNext(dEnemies);
 		xUnitSelect(dEnemies, xUnitID);
+		if(trUnitAlive() == false){
+			xFreeDatabaseBlock(dEnemies);
+			break;
+		}
+		xUnitSelect(dEnemies, xUnitID);
 		if(trUnitPercentDamaged() > 0){
 			if(xGetBool(dEnemies, xAggro) == false){
 				xSetBool(dEnemies, xAggro, true);
@@ -1647,15 +1652,12 @@ active
 				xUnitSelect(dEnemies, xUnitID);
 				trUnitMoveFromArea(xsVectorGetX(move),1,xsVectorGetZ(move), -1, true, cNumberNonGaiaPlayers, "All", 10);
 				xsSetContextPlayer(old);
-				/*xUnitSelect(dEnemies, xUnitID);
+				xUnitSelect(dEnemies, xUnitID);
 				trUnitHighlight(100, true);
-				debugLog(""+xGetInt(dEnemies, xUnitID));*/
+				debugLog(""+xGetInt(dEnemies, xUnitID));
 			}
 		}
 		xUnitSelect(dEnemies, xUnitID);
-		if(trUnitAlive() == false){
-			xFreeDatabaseBlock(dEnemies);
-		}
 	}
 	for(i = xsMin(xGetDatabaseCount(dTowers), cNumberNonGaiaPlayers); > 0){
 		xDatabaseNext(dTowers);
@@ -1701,31 +1703,31 @@ active
 						trQuestVarSetFromRand("temp", 1, 7);
 						if(1*trQuestVarGet("temp") == 1){
 							grantGodPowerNoRechargeNextPosition(p, "Journey" ,1);
-							ColouredChat("1,0,1", "Great Journey granted");
+							ColouredChatToPlayer(p, "1,0,1", "Great Journey granted");
 						}
 						if(1*trQuestVarGet("temp") == 2){
 							grantGodPowerNoRechargeNextPosition(p, "Vision" ,1);
-							ColouredChat("1,0,1", "Vision granted");
+							ColouredChatToPlayer(p, "1,0,1", "Vision granted");
 						}
 						if(1*trQuestVarGet("temp") == 3){
 							grantGodPowerNoRechargeNextPosition(p, "Sandstorm" ,1);
-							ColouredChat("1,0,1", "Shifting Sands granted");
+							ColouredChatToPlayer(p, "1,0,1", "Shifting Sands granted");
 						}
 						if(1*trQuestVarGet("temp") == 4){
 							grantGodPowerNoRechargeNextPosition(p, "Bolt" , 5);
-							ColouredChat("1,0,1", "5x Bolt granted");
+							ColouredChatToPlayer(p, "1,0,1", "5x Bolt granted");
 						}
 						if(1*trQuestVarGet("temp") == 5){
 							grantGodPowerNoRechargeNextPosition(p, "Gaia Forest" ,1);
-							ColouredChat("1,0,1", "Gaia Forest granted");
+							ColouredChatToPlayer(p, "1,0,1", "Gaia Forest granted");
 						}
 						if(1*trQuestVarGet("temp") == 6){
 							grantGodPowerNoRechargeNextPosition(p, "Prosperity" ,1);
-							ColouredChat("1,0,1", "Prosperity granted");
+							ColouredChatToPlayer(p, "1,0,1", "Prosperity granted");
 						}
 						if(1*trQuestVarGet("temp") == 7){
 							grantGodPowerNoRechargeNextPosition(p, "Timber Harvest" ,1);
-							ColouredChat("1,0,1", "Timber Harvest granted");
+							ColouredChatToPlayer(p, "1,0,1", "Timber Harvest granted");
 						}
 						if(trCurrentPlayer() == p){
 							playSound("\cinematics\17_in\weirdthing.mp3");

@@ -67,8 +67,8 @@ int NextNightAttack = 0;
 int Part = 0;
 int WonderHP = 9999;
 int Difficulty = 0;
-	float yc = 0.1;
-	bool TempleUnlocked = false;
+float yc = 0.1;
+bool TempleUnlocked = false;
 
 //SKIN DATA
 string TreeType = "";
