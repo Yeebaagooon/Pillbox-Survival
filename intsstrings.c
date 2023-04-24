@@ -16,6 +16,25 @@ tEMPLE DISABLED
 200k gold available
 700k wood available
 
+Reward choice for brining parts back?
+1
+Vision
+Great jounrey
+Prsperity
+Timber harvest
+Gaia forest
+Great hunt
+Lure
+Shifting sands
+Bolt
+
+Tower HP
+Villie HP
+Villie speed
+Sky passage attack
+Sky passage range
+Sky passage limit
+
 Redo cine
 */
 
@@ -23,11 +42,11 @@ Redo cine
 bool Visible = true;
 bool AllowEnemies = true;
 bool CineChoice = false;
-int TestRelic = 39;
+int TestRelic = 41;
 bool Helpers = false;
 
 //---Game Data
-int MapSkin = 1;
+int MapSkin = 3;
 //1, greek, 2 is eggy, 3 is norse, 4 is hades
 bool Day = true;
 int Date = 0;
@@ -47,6 +66,7 @@ int Part = 0;
 int WonderHP = 9999;
 int Difficulty = 0;
 float yc = 0.1;
+bool TempleUnlocked = false;
 
 //SKIN DATA
 string TreeType = "";

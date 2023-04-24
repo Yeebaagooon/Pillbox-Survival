@@ -346,6 +346,21 @@ highFrequency
 						trTechInvokeGodPower(0, "Bolt", vector(0,0,0), vector(0,0,0));
 						break;
 					}
+					if(xGetInt(dProjectiles, xProjSpecial) == 12){
+						//burn
+						xUnitSelect(dEnemies, xUnitID);
+						xAddDatabaseBlock(dOnFire, true);
+						xSetInt(dOnFire, xUnitID, xGetInt(dEnemies, xUnitID));
+						xSetFloat(dOnFire, xTimeToBurn, trTimeMS()+1500);
+						xSetFloat(dOnFire, xTotalBurnDamage, 500);
+						xSetFloat(dOnFire, xDamagePerTick, xGetFloat(dOnFire, xTotalBurnDamage)/xGetFloat(dOnFire, xTimeToBurn));
+						xUnitSelect(dEnemies, xSpyBurn);
+						trMutateSelected(kbGetProtoUnitID("Inferno Unit Flame"));
+						xSetInt(dOnFire, xBurnSpyID, xGetInt(dEnemies, xSpyBurn));
+						ProjChange = false;
+						ProjDead = false;
+						break;
+					}
 					continue;
 					//[BUG, HITS ENEMY MULTIPLE TIMES]
 				}
@@ -836,10 +851,12 @@ void HelpText(int p = 0){
 		}
 	}
 	if(CartsCaptured >= 5){
-		//ColouredChatToPlayer(p, "1,1,1", "<icon=(20)(icons\icon building temple)> - Recycle relics and buy upgrades");
 		if(trCurrentPlayer() == p){
 			trMessageSetText("OBJECTIVE: Defend and repair the rocket with wood to win.", 10000);
 		}
+	}
+	if(TempleUnlocked){
+		ColouredChatToPlayer(p, "1,1,1", "<icon=(20)(icons\icon building temple)> - Recycle relics and buy upgrades");
 	}
 }
 

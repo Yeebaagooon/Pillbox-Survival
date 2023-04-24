@@ -197,9 +197,9 @@ highFrequency
 	trModifyProtounit("Circe", cNumberNonGaiaPlayers, 0, 750);
 	trModifyProtounit("Minion", cNumberNonGaiaPlayers,8, 1000);
 	trRateConstruction(5);
-	trModifyProtounit("Minion", cNumberNonGaiaPlayers, 0, 100);
-	trModifyProtounit("Ulfsark", cNumberNonGaiaPlayers, 0, 100);
-	trModifyProtounit("Spearman", cNumberNonGaiaPlayers, 0, 100);
+	modifyProtounitAbsolute("Minion", cNumberNonGaiaPlayers, 0, 100);
+	modifyProtounitAbsolute("Ulfsark", cNumberNonGaiaPlayers, 0, 100);
+	modifyProtounitAbsolute("Spearman", cNumberNonGaiaPlayers, 0, 100);
 	xsDisableSelf();
 	xsEnableRule("ChickenBlood");
 }

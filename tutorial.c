@@ -941,6 +941,110 @@ void CreateStartingBerries(int num = 1){
 	}
 }
 
+void CreateTemple(){
+	vector spawn = vector(0,0,0);
+	vector MapMid = xsVectorSet(getMapSize()/2, 0, getMapSize()/2);
+	int temp = 0;
+	int allow = 0;
+	float dist = 0.0;
+	int num = 1;
+	while(num > 0){
+		trQuestVarSetFromRand("x", 0, 200);
+		trQuestVarSetFromRand("z", 0, 200);
+		spawn = perlinRoll(myPerlin, 1*trQuestVarGet("x"),1*trQuestVarGet("z"), 1, -1,20, false) ;
+		dist = distanceBetweenVectors(spawn, MapMid, true);
+		if(dist > 7000){
+			//no city
+			allow = 0;
+			for(b = xGetDatabaseCount(dCity); > 0){
+				xDatabaseNext(dCity);
+				if(distanceBetweenVectors(spawn, xGetVector(dCity, xLocation)) > 2000){
+					allow = allow+1;
+				}
+			}
+			if(allow == CitiesToMake){
+				temp = trGetNextUnitScenarioNameNumber();
+				MapMid = xsVectorNormalize(MapMid-spawn);
+				UnitCreate(0, "Victory Marker", xsVectorGetX(spawn), xsVectorGetZ(spawn));
+				trUnitSelectClear();
+				trUnitSelect(""+temp);
+				trUnitChangeProtoUnit("Temple Underworld");
+				trUnitSelectClear();
+				trUnitSelect(""+temp);
+				trSetUnitOrientation(MapMid, MapMid);
+				trUnitSelectClear();
+				trUnitSelect(""+temp);
+				trUnitChangeInArea(0,0,TreeType, "Cinematic Block", 14);
+				trUnitSelectClear();
+				trUnitSelect(""+temp);
+				trUnitSetAnimationPath("0,-1,-1,-1,-1,-1,0");
+				trQuestVarSet("Temple", temp);
+				spawn = (spawn+MapMid*8);
+				temp = trGetNextUnitScenarioNameNumber();
+				UnitCreate(0, "Victory Marker", xsVectorGetX(spawn), xsVectorGetZ(spawn));
+				trUnitSelectClear();
+				trUnitSelect(""+temp);
+				trUnitChangeProtoUnit("Titan Atlantean");
+				trUnitSelectClear();
+				trUnitSelect(""+temp);
+				trUnitChangeProtoUnit("Relic");
+				trQuestVarSet("TempleRelic", temp);
+				temp = yGetLatestReverse("Titan Gate Dead");
+				trUnitSelectClear();
+				trUnitSelect(""+temp);
+				trUnitChangeProtoUnit("Spy Eye");
+				trUnitSelectClear();
+				trUnitSelect(""+temp);
+				trMutateSelected(kbGetProtoUnitID("Trident"));
+				trUnitSelectClear();
+				trUnitSelect(""+temp);
+				trSetUnitOrientation(vector(1.0, 0.0, 0.0), vector(0.0, 0.0, 1.0), true);
+				trQuestVarSet("TempleRelicSFX", temp);
+				num = 0;
+			}
+			else{
+				trUnitSelectClear();
+				trUnitSelect(""+temp);
+				trUnitDestroy();
+			}
+		}
+	}
+}
+
+rule UnlockTemple
+highFrequency
+inactive
+{
+	trUnitSelectByQV("TempleRelic");
+	if(trUnitGetIsContained() == true){
+		trOverlayText("Temple unlocked - recycle unwanted relics into resources here and research upgrades", 7);
+		for(p = 1; < cNumberNonGaiaPlayers){
+			trUnforbidProtounit(p, "Temple");
+		}
+		TempleUnlocked = true;
+		trUnitSelectByQV("TempleRelic");
+		trUnitChangeProtoUnit("Olympus Temple SFX");
+		trUnitSelectByQV("TempleRelicSFX");
+		trUnitChangeProtoUnit("Arkantos God Out");
+		trUnitSelectByQV("Temple");
+		trUnitChangeProtoUnit("Titan Atlantean");
+		trUnitSelectByQV("Temple");
+		trUnitChangeProtoUnit("Temple Underworld");
+		trUnitSelectByQV("Temple");
+		trUnitSetAnimationPath("0,0,0,0,0,-1,0");
+		playSound("\cinematics\15_in\gong.wav");
+		trUnitSelectClear();
+		trUnitSelect(""+yGetLatestReverse("Titan Gate Dead"));
+		trUnitChangeProtoUnit("Imperial Examination");
+		xsDisableSelf();
+	}
+	if (trUnitIsSelected()) {
+		uiClearSelection();
+		ColouredChat("1,0.5,0", "<u>Temple Relic</u>");
+		ColouredChat("1,1,1", "Pick this up to gain the ability to construct temples");
+	}
+}
+
 rule WorldCreate
 highFrequency
 inactive
@@ -1208,6 +1312,7 @@ inactive
 	CreateStartingRelics(50);
 	CreateStartingAnimals(30);
 	CreateStartingBerries(30);
+	CreateTemple();
 	refreshPassability();
 	if(Visible == false){
 		trSetFogAndBlackmap(true, true);
@@ -1248,6 +1353,15 @@ inactive
 	uiLookAtProto("Villager Atlantean Hero");
 	xsEnableRule("FirstHelper");
 	trUnforbidProtounit(1, "Temple");
+	trUnforbidProtounit(1, "Oracle Scout");
+	trUnforbidProtounit(1, "Automaton");
+	trUnforbidProtounit(1, "Behemoth");
+	trUnforbidProtounit(1, "Satyr");
+	trUnforbidProtounit(1, "Lampades");
+	trUnforbidProtounit(1, "Argus");
+	trUnforbidProtounit(1, "Manticore");
+	trUnforbidProtounit(1, "Phoenix");
+	xsEnableRule("UnlockTemple");
 	smooth(4);
 	if(MapSkin == 3){
 		replaceTerrainBelowHeightMin(Terrain5, "IceC", -1);
@@ -1364,10 +1478,7 @@ inactive
 					if(xGetInt(dProjectiles, xProjAmmoCost) <= xGetInt(dPlayerData, xAmmo)){
 						if(trCurrentPlayer() == p){
 							trClearCounterDisplay();
-							//uiZoomToProto("Tower");
-							//uiZoomToProto("Helepolis");
-							//uiLookAtProto("Tower");
-							uiLookAtUnitByName(""+xGetInt(dTowers, xUnitID));
+							//uiLookAtUnitByName(""+xGetInt(dTowers, xUnitID));
 							trSetCounterDisplay("<color={PlayerColor("+p+")}>Firing " + xGetString(dProjectiles, xProjName) + "| Ammo remaining - " + xGetInt(dPlayerData, xAmmo));
 						}
 					}
@@ -2151,7 +2262,6 @@ highFrequency
 	if((trTime()-cActivationTime) >= 4){
 		//if(CartsCaptured == CitiesToMake){
 		trCounterAbort("rocketparts");
-		//trOverlayText("Temple unlocked - recycle unwanted relics into ammo here and research upgrades", 7);
 		xsEnableRule("Part2");
 		xsDisableSelf();
 		xsDisableRule("RocketAttackWarn");

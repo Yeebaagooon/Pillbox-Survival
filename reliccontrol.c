@@ -63,6 +63,7 @@ highFrequency
 {
 	int time = trTimeMS();
 	int old = xGetPointer(dProjectiles);
+	int bounty = 0;
 	for(a = xGetDatabaseCount(dFreeRelics); > 0){
 		xDatabaseNext(dFreeRelics);
 		xSetPointer(dProjectiles, xGetInt(dFreeRelics, xProjPointer));
@@ -97,19 +98,6 @@ highFrequency
 				}
 			}
 		}
-		else if (trUnitGetIsContained("Temple")) {
-			for(p=1; < cNumberNonGaiaPlayers) {
-				xSetPointer(dPlayerData, p);
-				xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)+xGetInt(dProjectiles, xProjAmmoCost)*2);
-				trPlayerGrantResources(p, "Wood", 2*xGetInt(dProjectiles, xProjAmmoCost));
-			}
-			xUnitSelect(dFreeRelics, xUnitID);
-			trUnitChangeProtoUnit("Heavenlight");
-			xUnitSelect(dFreeRelics, xSFXID);
-			trUnitChangeProtoUnit("Heavenlight");
-			xFreeDatabaseBlock(dFreeRelics);
-			//break;
-		}
 		xUnitSelect(dFreeRelics, xUnitID);
 		if (trUnitIsSelected()) {
 			uiClearSelection();
@@ -133,6 +121,10 @@ highFrequency
 				xUnitSelect(dFreeRelics, xSFXID);
 				trUnitSetAnimationPath(xGetString(dProjectiles, xProjRelicAnimPath));
 			}
+			if(xGetInt(dFreeRelics, xSFXExtra) == 2){
+				xUnitSelect(dFreeRelics, xSFXID);
+				trUnitOverrideAnimation(6,0,true,true,-1);
+			}
 		}
 	}
 	if(time > timelast){
@@ -155,10 +147,11 @@ highFrequency
 		xUnitSelect(dHeldRelics, xUnitID);
 		//If relic is dropped
 		if (trUnitGetIsContained("Temple")) {
-			//Recycle relic - give every player the total ammo
+			//Recycle relic - give every player the total ammo and wood
 			for(p=1; < cNumberNonGaiaPlayers) {
 				xSetPointer(dPlayerData, p);
-				xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)+xGetInt(dProjectiles, xProjAmmoCost));
+				xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)+xGetInt(dProjectiles, xProjAmmoCost)*2);
+				trPlayerGrantResources(p, "Wood", xGetInt(dProjectiles, xProjAmmoCost));
 			}
 			xUnitSelect(dHeldRelics, xUnitID);
 			trUnitChangeProtoUnit("Heavenlight");

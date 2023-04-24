@@ -156,6 +156,8 @@ const int PROJ_Nottud = 36;
 const int PROJ_RaptureDeluxe = 37;
 const int PROJ_Kronos = 38;
 const int PROJ_Ten = 39;
+const int PROJ_ChickenGrenadeTriple = 40;
+const int PROJ_LiquidFire = 41;
 
 //4 levels, maybe 5 if there's a reward only
 
@@ -1178,6 +1180,56 @@ highFrequency
 	ProjNoShoot();
 	ProjRelicDecorate("Vortex finish linked",1, "0,0,1,0,0,0", 1);
 	ProjTowerDecor("Vortex start linked", "0,0,1,0,0,0",2.5);
+	
+	//--BUILD MISSILE --- 40
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(PROJ_ChickenGrenadeTriple);
+	ProjSetName("Chicken Grenade Triple");
+	ProjSetDesc("Fires exploding chickens");
+	ProjSetProto("Chicken Exploding");
+	ProjSetAnim(2);
+	ProjSetAnimPath("0,0,0,0,0,0");
+	ProjSetSize(1);
+	ProjSetDamage(200);
+	ProjRangeandLOS(24,24);
+	ProjSetAmmoCost(70);
+	ProjSetFireRate(1800);
+	ProjSetCount(3);
+	ProjSetAngle(20);
+	ProjSetBaseCosSin(0.939693, 0.342020); //the initial +cos/sin (+20)
+	ProjSetMoveCosSin(0.939693, -0.342020); //the incremental -cos/sin (-20)
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(5);
+	ProjSetSound("chickenambient.wav");
+	//ProjAllowPassThrough();
+	ProjDeathEffect();
+	//ProjNoShoot();
+	ProjRelicDecorate("Chicken", 0 , "0,0,0,0,0,0", 1.5);
+	ProjTowerDecor("Cinematic Block");
+	
+	//--BUILD MISSILE --- 41
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(PROJ_LiquidFire);
+	ProjSetName("Greek fire");
+	ProjSetDesc("Launches liquid fire, dealing additional burn damage");
+	ProjSetProto("Meteorite");
+	ProjSetAnim(6);
+	ProjSetSize(1);
+	ProjSetDamage(500);
+	ProjRangeandLOS(24,24);
+	ProjSetAmmoCost(200);
+	ProjSetFireRate(2000);
+	ProjSetCount(1);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(12);
+	ProjSetSound("fireball launch.wav");
+	ProjAllowPassThrough();
+	//ProjDeathEffect();
+	//ProjNoShoot();
+	ProjRelicDecorate("Meteorite",2, "", 1);
+	ProjTowerDecor("Fire Hades");
 	
 	
 	
