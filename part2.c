@@ -69,7 +69,7 @@ highFrequency
 		LunchTime = trTime()+1000;
 		TeaTime = trTime()+1000;
 		trSetLighting("default", 6);
-		xsEnableRule("EndGameWin");
+		xsEnableRule("RocketLaunchSequence");
 	}
 }
 
@@ -77,13 +77,48 @@ rule EndGameWin
 highFrequency
 inactive
 {
+	trCounterAbort("clock");
+	trShowWinLose("TEST VERSION DO NOT HOST", "xwin.wav");
+	for(p=1 ; < cNumberNonGaiaPlayers){
+		trSetPlayerWon(p);
+	}
+	EndChats();
+	xsDisableSelf();
+	trEndGame();
+}
+
+
+rule RocketLaunchSequence
+highFrequency
+inactive
+{
 	if (trTime() > cActivationTime + 5) {
-		trShowWinLose("TEST VERSION DO NOT HOST", "xwin.wav");
-		for(p=1 ; < cNumberNonGaiaPlayers){
-			trSetPlayerWon(p);
-		}
-		EndChats();
 		xsDisableSelf();
-		trEndGame();
+		FloatingUnitAnimIdle("Implode Sphere Effect", getMapSize()/2,0,getMapSize()/2,0,0,0);
+		AddUnitToDB(dRocket, xUnitID, 1*trQuestVarGet("QVHero"));
+		trUnitSelectByQV("QVRelic");
+		trSetSelectedUpVector(0,0,0);
+		trUnitSelectByQV("QVHero");
+		trSetSelectedUpVector(0,0,0);
+		xsEnableRule("Launch");
+		trCounterAbort("clock");
+	}
+}
+
+rule Launch
+highFrequency
+inactive
+{
+	vector unit = vector(0,0,0);
+	for(a = xGetDatabaseCount(dRocket) ; > 0){
+		xDatabaseNext(dRocket);
+		unit = kbGetBlockPosition(""+xGetInt(dRocket, xUnitID));
+		xUnitSelect(dRocket, xUnitID);
+		trUnitTeleport(xsVectorGetX(unit), xsVectorGetY(unit)+yc, xsVectorGetZ(unit));
+	}
+	yc = yc+0.01;
+	if(yc > 1){
+		xsDisableSelf();
+		xsEnableRule("EndGameWin");
 	}
 }

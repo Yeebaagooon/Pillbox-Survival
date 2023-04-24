@@ -68,9 +68,9 @@ void ProjSetDesc(string texts = ""){
 }
 
 void ProjSetAmmoCost(int num = 1){
-	if(num != 10){
+	/*if(num != 10){
 		num = num*1.5;
-	}
+	}*/
 	xSetInt(dProjectiles, xProjAmmoCost, num);
 }
 
@@ -123,33 +123,39 @@ const int PROJ_Blue = 6;
 const int PROJ_Bolter = 7;
 const int PROJ_Burner = 8;
 const int PROJ_Justice = 9;
+const int PROJ_Spider = 10;
 //---CLASS 2
-const int PROJ_BolterClose = 10;
-const int PROJ_Rapture = 11;
-const int PROJ_MiniGrenade_C3A10 = 12;
-const int PROJ_Flammenwerfer = 13;
-const int PROJ_FlammenwerferC5A10 = 14;
-const int PROJ_BlueC2A5 = 15;
-const int PROJ_BlueC3A5 = 16;
-const int PROJ_Curse = 17;
-const int PROJ_CurseFast = 18;
-const int PROJ_100Dmg = 19;
-const int PROJ_Tremor = 20;
+const int PROJ_BolterClose = 11;
+const int PROJ_Rapture = 12;
+const int PROJ_MiniGrenade_C3A10 = 13;
+const int PROJ_Flammenwerfer = 14;
+const int PROJ_FlammenwerferC5A10 = 15;
+const int PROJ_BlueC2A5 = 16;
+const int PROJ_BlueC3A5 = 17;
+const int PROJ_Curse = 18;
+const int PROJ_CurseFast = 19;
+const int PROJ_100Dmg = 20;
+const int PROJ_Tremor = 21;
 //---CLASS 3
-const int PROJ_ChickenGrenade = 21;
-const int PROJ_Acid = 22;
-const int PROJ_Sniper = 23;
-const int PROJ_RaptureMyth = 24;
-const int PROJ_JusticeMyth = 25;
-const int PROJ_Homo = 26;
-const int PROJ_Dimensional = 27;
-const int PROJ_Explosion = 28;
-const int PROJ_SniperExplode = 29;
-const int PROJ_Sunstrike = 30;
-const int PROJ_Tesla = 31;
-const int PROJ_BolterDeluxe = 32;
-const int PROJ_Purple = 33;
-const int PROJ_Tsunami = 34;
+const int PROJ_ChickenGrenade = 22;
+const int PROJ_Acid = 23;
+const int PROJ_Sniper = 24;
+const int PROJ_RaptureMyth = 25;
+const int PROJ_JusticeMyth = 26;
+const int PROJ_Homo = 27;
+const int PROJ_Dimensional = 28;
+const int PROJ_Explosion = 29;
+//---CLASS 4
+const int PROJ_SniperExplode = 30;
+const int PROJ_Sunstrike = 31;
+const int PROJ_Tesla = 32;
+const int PROJ_BolterDeluxe = 33;
+const int PROJ_Purple = 34;
+const int PROJ_Tsunami = 35;
+const int PROJ_Nottud = 36;
+const int PROJ_RaptureDeluxe = 37;
+const int PROJ_Kronos = 38;
+const int PROJ_Ten = 39;
 
 //4 levels, maybe 5 if there's a reward only
 
@@ -1042,7 +1048,7 @@ highFrequency
 	ProjSetDamage(900);
 	ProjRangeandLOS(24,24);
 	ProjSetAmmoCost(300);
-	ProjSetFireRate(7000);
+	ProjSetFireRate(5000);
 	ProjSetCount(1);
 	ProjSetSpeed(30.0);
 	ProjSetSpecial(0);
@@ -1052,6 +1058,127 @@ highFrequency
 	//ProjNoShoot();
 	ProjRelicDecorate("Splash",1, "", 0.1);
 	ProjTowerDecor("Kronny Birth");
+	
+	//--BUILD MISSILE --- 35
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(PROJ_Nottud);
+	ProjSetName("Meteor Tower");
+	ProjSetDesc("Rains SPC meteors down for huge damage on stationary enemies");
+	ProjSetProto("Spear");
+	ProjSetAnim(2);
+	ProjSetSize(1);
+	ProjSetDamage(2000);
+	ProjRangeandLOS(40,40);
+	ProjSetAmmoCost(400);
+	ProjSetFireRate(5000);
+	ProjSetCount(1);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("meteorapproach.wav");
+	//ProjAllowPassThrough();
+	//ProjDeathEffect();
+	ProjNoShoot();
+	ProjRelicDecorate("Phoenix Egg",1, "", 0.8);
+	ProjTowerDecor("Meteor");
+	
+	//--BUILD MISSILE --- 36
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(PROJ_RaptureDeluxe);
+	ProjSetName("Rapture Tower Deluxe");
+	ProjSetDesc("Raptures any units, but reduced range and expensive");
+	ProjSetProto("Spear");
+	ProjSetAnim(2);
+	ProjSetSize(0);
+	ProjSetDamage(0);
+	ProjRangeandLOS(15,16);
+	ProjSetAmmoCost(250);
+	ProjSetFireRate(1250);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("\xpack\xcinematics\8_in\krioschange.mp3");
+	//ProjAllowPassThrough();
+	//ProjDeathEffect();
+	ProjNoShoot();
+	ProjRelicDecorate("Ragnorok SFX", 1,);
+	ProjTowerDecor("Vortex Landing", "0,1,0,0,0,0");
+	
+	//--BUILD MISSILE --- 37
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(PROJ_Kronos);
+	ProjSetName("Purple cloud of doom Deluxe");
+	ProjSetDesc("Fires an even bigger deadlier purple cloud");
+	ProjSetProto("Titan Kronos");
+	ProjSetAnim(2);
+	ProjSetSize(0);
+	ProjSetAnimPath("0,0,0,0,0,0,0");
+	ProjSetDamage(800);
+	ProjRangeandLOS(26,26);
+	ProjSetAmmoCost(400);
+	ProjSetFireRate(1500);
+	ProjSetCount(9);
+	ProjSetAngle(5);
+	ProjSetBaseCosSin(0.939693, 0.342020); //the initial +cos/sin (+20)
+	ProjSetMoveCosSin(0.996195, -0.087156); //the incremental -cos/sin (-5)
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("\cinematics\31_in\sound 1.mp3");
+	ProjAllowPassThrough();
+	//ProjDeathEffect();
+	//ProjNoShoot();
+	ProjRelicDecorate("Kronny Birth SFX" ,1, "0,1,0,0,0,0", 0.0);
+	ProjTowerDecor("Titan Kronos", "0,0,0,0,0,0", 0);
+	
+	//--BUILD MISSILE --- 38
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(PROJ_Spider);
+	ProjSetName("Spider Summoner");
+	ProjSetDesc("Does no damage but summons spider eggs");
+	ProjSetProto("Spear");
+	ProjSetAnim(2);
+	ProjSetSize(1);
+	ProjSetDamage(0);
+	ProjRangeandLOS(40,40);
+	ProjSetAmmoCost(70);
+	ProjSetFireRate(4000);
+	ProjSetCount(1);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("spiders2.wav");
+	//ProjAllowPassThrough();
+	//ProjDeathEffect();
+	ProjNoShoot();
+	ProjRelicDecorate("Spider Door",0, "", 0.8);
+	ProjTowerDecor("Spider Egg", "0,0,0,0,0,0",2.5);
+	
+	//--BUILD MISSILE --- 39
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(PROJ_Ten);
+	ProjSetName("Death Pact of Ten");
+	ProjSetDesc("When 10 enemies are highlighted, kills them all");
+	ProjSetProto("Spear");
+	ProjSetAnim(2);
+	ProjSetSize(1);
+	ProjSetDamage(0);
+	ProjRangeandLOS(40,40);
+	ProjSetAmmoCost(40);
+	ProjSetFireRate(500);
+	ProjSetCount(1);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("underminebirth.wav");
+	//ProjAllowPassThrough();
+	//ProjDeathEffect();
+	ProjNoShoot();
+	ProjRelicDecorate("Vortex finish linked",1, "0,0,1,0,0,0", 1);
+	ProjTowerDecor("Vortex start linked", "0,0,1,0,0,0",2.5);
+	
 	
 	
 	//END

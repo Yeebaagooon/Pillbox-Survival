@@ -156,7 +156,7 @@ highFrequency
 					trDamageUnit(xGetInt(dProjectiles, xProjDamage));
 				}
 				else{
-					trDamageUnit(xGetInt(dProjectiles, xProjDamage)*0.25);
+					trDamageUnit(xGetInt(dProjectiles, xProjDamage)*1);
 				}
 				/*if(xGetInt(dProjectiles, xProjSpecial) == 0){
 					trTechInvokeGodPower(0, "tremor", kbGetBlockPosition(""+xGetInt(dEnemies, xUnitID)), vector(0,0,0));
@@ -475,6 +475,7 @@ int SpawnEnemy(string pname="", int x = 0, int z = 0, bool stationary = false, i
 	xUnitSelect(dEnemies, xUnitID);
 	spyEffect(kbGetProtoUnitID("Cinematic Block"), 2, xsVectorSet(dEnemies, xSpyBurn, index), vector(1,1,1));
 	spyEffect(kbGetProtoUnitID("Cinematic Block"), 2, xsVectorSet(dEnemies, xSpyStun, index), vector(1,1,1));
+	spyEffect(kbGetProtoUnitID("Cinematic Block"), 2, xsVectorSet(dEnemies, xSpyStatus, index), vector(1,1,1));
 	return(temp);
 }
 
@@ -625,13 +626,53 @@ void CityPillbox(int c = 0){
 		if(xGetInt(dCity, xNumber) == c){
 			central = xGetVector(dCity, xLocation);
 			//---22 is edge of white tile, 24 set to lowest
-			if(iModulo(2, trTimeMS()) == 0){
-				CreatePillBox(xsVectorGetX(central)+dist,xsVectorGetZ(central));
-				CreatePillBox(xsVectorGetX(central),xsVectorGetZ(central)+dist);
+			if(c == 1){
+				if(iModulo(4, trTimeMS()) == 0){
+					CreatePillBox(xsVectorGetX(central),xsVectorGetZ(central)+dist);
+					CreatePillBox(xsVectorGetX(central)-dist,xsVectorGetZ(central));
+					CreatePillBox(xsVectorGetX(central),xsVectorGetZ(central)-dist);
+				}
+				else if(iModulo(4, trTimeMS()) == 1){
+					CreatePillBox(xsVectorGetX(central)+dist,xsVectorGetZ(central));
+					CreatePillBox(xsVectorGetX(central)-dist,xsVectorGetZ(central));
+					CreatePillBox(xsVectorGetX(central),xsVectorGetZ(central)-dist);
+				}
+				else if(iModulo(4, trTimeMS()) == 2){
+					CreatePillBox(xsVectorGetX(central)+dist,xsVectorGetZ(central));
+					CreatePillBox(xsVectorGetX(central),xsVectorGetZ(central)+dist);
+					CreatePillBox(xsVectorGetX(central),xsVectorGetZ(central)-dist);
+				}
+				else if(iModulo(4, trTimeMS()) == 3){
+					CreatePillBox(xsVectorGetX(central)+dist,xsVectorGetZ(central));
+					CreatePillBox(xsVectorGetX(central),xsVectorGetZ(central)+dist);
+					CreatePillBox(xsVectorGetX(central)-dist,xsVectorGetZ(central));
+				}
+				
 			}
-			else{
-				CreatePillBox(xsVectorGetX(central)-dist,xsVectorGetZ(central));
-				CreatePillBox(xsVectorGetX(central),xsVectorGetZ(central)-dist);
+			if((c == 2) || (c == 3)){
+				if(iModulo(2, trTimeMS()) == 0){
+					CreatePillBox(xsVectorGetX(central)+dist,xsVectorGetZ(central));
+					CreatePillBox(xsVectorGetX(central),xsVectorGetZ(central)+dist);
+				}
+				else{
+					CreatePillBox(xsVectorGetX(central)-dist,xsVectorGetZ(central));
+					CreatePillBox(xsVectorGetX(central),xsVectorGetZ(central)-dist);
+				}
+			}
+			if(c == 4){
+				if(iModulo(4, trTimeMS()) == 0){
+					CreatePillBox(xsVectorGetX(central)+dist,xsVectorGetZ(central));
+				}
+				else if(iModulo(4, trTimeMS()) == 1){
+					CreatePillBox(xsVectorGetX(central),xsVectorGetZ(central)+dist);
+				}
+				else if(iModulo(4, trTimeMS()) == 2){
+					CreatePillBox(xsVectorGetX(central)-dist,xsVectorGetZ(central));
+				}
+				else if(iModulo(4, trTimeMS()) == 3){
+					CreatePillBox(xsVectorGetX(central),xsVectorGetZ(central)-dist);
+				}
+				
 			}
 		}
 	}

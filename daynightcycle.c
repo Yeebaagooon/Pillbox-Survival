@@ -3,6 +3,8 @@ inactive
 highFrequency
 {
 	if(trTime() >= NextDay){
+		trCounterAbort("clock");
+		trCounterAddTime("clock", 180, 0, "<color={PlayerColor(0)}>Night Time", -1);
 		Date = Date+1;
 		trSetLighting("Dawn", 10);
 		Day = true;
@@ -36,8 +38,8 @@ highFrequency
 {
 	if(trTime() >= LunchTime){
 		xsDisableSelf();
-		trSetLighting("default", 50);
-		TeaTime = trTime()+50;
+		trSetLighting("default", 80);
+		TeaTime = trTime()+80;
 		xsEnableRule("DinDins");
 		if(Part == 2){
 			//Send bombers
@@ -54,8 +56,8 @@ highFrequency
 {
 	if(trTime() >= TeaTime){
 		xsDisableSelf();
-		trSetLighting("Dusk", 60);
-		NextNight = trTime()+60;
+		trSetLighting("Dusk", 90);
+		NextNight = trTime()+90;
 		xsEnableRule("BeginNight");
 		if(Part == 2){
 			//Send bombers
@@ -71,6 +73,8 @@ inactive
 highFrequency
 {
 	if(trTime() >= NextNight){
+		trCounterAbort("clock");
+		trCounterAddTime("clock", 120, 0, "<color={PlayerColor(0)}>Day Time", -1);
 		xsDisableSelf();
 		trSetLighting("Night", 10);
 		NextNight = trTime()+240;
@@ -102,7 +106,9 @@ highFrequency
 		if(trTime() > NextNightAttack){
 			if(Day == false){
 				if(Part == 2){
-					Date = Date+1;
+					if(Difficulty > 1){
+						Date = Date+1;
+					}
 					//Stronger enemies
 				}
 				NextNightAttack = trTime()+NightInterval;
@@ -275,7 +281,9 @@ highFrequency
 					}
 				}
 				if(Part == 2){
-					Date = Date-1;
+					if(Difficulty > 1){
+						Date = Date-1;
+					}
 					//Stronger enemies reset
 				}
 			}

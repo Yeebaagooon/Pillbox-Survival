@@ -9,6 +9,12 @@ void CreateRocket(int x = 0, int z = 0){
 		}
 		xResetDatabase(dRocket);
 	}
+	for(a = 1; <= 20){
+		temp = trGetNextUnitScenarioNameNumber();
+		UnitCreate(0, "Dwarf", x, z, 0);
+		trQuestVarSet("RocketExpl"+a, temp);
+	}
+	
 	temp = trGetNextUnitScenarioNameNumber();
 	UnitCreate(0, "Dwarf", x, z, 0);
 	trQuestVarSet("RocketUnit", temp);
@@ -23,24 +29,20 @@ void CreateRocket(int x = 0, int z = 0){
 	UnitCreate(0, "Dwarf", x, z, 180);
 	UnitCreate(0, "Dwarf", x, z, 240);
 	UnitCreate(0, "Dwarf", x, z, 300);
-	for(a = temp; < temp+6){
-		trUnitSelectClear();
-		trUnitSelect(""+a);
-		trUnitChangeProtoUnit("Spy Eye");
-		trUnitSelectClear();
-		trUnitSelect(""+a);
-		trMutateSelected(kbGetProtoUnitID("Shrine"));
-		trUnitSelectClear();
-		trUnitSelect(""+a);
-		trSetSelectedScale(2,10,2);
-		AddUnitToDB(dRocket, xUnitID, a);
+	for(a = 1; < 6){
+		temp = trGetNextUnitScenarioNameNumber();
+		FloatingUnitAnimIdle("Shrine", x, 0, z, a*60, 2,10,2, "1,0,0,0,0,0");
+		AddUnitToDB(dRocket, xUnitID, 1*trQuestVarGet("QVHero"));
 	}
 	trUnitSelectClear();
-	trUnitSelect(""+(temp-1));
+	/*trUnitSelect(""+(temp-1));
 	trUnitChangeProtoUnit("Columns");
 	trUnitSelectClear();
 	trUnitSelect(""+(temp-1));
-	trSetSelectedScale(8,8,8);
+	trSetSelectedScale(8,8,8);*/
+	temp = trGetNextUnitScenarioNameNumber();
+	FloatingUnitAnimIdle("Columns", x, 0, z, 0, 8,8,8, "1,0,0,0,0,0");
+	AddUnitToDB(dRocket, xUnitID, 1*trQuestVarGet("QVHero"));
 	trUnitSelectClear();
 	trUnitSelect(""+(temp-2));
 	trUnitChangeProtoUnit("Spy Eye");
@@ -89,11 +91,11 @@ void CreateRocket(int x = 0, int z = 0){
 		trUnitChangeProtoUnit("Revealer");
 		
 		//	Shuttle body
-		FloatingUnit("Great Box", getMapSize()/2-10, 10, getMapSize()/2, 0, 1,1,1);
 		FloatingUnitAnimIdle("Obelisk", x-4, 15, z, 0, 2,1,2);
 		trQuestVarSet("ShuttleEC1", 1*trQuestVarGet("QVRelic"));
 		trUnitSelectByQV("QVRelic");
 		trMutateSelected(kbGetProtoUnitID("Cinematic Block"));
+		AddUnitToDB(dRocket, xUnitID, 1*trQuestVarGet("QVHero"));
 		
 		//STAGE 1 LAUNCH PAD
 		FloatingUnitAnimIdle("Columns", x+14, 8, z-2, 0, 1,2,1, "1,0,0,0,0,0");
@@ -383,7 +385,7 @@ void SetupCities(){
 			tempV = tempV/2;
 			//from metres to tiles
 			//---CITY 1 LAYOUT
-			CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)-5, 3, getTerrainType(Terrain5), getTerrainSubType(Terrain5), 0, "Academy", 180);
+			CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)-5, 3, getTerrainType(Terrain5), getTerrainSubType(Terrain5), 0, City1Building, 180);
 			trQuestVarSet("temp1", trGetNextUnitScenarioNameNumber());
 			UnitCreate(0, "Dwarf",(xsVectorGetX(tempV)+4)*2,(xsVectorGetZ(tempV)+5)*2);
 			trQuestVarSet("temp2", trGetNextUnitScenarioNameNumber());
@@ -411,8 +413,8 @@ void SetupCities(){
 			tempV = tempV/2;
 			//from metres to tiles
 			//---CITY 2 LAYOUT
-			CreateUnitInAtlantisBox(xsVectorGetX(tempV)-6,xsVectorGetZ(tempV), 3, getTerrainType(RoadTerrain), getTerrainSubType(RoadTerrain), 0, "Academy", 0);
-			CreateUnitInAtlantisBox(xsVectorGetX(tempV)+6,xsVectorGetZ(tempV), 3, getTerrainType(RoadTerrain), getTerrainSubType(RoadTerrain), 0, "Archery Range", 0);
+			CreateUnitInAtlantisBox(xsVectorGetX(tempV)-6,xsVectorGetZ(tempV), 3, getTerrainType(RoadTerrain), getTerrainSubType(RoadTerrain), 0, City1Building, 0);
+			CreateUnitInAtlantisBox(xsVectorGetX(tempV)+6,xsVectorGetZ(tempV), 3, getTerrainType(RoadTerrain), getTerrainSubType(RoadTerrain), 0, City2Building, 0);
 			trQuestVarSet("temp1", trGetNextUnitScenarioNameNumber());
 			UnitCreate(0, "Dwarf",(xsVectorGetX(tempV)+4)*2,(xsVectorGetZ(tempV)+5)*2);
 			trQuestVarSet("temp2", trGetNextUnitScenarioNameNumber());
@@ -450,9 +452,26 @@ void SetupCities(){
 			tempV = tempV/2;
 			//from metres to tiles
 			//---CITY 3 LAYOUT
-			CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)+7, 3, getTerrainType("CityTileA"), getTerrainSubType("CityTileA"), 0, "Temple", 90);
-			CreateUnitInAtlantisBox(xsVectorGetX(tempV)+7,xsVectorGetZ(tempV), 2, getTerrainType("CityTileA"), getTerrainSubType("CityTileA"), 0, "Shrine", 0);
-			CreateUnitInAtlantisBox(xsVectorGetX(tempV)-7,xsVectorGetZ(tempV), 2, getTerrainType("CityTileA"), getTerrainSubType("CityTileA"), 0, "Shrine", 0);
+			if(MapSkin == 1){
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)+7, 3, getTerrainType("CityTileA"), getTerrainSubType("CityTileA"), 0, "Temple", 90);
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)+7,xsVectorGetZ(tempV), 2, getTerrainType("CityTileA"), getTerrainSubType("CityTileA"), 0, "Shrine", 0);
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)-7,xsVectorGetZ(tempV), 2, getTerrainType("CityTileA"), getTerrainSubType("CityTileA"), 0, "Shrine", 0);
+			}
+			if(MapSkin == 2){
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)+7, 3, getTerrainType("CityTileA"), getTerrainSubType("CityTileA"), 0, "Temple", 90, "0,2,0,1,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)+7,xsVectorGetZ(tempV), 2, getTerrainType("CityTileA"), getTerrainSubType("CityTileA"), 0, "Shrine", 0, "0,0,0,0,1,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)-7,xsVectorGetZ(tempV), 2, getTerrainType("CityTileA"), getTerrainSubType("CityTileA"), 0, "Shrine", 0, "0,0,0,0,1,0,0");
+			}
+			if(MapSkin == 3){
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)+7, 3, getTerrainType("CityTileA"), getTerrainSubType("CityTileA"), 0, "Temple", 90, "2,1,0,7,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)+7,xsVectorGetZ(tempV), 2, getTerrainType("CityTileA"), getTerrainSubType("CityTileA"), 0, "Shrine", 0, "2,0,0,0,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)-7,xsVectorGetZ(tempV), 2, getTerrainType("CityTileA"), getTerrainSubType("CityTileA"), 0, "Shrine", 0, "2,0,0,0,0,0,0");
+			}
+			if(MapSkin == 4){
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)+7, 3, getTerrainType("CityTileA"), getTerrainSubType("CityTileA"), 0, "Temple", 90, "3,2,0,3,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)+7,xsVectorGetZ(tempV), 2, getTerrainType("CityTileA"), getTerrainSubType("CityTileA"), 0, "Shrine", 0);
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)-7,xsVectorGetZ(tempV), 2, getTerrainType("CityTileA"), getTerrainSubType("CityTileA"), 0, "Shrine", 0);
+			}
 			trQuestVarSet("temp1", trGetNextUnitScenarioNameNumber());
 			UnitCreate(0, "Dwarf",(xsVectorGetX(tempV)+4)*2,(xsVectorGetZ(tempV)+5)*2);
 			trQuestVarSet("temp2", trGetNextUnitScenarioNameNumber());
@@ -461,10 +480,30 @@ void SetupCities(){
 			UnitCreate(0, "Dwarf",(xsVectorGetX(tempV)+4)*2,(xsVectorGetZ(tempV)-5)*2);
 			trQuestVarSet("temp4", trGetNextUnitScenarioNameNumber());
 			UnitCreate(0, "Dwarf",(xsVectorGetX(tempV)-4)*2,(xsVectorGetZ(tempV)+5)*2);
-			CreateUnitInAtlantisBox(xsVectorGetX(tempV)+4,xsVectorGetZ(tempV)+5, 1,-1, -1, 0, "Columns", 0, "1,0,0,0,0,0");
-			CreateUnitInAtlantisBox(xsVectorGetX(tempV)-4,xsVectorGetZ(tempV)+5, 1,-1, -1, 0, "Columns", 0, "1,0,0,0,0,0");
-			CreateUnitInAtlantisBox(xsVectorGetX(tempV)+4,xsVectorGetZ(tempV)-5, 1,-1, -1, 0, "Columns", 0, "1,0,0,0,0,0");
-			CreateUnitInAtlantisBox(xsVectorGetX(tempV)-4,xsVectorGetZ(tempV)-5, 1,-1, -1, 0, "Columns", 0, "1,0,0,0,0,0");
+			if(MapSkin == 1){
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)+4,xsVectorGetZ(tempV)+5, 1,-1, -1, 0, "Columns", 0, "1,0,0,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)-4,xsVectorGetZ(tempV)+5, 1,-1, -1, 0, "Columns", 0, "1,0,0,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)+4,xsVectorGetZ(tempV)-5, 1,-1, -1, 0, "Columns", 0, "1,0,0,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)-4,xsVectorGetZ(tempV)-5, 1,-1, -1, 0, "Columns", 0, "1,0,0,0,0,0");
+			}
+			if(MapSkin == 2){
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)+4,xsVectorGetZ(tempV)+5, 1,-1, -1, 0, "Columns", 0, "0,0,0,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)-4,xsVectorGetZ(tempV)+5, 1,-1, -1, 0, "Columns", 0, "0,0,0,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)+4,xsVectorGetZ(tempV)-5, 1,-1, -1, 0, "Columns", 0, "0,0,0,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)-4,xsVectorGetZ(tempV)-5, 1,-1, -1, 0, "Columns", 0, "0,0,0,0,0,0");
+			}
+			if(MapSkin == 3){
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)+4,xsVectorGetZ(tempV)+5, 1,-1, -1, 0, "Columns", 0, "2,0,0,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)-4,xsVectorGetZ(tempV)+5, 1,-1, -1, 0, "Columns", 0, "2,0,0,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)+4,xsVectorGetZ(tempV)-5, 1,-1, -1, 0, "Columns", 0, "2,0,0,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)-4,xsVectorGetZ(tempV)-5, 1,-1, -1, 0, "Columns", 0, "2,0,0,0,0,0");
+			}
+			if(MapSkin == 4){
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)+4,xsVectorGetZ(tempV)+5, 1,-1, -1, 0, "Columns", 0, "3,0,0,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)-4,xsVectorGetZ(tempV)+5, 1,-1, -1, 0, "Columns", 0, "3,0,0,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)+4,xsVectorGetZ(tempV)-5, 1,-1, -1, 0, "Columns", 0, "3,0,0,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)-4,xsVectorGetZ(tempV)-5, 1,-1, -1, 0, "Columns", 0, "3,0,0,0,0,0");
+			}
 			trUnitSelectByQV("temp1");
 			trUnitChangeProtoUnit("Flowers");
 			trUnitSelectByQV("temp2");
@@ -491,10 +530,30 @@ void SetupCities(){
 			tempV = tempV/2;
 			//from metres to tiles
 			//---CITY 4 LAYOUT
-			CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)+7, 3, getTerrainType("CityTileAtlantis"), getTerrainSubType("CityTileAtlantis"), 0, "Fortress", 180);
-			CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)-7, 2, getTerrainType("CityTileAtlantis"), getTerrainSubType("CityTileAtlantis"), 0, "Shrine", 90);
-			CreateUnitInAtlantisBox(xsVectorGetX(tempV)+7,xsVectorGetZ(tempV), 3, getTerrainType("CityTileAtlantis"), getTerrainSubType("CityTileAtlantis"), 0, "Temple", 180);
-			CreateUnitInAtlantisBox(xsVectorGetX(tempV)-7,xsVectorGetZ(tempV), 3, getTerrainType("CityTileAtlantis"), getTerrainSubType("CityTileAtlantis"), 0, "Temple", 0);
+			if(MapSkin == 1){
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)+7, 3, getTerrainType("CityTileAtlantis"), getTerrainSubType("CityTileAtlantis"), 0, "Fortress", 180);
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)-7, 2, getTerrainType("CityTileAtlantis"), getTerrainSubType("CityTileAtlantis"), 0, "Shrine", 90);
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)+7,xsVectorGetZ(tempV), 3, getTerrainType("CityTileAtlantis"), getTerrainSubType("CityTileAtlantis"), 0, "Temple", 180, "1,2,0,0,0,5,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)-7,xsVectorGetZ(tempV), 3, getTerrainType("CityTileAtlantis"), getTerrainSubType("CityTileAtlantis"), 0, "Temple", 0, "1,2,0,0,0,5,0");
+			}
+			if(MapSkin == 2){
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)+7, 3, getTerrainType("CityTileAtlantis"), getTerrainSubType("CityTileAtlantis"), 0, "Migdol Stronghold", 180);
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)-7, 2, getTerrainType("CityTileAtlantis"), getTerrainSubType("CityTileAtlantis"), 0, "Shrine", 90, "0,0,0,0,1,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)+7,xsVectorGetZ(tempV), 3, getTerrainType("CityTileAtlantis"), getTerrainSubType("CityTileAtlantis"), 0, "Temple", 180, "0,2,0,0,0,5,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)-7,xsVectorGetZ(tempV), 3, getTerrainType("CityTileAtlantis"), getTerrainSubType("CityTileAtlantis"), 0, "Temple", 0, "0,2,0,0,0,5,0");
+			}
+			if(MapSkin == 3){
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)+7, 3, getTerrainType("CityTileAtlantis"), getTerrainSubType("CityTileAtlantis"), 0, "Hill Fort", 180);
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)-7, 2, getTerrainType("CityTileAtlantis"), getTerrainSubType("CityTileAtlantis"), 0, "Shrine", 90, "2,0,0,0,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)+7,xsVectorGetZ(tempV), 3, getTerrainType("CityTileAtlantis"), getTerrainSubType("CityTileAtlantis"), 0, "Temple", 180, "2,3,0,8,0,5,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)-7,xsVectorGetZ(tempV), 3, getTerrainType("CityTileAtlantis"), getTerrainSubType("CityTileAtlantis"), 0, "Temple", 0, "2,3,0,8,0,5,0");
+			}
+			if(MapSkin == 4){
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)+7, 3, getTerrainType("CityTileAtlantis"), getTerrainSubType("CityTileAtlantis"), 0, "Fortress", 180);
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)-7, 2, getTerrainType("CityTileAtlantis"), getTerrainSubType("CityTileAtlantis"), 0, "Shrine", 90);
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)+7,xsVectorGetZ(tempV), 3, getTerrainType("CityTileAtlantis"), getTerrainSubType("CityTileAtlantis"), 0, "Temple", 180, "3,3,0,3,0,5,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)-7,xsVectorGetZ(tempV), 3, getTerrainType("CityTileAtlantis"), getTerrainSubType("CityTileAtlantis"), 0, "Temple", 0, "3,3,0,3,0,5,0");
+			}
 			trQuestVarSet("temp1", trGetNextUnitScenarioNameNumber());
 			UnitCreate(0, "Dwarf",(xsVectorGetX(tempV)+4)*2,(xsVectorGetZ(tempV)+5)*2);
 			trQuestVarSet("temp2", trGetNextUnitScenarioNameNumber());
@@ -503,10 +562,30 @@ void SetupCities(){
 			UnitCreate(0, "Dwarf",(xsVectorGetX(tempV)+4)*2,(xsVectorGetZ(tempV)-5)*2);
 			trQuestVarSet("temp4", trGetNextUnitScenarioNameNumber());
 			UnitCreate(0, "Dwarf",(xsVectorGetX(tempV)-4)*2,(xsVectorGetZ(tempV)+5)*2);
-			CreateUnitInAtlantisBox(xsVectorGetX(tempV)+5,xsVectorGetZ(tempV)+5, 1,-1, -1, 0, "Columns", 0, "3,0,0,0,0,0");
-			CreateUnitInAtlantisBox(xsVectorGetX(tempV)-5,xsVectorGetZ(tempV)+5, 1,-1, -1, 0, "Columns", 0, "3,0,0,0,0,0");
-			CreateUnitInAtlantisBox(xsVectorGetX(tempV)+4,xsVectorGetZ(tempV)-5, 1,-1, -1, 0, "Columns", 0, "3,0,0,0,0,0");
-			CreateUnitInAtlantisBox(xsVectorGetX(tempV)-4,xsVectorGetZ(tempV)-5, 1,-1, -1, 0, "Columns", 0, "3,0,0,0,0,0");
+			if(MapSkin == 1){
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)+5,xsVectorGetZ(tempV)+5, 1,-1, -1, 0, "Columns", 0, "1,0,0,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)-5,xsVectorGetZ(tempV)+5, 1,-1, -1, 0, "Columns", 0, "1,0,0,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)+4,xsVectorGetZ(tempV)-5, 1,-1, -1, 0, "Columns", 0, "1,0,0,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)-4,xsVectorGetZ(tempV)-5, 1,-1, -1, 0, "Columns", 0, "1,0,0,0,0,0");
+			}
+			if(MapSkin == 2){
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)+5,xsVectorGetZ(tempV)+5, 1,-1, -1, 0, "Columns", 0, "0,0,0,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)-5,xsVectorGetZ(tempV)+5, 1,-1, -1, 0, "Columns", 0, "0,0,0,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)+4,xsVectorGetZ(tempV)-5, 1,-1, -1, 0, "Columns", 0, "0,0,0,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)-4,xsVectorGetZ(tempV)-5, 1,-1, -1, 0, "Columns", 0, "0,0,0,0,0,0");
+			}
+			if(MapSkin == 3){
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)+5,xsVectorGetZ(tempV)+5, 1,-1, -1, 0, "Columns", 0, "2,0,0,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)-5,xsVectorGetZ(tempV)+5, 1,-1, -1, 0, "Columns", 0, "2,0,0,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)+4,xsVectorGetZ(tempV)-5, 1,-1, -1, 0, "Columns", 0, "2,0,0,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)-4,xsVectorGetZ(tempV)-5, 1,-1, -1, 0, "Columns", 0, "2,0,0,0,0,0");
+			}
+			if(MapSkin == 4){
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)+5,xsVectorGetZ(tempV)+5, 1,-1, -1, 0, "Columns", 0, "3,0,0,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)-5,xsVectorGetZ(tempV)+5, 1,-1, -1, 0, "Columns", 0, "3,0,0,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)+4,xsVectorGetZ(tempV)-5, 1,-1, -1, 0, "Columns", 0, "3,0,0,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)-4,xsVectorGetZ(tempV)-5, 1,-1, -1, 0, "Columns", 0, "3,0,0,0,0,0");
+			}
 			trUnitSelectByQV("temp1");
 			trUnitChangeProtoUnit("Mist");
 			trUnitSelectByQV("temp2");
@@ -539,10 +618,30 @@ void SetupCities(){
 			tempV = tempV/2;
 			//from metres to tiles
 			//---CITY 5 LAYOUT
-			CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)+8, 4, getTerrainType("OlympusTile"), getTerrainSubType("OlympusTile"), 0, "Wonder SPC", 180);
-			CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)-7, 2, getTerrainType("OlympusTile"), getTerrainSubType("OlympusTile"), 0, "Temple Underworld", 90);
-			CreateUnitInAtlantisBox(xsVectorGetX(tempV)+7,xsVectorGetZ(tempV), 3, getTerrainType("OlympusTile"), getTerrainSubType("OlympusTile"), 0, "Fortress", 270);
-			CreateUnitInAtlantisBox(xsVectorGetX(tempV)-7,xsVectorGetZ(tempV), 3, getTerrainType("OlympusTile"), getTerrainSubType("OlympusTile"), 0, "Fortress", 90);
+			if(MapSkin == 1){
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)+8, 4, getTerrainType("OlympusTile"), getTerrainSubType("OlympusTile"), 0, "Wonder SPC", 180);
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)-7, 2, getTerrainType("OlympusTile"), getTerrainSubType("OlympusTile"), 0, "Temple Underworld", 90, "0,0,0,0,0,-1,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)+7,xsVectorGetZ(tempV), 3, getTerrainType("OlympusTile"), getTerrainSubType("OlympusTile"), 0, "Fortress", 270);
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)-7,xsVectorGetZ(tempV), 3, getTerrainType("OlympusTile"), getTerrainSubType("OlympusTile"), 0, "Fortress", 90);
+			}
+			if(MapSkin == 2){
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)+8, 4, getTerrainType("OlympusTile"), getTerrainSubType("OlympusTile"), 0, "Wonder SPC", 180, "0,0,0,0,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)-7, 2, getTerrainType("OlympusTile"), getTerrainSubType("OlympusTile"), 0, "Temple Underworld", 90, "0,0,0,0,0,-1,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)+7,xsVectorGetZ(tempV), 3, getTerrainType("OlympusTile"), getTerrainSubType("OlympusTile"), 0, "Migdol Stronghold", 270);
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)-7,xsVectorGetZ(tempV), 3, getTerrainType("OlympusTile"), getTerrainSubType("OlympusTile"), 0, "Migdol Stronghold", 90);
+			}
+			if(MapSkin == 3){
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)+8, 4, getTerrainType("OlympusTile"), getTerrainSubType("OlympusTile"), 0, "Wonder SPC", 180, "2,2,0,0,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)-7, 2, getTerrainType("OlympusTile"), getTerrainSubType("OlympusTile"), 0, "Temple Underworld", 90, "0,0,0,0,0,-1,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)+7,xsVectorGetZ(tempV), 3, getTerrainType("OlympusTile"), getTerrainSubType("OlympusTile"), 0, "Hill Fort", 270);
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)-7,xsVectorGetZ(tempV), 3, getTerrainType("OlympusTile"), getTerrainSubType("OlympusTile"), 0, "Hill Fort", 90);
+			}
+			if(MapSkin == 4){
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)+8, 4, getTerrainType("OlympusTile"), getTerrainSubType("OlympusTile"), 0, "Wonder SPC", 180, "1,0,0,0,0,0,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV),xsVectorGetZ(tempV)-7, 2, getTerrainType("OlympusTile"), getTerrainSubType("OlympusTile"), 0, "Temple Underworld", 90, "0,0,0,0,0,-1,0");
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)+7,xsVectorGetZ(tempV), 3, getTerrainType("OlympusTile"), getTerrainSubType("OlympusTile"), 0, "Fortress", 270);
+				CreateUnitInAtlantisBox(xsVectorGetX(tempV)-7,xsVectorGetZ(tempV), 3, getTerrainType("OlympusTile"), getTerrainSubType("OlympusTile"), 0, "Fortress", 90);
+			}
 			CreateUnitInAtlantisBox(xsVectorGetX(tempV)+6,xsVectorGetZ(tempV)+5, 1,-1, -1, 0, "Mist", 0);
 			CreateUnitInAtlantisBox(xsVectorGetX(tempV)-6,xsVectorGetZ(tempV)+5, 1,-1, -1, 0, "Mist", 0);
 			CreateUnitInAtlantisBox(xsVectorGetX(tempV)+4,xsVectorGetZ(tempV)-5, 1,-1, -1, 0, "Mist", 0);
@@ -709,17 +808,17 @@ void CreateStartingRelics(int num = 1){
 					num = num-1;
 					if(dist < 6400){
 						//FORCE LEVEL 1 RELICS
-						trQuestVarSetFromRand("temp", 1,9);
+						trQuestVarSetFromRand("temp", 1,10);
 						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
 					}
 					if((dist < 14400) && (dist >= 6400)){
 						//FORCE LEVEL 2 RELICS
-						trQuestVarSetFromRand("temp", 10,20);
+						trQuestVarSetFromRand("temp", 11,21);
 						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
 					}
 					if((dist < 25600) && (dist >= 14400)){
 						//FORCE LEVEL 3 RELICS
-						trQuestVarSetFromRand("temp", 21,28);
+						trQuestVarSetFromRand("temp", 22,29);
 						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
 						/*trQuestVarSetFromRand("temp2", 1,3);
 						if(1*trQuestVarGet("temp2") == 1){
@@ -731,7 +830,7 @@ void CreateStartingRelics(int num = 1){
 					}
 					else if(dist >= 25600){
 						//FORCE LEVEL 4 RELICS
-						trQuestVarSetFromRand("temp", 21,34);
+						trQuestVarSetFromRand("temp", 30,38);
 						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
 						/*trQuestVarSetFromRand("temp2", 1,3);
 						if(1*trQuestVarGet("temp2") == 1){
@@ -887,6 +986,9 @@ inactive
 		//---
 		Huntable = "Deer";
 		Berry = "Berry Bush";
+		//---
+		City1Building = "Academy";
+		City2Building = "Archery Range";
 	}
 	if(MapSkin == 2){
 		TreeTerrain = "ForestFloorPalm";
@@ -911,6 +1013,9 @@ inactive
 		//---
 		Huntable = "Gazelle";
 		Berry = "Dust Devil";
+		//---
+		City1Building = "Barracks";
+		City2Building = "Mounument 4";
 	}
 	if(MapSkin == 3){
 		TreeTerrain = "ForestFloorPineSnow";
@@ -935,6 +1040,9 @@ inactive
 		//---
 		Huntable = "Elk";
 		Berry = "Arctic Wolf";
+		//---
+		City1Building = "Longhouse";
+		City2Building = "Longhouse";
 	}
 	if(MapSkin == 4){
 		TreeTerrain = "HadesCliff";
@@ -959,6 +1067,9 @@ inactive
 		//---
 		Huntable = "Pig";
 		Berry = "Skeleton";
+		//---
+		City1Building = "Dwarf Foundry";
+		City2Building = "Dwarven Forge";
 	}
 }
 
@@ -1108,11 +1219,10 @@ inactive
 	vector spawn = vector(0,0,0);
 	//--Test relic
 	DeployRelic(getMapSize()/2+4,getMapSize()/2+10,TestRelic);
-	if(aiIsMultiplayer() == false){
+	/*if(aiIsMultiplayer() == false){
 		SpawnEnemy("Militia", getMapSize()/2-10,getMapSize()/2);
 		SpawnBomber("Huskarl");
-	}
-	
+	}*/
 	trPlayerResetBlackMapForAllPlayers();
 	xsEnableRule("BlackMap");
 	CityPillbox(1);
@@ -1137,11 +1247,24 @@ inactive
 	uiZoomToProto("Villager Atlantean Hero");
 	uiLookAtProto("Villager Atlantean Hero");
 	xsEnableRule("FirstHelper");
+	trUnforbidProtounit(1, "Temple");
+	smooth(4);
 	if(MapSkin == 3){
 		replaceTerrainBelowHeightMin(Terrain5, "IceC", -1);
 		replaceTerrainBelowHeightMin(Terrain4, "IceB", -1);
 		replaceTerrainBelowHeightMin(Terrain3, "IceA", -1);
 	}
+	vector flare = vector(0,0,0);
+	for(a = xGetDatabaseCount(dCity); > 0){
+		xDatabaseNext(dCity);
+		if(xGetInt(dCity, xNumber) == (CartsCaptured+1)){
+			flare = xGetVector(dCity, xLocation);
+			for(p=1 ; < cNumberNonGaiaPlayers){
+				trMinimapFlare(p, 30, flare, false);
+			}
+		}
+	}
+	//xsEnableRule("RocketLaunchSequence");
 }
 
 rule FirstHelper
@@ -1174,7 +1297,7 @@ inactive
 		temp = trGetNextUnitScenarioNameNumber();
 		trClearCounterDisplay();
 		if(trCurrentPlayer() == p){
-			trSetCounterDisplay("Current ammo: " + xGetInt(dPlayerData, xAmmo));
+			trSetCounterDisplay("</color>Current ammo: " + xGetInt(dPlayerData, xAmmo));
 		}
 	}
 	uiZoomToProto("Villager Atlantean Hero");
@@ -1279,7 +1402,7 @@ inactive
 					trSetCounterDisplay("<color={PlayerColor(2)}>Current ammo: " + xGetInt(dPlayerData, xAmmo));
 				}
 				else{
-					trSetCounterDisplay("Current ammo: " + xGetInt(dPlayerData, xAmmo));
+					trSetCounterDisplay("</color>Current ammo: " + xGetInt(dPlayerData, xAmmo));
 				}
 			}
 			if(xGetBool(dPlayerData, xInTower) == true){
@@ -1503,6 +1626,7 @@ active
 	int missileclass = 0;
 	int index = 0;
 	bool AttackAllowed = true;
+	bool indb = false;
 	//cycle through all towers and find ones under player control
 	for(c = xGetDatabaseCount(dTowers); > 0){
 		xDatabaseNext(dTowers);
@@ -1691,6 +1815,61 @@ active
 									trMutateSelected(kbGetProtoUnitID("Hero Birth"));
 									xSetInt(dOnFire, xBurnSpyID, xGetInt(dEnemies, xSpyBurn));
 								}
+								if(xGetInt(dProjectiles, xProjClass) == PROJ_Nottud){
+									//SPC meteor
+									//trUnitSelectClear();
+									//trUnitSelect(""+targetid);
+									trTechInvokeGodPower(0, "SPCMeteor", kbGetBlockPosition(""+targetid), vector(0,0,0));
+								}
+								if(xGetInt(dProjectiles, xProjClass) == PROJ_Spider){
+									//Spiders
+									//trUnitSelectClear();
+									//trUnitSelect(""+targetid);
+									trTechInvokeGodPower(0, "Spiders", kbGetBlockPosition(""+targetid), vector(0,0,0));
+								}
+								if(xGetInt(dProjectiles, xProjClass) == PROJ_RaptureDeluxe){
+									//Rapture n
+									trUnitSelectClear();
+									trUnitSelect(""+targetid);
+									trUnitChangeProtoUnit("Titan Atlantean");
+									trUnitSelectClear();
+									trUnitSelect(""+targetid);
+									trUnitChangeProtoUnit("Dwarf");
+									trUnitSelectClear();
+									trUnitSelect(""+targetid);
+									trUnitChangeInArea(cNumberNonGaiaPlayers, cNumberNonGaiaPlayers, "Titan Gate Dead", "Hero Death", 1);
+									trUnitSelectClear();
+									trUnitSelect(""+targetid);
+									trUnitChangeProtoUnit("Ragnorok SFX");
+								}
+								if(xGetInt(dProjectiles, xProjClass) == PROJ_Ten){
+									//10pact
+									for(u = xGetDatabaseCount(dTen); > 0){
+										xDatabaseNext(dTen);
+										if(xGetInt(dTen, xTenUnitID) == targetid){
+											indb = true;
+											break;
+										}
+									}
+									if(indb == false){
+										for(u = xGetDatabaseCount(dEnemies); > 0){
+											xDatabaseNext(dEnemies);
+											if(xGetInt(dEnemies, xUnitID) == targetid){
+												break;
+											}
+										}
+										index = xAddDatabaseBlock(dTen, true);
+										xSetInt(dTen, xTenUnitID, xGetInt(dEnemies, xUnitID));
+										xSetInt(dTen, xTenSpyID, xGetInt(dEnemies, xSpyStatus));
+										xUnitSelect(dEnemies, xSpyStatus);
+										trMutateSelected(kbGetProtoUnitID("Vortex finish linked"));
+										xUnitSelect(dEnemies, xSpyStatus);
+										trUnitSetAnimationPath("0,0,1,0,0,0");
+									}
+									else{
+										xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)+xGetInt(dProjectiles, xProjAmmoCost));
+									}
+								}
 								xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)-xGetInt(dProjectiles, xProjAmmoCost));
 								if(trCurrentPlayer() == shotby){
 									trSetCounterDisplay("<color={PlayerColor("+shotby+")}>Firing " + xGetString(dProjectiles, xProjName) + "| Ammo remaining - " + xGetInt(dPlayerData, xAmmo));
@@ -1755,6 +1934,28 @@ highFrequency
 					//trMutateSelected(kbGetProtoUnitID("Cinematic Block"));
 					trUnitChangeProtoUnit("Cinematic Block");
 					xFreeDatabaseBlock(dStunned);
+				}
+			}
+		}
+		if(xGetDatabaseCount(dTen) > 9){
+			//Fire and kill
+			for(a = xGetDatabaseCount(dTen); > 0){
+				xDatabaseNext(dTen);
+				xUnitSelect(dTen, xTenUnitID);
+				if(trUnitVisToPlayer()){
+					playSound("vultureambient.wav");
+				}
+				trDamageUnitPercent(100);
+			}
+		}
+		if(xGetDatabaseCount(dTen) > 0){
+			for(a = xGetDatabaseCount(dTen); > 0){
+				xDatabaseNext(dTen);
+				xUnitSelect(dTen, xTenUnitID);
+				if(trUnitAlive() == false){
+					xUnitSelect(dTen, xTenSpyID);
+					trUnitDestroy();
+					xFreeDatabaseBlock(dTen);
 				}
 			}
 		}
@@ -2057,14 +2258,45 @@ minInterval 2
 		trUnitSelectByQV("RocketUnit");
 		if(trUnitAlive() == false){
 			if(PlayersDead != cNumberNonGaiaPlayers){
-				for(p = 1; < cNumberNonGaiaPlayers){
-					trSetPlayerDefeated(p);
-				}
-				trShowWinLose("The rocket has been destroyed");
-				trEndGame();
-				EvilLaugh();
 				xsDisableSelf();
+				for(a=1; <= 6){
+					trUnitSelectByQV("RocketExpl"+a);
+					trUnitChangeProtoUnit("Meteor");
+				}
+				for(a=7; <= 11){
+					trUnitSelectByQV("RocketExpl"+a);
+					trUnitChangeProtoUnit("Underworld Explosion");
+					playSound("implode explode.wav");
+					playSound("tartarianopen2.wav");
+				}
+				for(a=12; <= 20){
+					trUnitSelectByQV("RocketExpl"+a);
+					trUnitChangeProtoUnit("Meteor Impact Ground");
+				}
+				xsEnableRule("RocketDeadEnd");
+				FloatingUnitAnimIdle("Underworld Explosion", getMapSize()/2,15,getMapSize()/2);
+				FloatingUnitAnimIdle("Underworld Explosion", getMapSize()/2,5,getMapSize()/2);
+				FloatingUnitAnimIdle("Underworld Explosion", getMapSize()/2,10,getMapSize()/2);
+				FloatingUnitAnimIdle("Underworld Explosion", getMapSize()/2,20,getMapSize()/2);
+				FloatingUnitAnimIdle("Implode Sphere Effect", getMapSize()/2,25,getMapSize()/2);
+				trOverlayText(" ",1,1,1,1);
+				uiLookAtUnitByName(""+1*trQuestVarGet("RocketUnit"));
 			}
 		}
+	}
+}
+
+rule RocketDeadEnd
+inactive
+highFrequency
+{
+	if(trTime()-cActivationTime >= 1){
+		xsDisableSelf();
+		for(p = 1; < cNumberNonGaiaPlayers){
+			trSetPlayerDefeated(p);
+		}
+		trShowWinLose("The rocket has been destroyed");
+		EvilLaugh();
+		trEndGame();
 	}
 }

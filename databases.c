@@ -28,6 +28,7 @@ int dEnemies = 0;
 int xStationary = 0;
 int xSpyBurn = 0;
 int xSpyStun = 0;
+int xSpyStatus = 0;
 int xAggro = 0;
 
 int dMissiles = 0;
@@ -157,6 +158,11 @@ int dBomb = 0;
 int xActive = 0;
 int xExplodeTime = 0;
 
+//TEN DB
+int dTen = 0;
+int xTenUnitID = 0;
+int xTenSpyID = 0;
+
 rule setup_first_databases
 active
 highFrequency
@@ -188,6 +194,7 @@ highFrequency
 	xStationary = xInitAddBool(dEnemies, "no movement", false);
 	xSpyBurn = xInitAddInt(dEnemies, "spy id for burn", -1);
 	xSpyStun = xInitAddInt(dEnemies, "spy id for stun", -1);
+	xSpyStatus = xInitAddInt(dEnemies, "spy id for status", -1);
 	xCityGuard = xInitAddInt(dEnemies, "guard of city num", 0);
 	xAggro = xInitAddBool(dEnemies, "aggro", false);
 	
@@ -317,6 +324,11 @@ highFrequency
 	xUnitID = xInitAddInt(dBomb, "unitid", -1);
 	xActive = xInitAddBool(dBomb, "dropped", false);
 	xExplodeTime = xInitAddInt(dBomb, "explodetime", -1);
+	
+	
+	dTen = xInitDatabase("dbten");
+	xTenUnitID = xInitAddInt(dTen, "unit id", -1);
+	xTenSpyID = xInitAddInt(dTen, "spy id", -1);
 }
 
 

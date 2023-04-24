@@ -156,17 +156,20 @@ highFrequency
 		modifyProtounitAbsolute("Villager Atlantean", p, 1, 4);
 		modifyProtounitAbsolute("Villager Atlantean Hero", p, 1, 4);
 		modifyProtounitAbsolute("Great Box Cart", p, 1, 4);
-		modifyProtounitAbsolute("Palace", p, 4, 1);
-		modifyProtounitAbsolute("Manor", p, 4, 1);
+		modifyProtounitAbsolute("Palace", p, 4, 10);
+		modifyProtounitAbsolute("Manor", p, 4, 10);
 		modifyProtounitAbsolute("Farm", p, 4, 1);
-		modifyProtounitAbsolute("Guild", p, 4, 1);
+		modifyProtounitAbsolute("Guild", p, 4, 10);
 		trUnforbidProtounit(p, "Dock");
 	}
 	modifyProtounitAbsolute("Bolt Strike", 0, 27, 0);
 	modifyProtounitAbsolute("Bolt Strike", 0, 28, 0);
 	modifyProtounitAbsolute("Bolt Strike", 0, 29, 0);
 	modifyProtounitAbsolute("Fortress", 0, 13, 0);
+	modifyProtounitAbsolute("Migdol Stronghold", 0, 13, 0);
+	modifyProtounitAbsolute("Hill Fort", 0, 13, 0);
 	modifyProtounitAbsolute("Titan Atlantean", 0, 2, 1);
+	modifyProtounitAbsolute("Meteor", 0, 2, 0);
 	modifyProtounitAbsolute("Helepolis", 0, 1, 0);
 	modifyProtounitAbsolute("Helepolis", 0, 2, 0);
 	modifyProtounitAbsolute("Helepolis", 0, 0, 2000);
@@ -194,6 +197,9 @@ highFrequency
 	trModifyProtounit("Circe", cNumberNonGaiaPlayers, 0, 750);
 	trModifyProtounit("Minion", cNumberNonGaiaPlayers,8, 1000);
 	trRateConstruction(5);
+	trModifyProtounit("Minion", cNumberNonGaiaPlayers, 0, 100);
+	trModifyProtounit("Ulfsark", cNumberNonGaiaPlayers, 0, 100);
+	trModifyProtounit("Spearman", cNumberNonGaiaPlayers, 0, 100);
 	xsDisableSelf();
 	xsEnableRule("ChickenBlood");
 }

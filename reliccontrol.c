@@ -100,14 +100,15 @@ highFrequency
 		else if (trUnitGetIsContained("Temple")) {
 			for(p=1; < cNumberNonGaiaPlayers) {
 				xSetPointer(dPlayerData, p);
-				xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)+xGetInt(dProjectiles, xProjAmmoCost));
+				xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)+xGetInt(dProjectiles, xProjAmmoCost)*2);
+				trPlayerGrantResources(p, "Wood", 2*xGetInt(dProjectiles, xProjAmmoCost));
 			}
 			xUnitSelect(dFreeRelics, xUnitID);
 			trUnitChangeProtoUnit("Heavenlight");
 			xUnitSelect(dFreeRelics, xSFXID);
 			trUnitChangeProtoUnit("Heavenlight");
 			xFreeDatabaseBlock(dFreeRelics);
-			break;
+			//break;
 		}
 		xUnitSelect(dFreeRelics, xUnitID);
 		if (trUnitIsSelected()) {
@@ -129,6 +130,8 @@ highFrequency
 				xUnitSelect(dFreeRelics, xSFXID);
 				trUnitChangeProtoUnit("Spy Eye");xUnitSelect(dFreeRelics, xSFXID);
 				trMutateSelected(kbGetProtoUnitID(xGetString(dProjectiles, xProjRelicSFX)));
+				xUnitSelect(dFreeRelics, xSFXID);
+				trUnitSetAnimationPath(xGetString(dProjectiles, xProjRelicAnimPath));
 			}
 		}
 	}

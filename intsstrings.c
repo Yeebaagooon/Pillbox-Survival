@@ -9,21 +9,21 @@ string MapName = "Pillbox Survival";
 /*
 playerIsPlaying - currently allows computers to exist ingame
 
-Have attached pheonix egg for bomber unit
-
 CATAPULT SHOT TAKEN
 CHICKEN BLOOD TAKEN
 tEMPLE DISABLED
 
 200k gold available
 700k wood available
+
+Redo cine
 */
 
 //---Launch Codes
 bool Visible = true;
 bool AllowEnemies = true;
-bool CineChoice = true;
-int TestRelic = 1;
+bool CineChoice = false;
+int TestRelic = 39;
 bool Helpers = false;
 
 //---Game Data
@@ -46,6 +46,7 @@ int NextNightAttack = 0;
 int Part = 0;
 int WonderHP = 9999;
 int Difficulty = 0;
+float yc = 0.1;
 
 //SKIN DATA
 string TreeType = "";
@@ -71,6 +72,10 @@ string Enemy5 = "";
 string Enemy6 = "";
 string Enemy7 = "";
 string Enemy8 = "";
+
+//---City skin
+string City1Building = "";
+string City2Building = "";
 
 //---
 int timelast = 0;
