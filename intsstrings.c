@@ -28,25 +28,23 @@ Lure
 Shifting sands
 Bolt
 
-Tower HP
-Villie HP
-Villie speed
-Sky passage attack
-Sky passage range
-Sky passage limit
+Oracle = Human HP
+Auto = Building HP
+Satyr = Sky passage damage
+Argus = Human speed
 
 Redo cine
 */
 
 //---Launch Codes
-bool Visible = true;
+bool Visible = false;
 bool AllowEnemies = true;
 bool CineChoice = false;
-int TestRelic = 41;
-bool Helpers = false;
+int TestRelic = 1;
+bool Helpers = true;
 
 //---Game Data
-int MapSkin = 3;
+int MapSkin = 2;
 //1, greek, 2 is eggy, 3 is norse, 4 is hades
 bool Day = true;
 int Date = 0;

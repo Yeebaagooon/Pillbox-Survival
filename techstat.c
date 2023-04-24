@@ -20,7 +20,7 @@ highFrequency
 		trTechSetStatus(p, 350, 4);
 		trTechSetStatus(p, 27, 4);
 		trTechSetStatus(p, 447, 4);
-		
+		trTechSetStatus(0, 304, 0);
 		trTechSetStatus(p, 9, 0);
 		trTechSetStatus(p, 101, 0);
 		trTechSetStatus(p, 34, 0);
@@ -161,6 +161,26 @@ highFrequency
 		modifyProtounitAbsolute("Farm", p, 4, 1);
 		modifyProtounitAbsolute("Guild", p, 4, 10);
 		trUnforbidProtounit(p, "Dock");
+		modifyProtounitAbsolute("Oracle Scout", p, 16, 0);
+		modifyProtounitAbsolute("Oracle Scout", p, 17, 500);
+		modifyProtounitAbsolute("Oracle Scout", p, 18, 0);
+		modifyProtounitAbsolute("Oracle Scout", p, 19, 0);
+		modifyProtounitAbsolute("Automaton", p, 16, 0);
+		modifyProtounitAbsolute("Automaton", p, 17, 500);
+		modifyProtounitAbsolute("Automaton", p, 18, 0);
+		modifyProtounitAbsolute("Automaton", p, 19, 0);
+		modifyProtounitAbsolute("Satyr", p, 16, 0);
+		modifyProtounitAbsolute("Satyr", p, 17, 500);
+		modifyProtounitAbsolute("Satyr", p, 18, 0);
+		modifyProtounitAbsolute("Satyr", p, 19, 0);
+		modifyProtounitAbsolute("Argus", p, 16, 0);
+		modifyProtounitAbsolute("Argus", p, 17, 500);
+		modifyProtounitAbsolute("Argus", p, 18, 0);
+		modifyProtounitAbsolute("Argus", p, 19, 0);
+		modifyProtounitAbsolute("Oracle Scout", p, 6, 0);
+		modifyProtounitAbsolute("Automaton", p, 6, 0);
+		modifyProtounitAbsolute("Satyr", p, 6, 0);
+		modifyProtounitAbsolute("Argus", p, 6, 0);
 	}
 	modifyProtounitAbsolute("Bolt Strike", 0, 27, 0);
 	modifyProtounitAbsolute("Bolt Strike", 0, 28, 0);

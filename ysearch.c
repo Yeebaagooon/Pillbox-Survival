@@ -75,6 +75,12 @@ highFrequency
 				xSetInt(dCar, xCarOwner, kbUnitGetOwner(id));
 				break;
 			}
+			case kbGetProtoUnitID("Temple"):
+			{
+				xAddDatabaseBlock(dTemple, true);
+				xSetInt(dTemple, xUnitID, i);
+				break;
+			}
 		}
 	}
 	if (xGetDatabaseCount(dSpyRequests) > 0) {

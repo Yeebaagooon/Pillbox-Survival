@@ -1020,6 +1020,10 @@ inactive
 		trOverlayText("Temple unlocked - recycle unwanted relics into resources here and research upgrades", 7);
 		for(p = 1; < cNumberNonGaiaPlayers){
 			trUnforbidProtounit(p, "Temple");
+			trUnforbidProtounit(p, "Oracle Scout");
+			trUnforbidProtounit(p, "Automaton");
+			trUnforbidProtounit(p, "Satyr");
+			trUnforbidProtounit(p, "Argus");
 		}
 		TempleUnlocked = true;
 		trUnitSelectByQV("TempleRelic");
@@ -1143,7 +1147,7 @@ inactive
 		Enemy8 = "Fire Giant";
 		//---
 		Huntable = "Elk";
-		Berry = "Arctic Wolf";
+		Berry = "Wolf Arctic";
 		//---
 		City1Building = "Longhouse";
 		City2Building = "Longhouse";
@@ -1352,15 +1356,6 @@ inactive
 	uiZoomToProto("Villager Atlantean Hero");
 	uiLookAtProto("Villager Atlantean Hero");
 	xsEnableRule("FirstHelper");
-	trUnforbidProtounit(1, "Temple");
-	trUnforbidProtounit(1, "Oracle Scout");
-	trUnforbidProtounit(1, "Automaton");
-	trUnforbidProtounit(1, "Behemoth");
-	trUnforbidProtounit(1, "Satyr");
-	trUnforbidProtounit(1, "Lampades");
-	trUnforbidProtounit(1, "Argus");
-	trUnforbidProtounit(1, "Manticore");
-	trUnforbidProtounit(1, "Phoenix");
 	xsEnableRule("UnlockTemple");
 	smooth(4);
 	if(MapSkin == 3){
@@ -1580,6 +1575,8 @@ active
 	float tempfloat = 0.0;
 	int target = -1;
 	int old = 0;
+	string TempleMsg1 = "Oracle: Increase human HP | Auto: Increase building HP | Satyr: ";
+	string TempleMsg2 = "Increase sky passage damage | Argus: Increase human speed";
 	vector move = vector(0,0,0);
 	for(i = xsMin(xGetDatabaseCount(dEnemies), cNumberNonGaiaPlayers); > 0){
 		xDatabaseNext(dEnemies);
@@ -1619,6 +1616,23 @@ active
 		xUnitSelect(dTowers, xUnitID);
 		if(trUnitAlive() == false){
 			xFreeDatabaseBlock(dTowers);
+		}
+	}
+	if(xGetDatabaseCount(dTemple) > 0){
+		for(i = xsMin(xGetDatabaseCount(dTemple), cNumberNonGaiaPlayers); > 0){
+			xDatabaseNext(dTemple);
+			xUnitSelect(dTemple, xUnitID);
+			if (trUnitIsSelected()) {
+				if(trTime() > 1*trQuestVarGet("NastyTime")){
+					//	uiClearSelection();
+					trMessageSetText(TempleMsg1 + TempleMsg2, 8000);
+					trQuestVarSet("NastyTime", trTime()+7);
+				}
+			}
+			xUnitSelect(dTemple, xUnitID);
+			if(trUnitAlive() == false){
+				xFreeDatabaseBlock(dTemple);
+			}
 		}
 	}
 	if(xGetDatabaseCount(dBuildTowers) > 0){
@@ -2011,6 +2025,52 @@ active
 						}
 					}
 				}
+			}
+		}
+	}
+	//---[UPGRADES]
+	for(p = 1; < cNumberNonGaiaPlayers){
+		if(trPlayerUnitCountSpecific(p, "Oracle Scout") > 0){
+			//Oracle, human HP
+			trModifyProtounit("Villager Atlantean Hero", p, 0, 250);
+			trModifyProtounit("Villager Atlantean", p, 0, 125);
+			trUnitSelectByQV("RocketUnit");
+			trUnitChangeInArea(p,p,"Oracle Scout", "Poison SFX", 999);
+			if(trCurrentPlayer() == p){
+				playSound("researchcomplete.wav");
+			}
+		}
+		if(trPlayerUnitCountSpecific(p, "Automaton") > 0){
+			//Auto, building HP
+			trModifyProtounit("Tower", p, 0, 250);
+			trModifyProtounit("Helepolis", p, 0, 200);
+			trModifyProtounit("Sky Passage", p, 0, 200);
+			trModifyProtounit("Manor", p, 0, 200);
+			trModifyProtounit("Guild", p, 0, 200);
+			trUnitSelectByQV("RocketUnit");
+			trUnitChangeInArea(p,p,"Automaton", "Poison SFX", 999);
+			if(trCurrentPlayer() == p){
+				playSound("researchcomplete.wav");
+			}
+		}
+		if(trPlayerUnitCountSpecific(p, "Satyr") > 0){
+			//Satyr, sky dmg
+			trModifyProtounit("Sky Passage", p, 31, 10);
+			trUnitSelectByQV("RocketUnit");
+			trUnitChangeInArea(p,p,"Satyr", "Poison SFX", 999);
+			if(trCurrentPlayer() == p){
+				playSound("researchcomplete.wav");
+			}
+		}
+		if(trPlayerUnitCountSpecific(p, "Argus") > 0){
+			//Argus, speed
+			trModifyProtounit("Villager Atlantean Hero", p, 1, 0.25);
+			trModifyProtounit("Villager Atlantean", p, 1, 0.2);
+			trModifyProtounit("Helepolis", p, 1, 0.3);
+			trUnitSelectByQV("RocketUnit");
+			trUnitChangeInArea(p,p,"Argus", "Poison SFX", 999);
+			if(trCurrentPlayer() == p){
+				playSound("researchcomplete.wav");
 			}
 		}
 	}

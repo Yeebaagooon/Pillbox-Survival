@@ -146,7 +146,7 @@ highFrequency
 					}
 					SpawnBomber(Enemy1);
 					if(Part == 2){
-						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)*2){
+						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)){
 							SpawnBomber("Hero Norse");
 						}
 					}
@@ -166,7 +166,7 @@ highFrequency
 					SpawnBomber(Enemy1);
 					SpawnBomber(Enemy1);
 					if(Part == 2){
-						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)*2){
+						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)){
 							SpawnBomber("Hero Norse");
 						}
 					}
@@ -184,7 +184,7 @@ highFrequency
 						}
 					}
 					if(Part == 2){
-						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)*2){
+						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)){
 							SpawnBomber("Hero Norse");
 						}
 					}
@@ -202,7 +202,7 @@ highFrequency
 						}
 					}
 					if(Part == 2){
-						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)*2){
+						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)){
 							SpawnBomber("Hero Norse");
 						}
 					}
@@ -220,7 +220,7 @@ highFrequency
 						}
 					}
 					if(Part == 2){
-						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)*2){
+						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)){
 							SpawnBomber("Hero Norse");
 						}
 					}
@@ -238,7 +238,7 @@ highFrequency
 						}
 					}
 					if(Part == 2){
-						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)*3){
+						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)*2){
 							SpawnBomber("Hero Norse");
 						}
 					}
@@ -256,7 +256,7 @@ highFrequency
 						}
 					}
 					if(Part == 2){
-						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)*3){
+						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)*2){
 							SpawnBomber("Hero Norse");
 						}
 					}
@@ -275,7 +275,7 @@ highFrequency
 						}
 					}
 					if(Part == 2){
-						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)*4){
+						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)*2){
 							SpawnBomber("Hero Norse");
 						}
 					}

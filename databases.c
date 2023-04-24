@@ -163,6 +163,9 @@ int dTen = 0;
 int xTenUnitID = 0;
 int xTenSpyID = 0;
 
+//TEMPLE
+int dTemple = 0;
+
 rule setup_first_databases
 active
 highFrequency
@@ -325,10 +328,12 @@ highFrequency
 	xActive = xInitAddBool(dBomb, "dropped", false);
 	xExplodeTime = xInitAddInt(dBomb, "explodetime", -1);
 	
-	
 	dTen = xInitDatabase("dbten");
 	xTenUnitID = xInitAddInt(dTen, "unit id", -1);
 	xTenSpyID = xInitAddInt(dTen, "spy id", -1);
+	
+	dTemple = xInitDatabase("temple");
+	xUnitID = xInitAddInt(dTemple, "unitid", -1);
 }
 
 
