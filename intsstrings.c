@@ -26,7 +26,7 @@ AGGRO STILL A PROBLEM
 */
 
 //---Launch Codes
-bool Visible = true;
+bool Visible = false;
 bool AllowEnemies = true;
 bool CineChoice = true;
 int TestRelic = 1;
@@ -54,6 +54,8 @@ int WonderHP = 9999;
 int Difficulty = 0;
 float yc = 0.1;
 bool TempleUnlocked = false;
+int SkipRequired = 0;
+int PlayersActive = 0;
 
 //SKIN DATA
 string TreeType = "";

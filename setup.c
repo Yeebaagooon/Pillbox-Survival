@@ -22,6 +22,7 @@ highFrequency
 	}
 	trEventSetHandler(25, "CustomContent");
 	trEventSetHandler(EVENT_REMOVE_CAM_TRACKS, "removeCamTracks");
+	trEventSetHandler(46, "CineGo");
 	xsDisableSelf();
 }
 
@@ -117,6 +118,7 @@ highFrequency
 	trTechSetStatus(0, 304, 4);
 	aiSet("NoAI", cNumberNonGaiaPlayers);
 	Difficulty = 1*trGetWorldDifficulty();
+	//Easy = 0, Mod = 1, Hard = 2, Titan = 3
 }
 
 rule load2

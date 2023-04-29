@@ -1166,6 +1166,12 @@ inactive
 	MapBuild("Creating rocket", "ui\ui map size select large");
 	trDelayedRuleActivation("WorldCreate3");
 	xsDisableSelf();
+	createCameraTrack(1);
+	trCameraCut(vector(-59.817345,123.743729,-59.817345), vector(0.500000,-0.707107,0.500000), vector(0.500000,0.707107,0.500000), vector(0.707107,0.000000,-0.707107));
+	addCameraTrackWaypoint();
+	trCameraCut(vector(-59.817345,123.743729,-59.817345), vector(0.500000,-0.707107,0.500000), vector(0.500000,0.707107,0.500000), vector(0.707107,0.000000,-0.707107));
+	addCameraTrackWaypoint();
+	playCameraTrack();
 }
 //--- Split using MapBuild void
 
@@ -1551,7 +1557,7 @@ active
 					move = kbGetBlockPosition(""+xGetInt(dPlayerData, xUnitID));
 					//xsSetContextPlayer(0);
 					xUnitSelect(dEnemies, xUnitID);
-					trUnitMoveFromArea(xsVectorGetX(move),1.0,xsVectorGetZ(move), -1, true, cNumberNonGaiaPlayers, "All", 10.0);
+					//trUnitMoveFromArea(xsVectorGetX(move),1.0,xsVectorGetZ(move), -1, true, cNumberNonGaiaPlayers, "All", 10.0);
 					//xsSetContextPlayer(old);
 					//	xUnitSelect(dEnemies, xUnitID);
 					//	trUnitHighlight(100, true);

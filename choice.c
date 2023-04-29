@@ -122,6 +122,12 @@ inactive
 				trUIFadeToColor(31,28,26,1,1,true);
 				trDelayedRuleActivation("WorldCreate");
 			}
+			case 3:
+			{
+				trQuestVarSet("SkipVotes", 1*trQuestVarGet("SkipVotes")+1);
+				trClearCounterDisplay();
+				trSetCounterDisplay("</color>Votes to skip: " + 1*trQuestVarGet("SkipVotes") +"/" + SkipRequired);
+			}
 		}
 		trQuestVarSet("P"+ActionChoice+"YesAction", 0);
 		trQuestVarSet("P"+ActionChoice+"NoAction", 0);

@@ -1,11 +1,95 @@
+void CineGo(int unused = 0){
+	gadgetUnreal("ShowChoiceBox");
+	xsEnableRule("RemoveCineTimers");
+	xsEnableRule("SetupCine");
+	xsDisableRule("SkipCine");
+}
+
 rule CineJunction
 highFrequency
 inactive
 {
-	if((trTime()-cActivationTime) >= 1){
-		PlayerChoice(1, "Play cinematic?", "Yes", 1, "No", 2);
-		xsDisableSelf();
+	DontDestroyBelow = 1*(trGetNextUnitScenarioNameNumber()-1);
+	PlayerChoice(1, "Play cinematic?", "Yes", 1, "No", 2);
+	xsDisableSelf();
+	trSetObscuredUnits(false);
+	PaintAtlantisArea(100,5,120,25,getTerrainType("OlympusTile"),getTerrainSubType("OlympusTile"));
+	trPaintTerrain(90,0,130,4,getTerrainType(TreeTerrain),getTerrainSubType(TreeTerrain));
+	paintTrees2(TreeTerrain, TreeType);
+	int temp = trGetNextUnitScenarioNameNumber();
+	UnitCreate(0, "Tower", 210,12,270);
+	trUnitSelectClear();
+	trUnitSelect(""+temp);
+	trSetSelectedScale(2,3,2);
+	temp = trGetNextUnitScenarioNameNumber();
+	UnitCreate(0, "Tower", 230,12,270);
+	trUnitSelectClear();
+	trUnitSelect(""+temp);
+	trSetSelectedScale(2,3,2);
+	trRenderSky(true, "SkySunset");
+	trUnitSelectClear();
+	createCameraTrack(15000);
+	trCameraCut(vector(218.800000,14.370558,104.707848), vector(0.024098,-0.088283,-0.995804), vector(0.002136,0.996095,-0.088258), vector(-0.999707,0.000000,-0.024192));
+	addCameraTrackWaypoint();
+	trCameraCut(vector(218.800000,14.370558,104.707848), vector(0.024098,-0.088283,-0.995804), vector(0.002136,0.996095,-0.088258), vector(-0.999707,0.000000,-0.024192));
+	addCameraTrackWaypoint();
+	playCameraTrack();
+	//PlayerChoice(1, "Play cinematic:", "Yes", 0, "No", 0);
+	//1 for play, 2 for no
+	trDelayedRuleActivation("TowerUnits");
+	PlayersActive = cNumberNonGaiaPlayers;
+	SkipRequired = PlayersActive-1;
+	if(PlayersActive == 1){
+		SkipRequired = PlayersActive;
 	}
+	trSetCounterDisplay("</color>Votes to skip: " + 1*trQuestVarGet("SkipVotes") +"/" + SkipRequired);
+	trCounterAddTime("cdcine", 13, 0, "<color={PlayerColor("+ cNumberNonGaiaPlayers +")}>Cinematic begins", 46);
+	for(p=1 ; < cNumberNonGaiaPlayers){
+		PlayerChoice(p, "Skip Cinematic?", "Yes", 3, "No", -1);
+	}
+	xsEnableRule("SkipCine");
+	xsDisableSelf();
+}
+
+rule SkipCine
+inactive
+highFrequency
+{
+	if(1*trQuestVarGet("SkipVotes") >= SkipRequired){
+		xsDisableSelf();
+		xsDisableRule("SetupCine");
+		SkipRequired = 47;
+		trSetObscuredUnits(true);
+		xsEnableRule("RemoveCineTimers");
+		trLetterBox(true);
+		trUIFadeToColor(31,28,26,1,1,true);
+		trDelayedRuleActivation("WorldCreate");
+		for(a = DontDestroyBelow; < trGetNextUnitScenarioNameNumber()){
+			trUnitSelectClear();
+			trUnitSelect(""+a);
+			trUnitDestroy();
+		}
+	}
+}
+
+rule RemoveCineTimers
+inactive
+highFrequency
+{
+	trCounterAbort("cdcine");
+	trClearCounterDisplay();
+	xsDisableSelf();
+	xsDisableRule("SkipCine");
+}
+
+
+rule TowerUnits
+highFrequency
+inactive
+{
+	FloatingUnitAnimIdle("Villager Atlantean", 210, 15, 12, 0, 1,1,1);
+	FloatingUnitAnimIdle("Pharaoh Of Osiris XP", 230, 15, 12, 0, 1,1,1);
+	xsDisableSelf();
 }
 
 rule SetupCine
@@ -13,7 +97,6 @@ highFrequency
 inactive
 {
 	trLetterBox(true);
-	DontDestroyBelow = 1*(trGetNextUnitScenarioNameNumber()-1);
 	AddCineText("You will need to defend yourself when night comes", 3500);
 	AddCineText("Right click to garrison in a gaia tower", 3500);
 	AddCineText("Once inside you will fire missiles at enemies by right clicking them", 5000);
@@ -77,7 +160,6 @@ inactive
 	replaceTerrainBelowHeightMin("JungleA", Terrain4, 10.0);
 	replaceTerrainBelowHeightMin("GrassB", Terrain5, 10.0);
 	replaceTerrainBelowHeightMin("GrassDirt25", Terrain1, 10.0);
-	
 }
 
 rule Cut1
