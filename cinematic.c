@@ -14,9 +14,9 @@ inactive
 {
 	trLetterBox(true);
 	DontDestroyBelow = 1*(trGetNextUnitScenarioNameNumber()-1);
-	AddCineText("You will need to defend yourself when night comes", 3000);
-	AddCineText("Right click to garrison in a gaia tower", 3000);
-	AddCineText("Once inside you will fire missiles at enemies", 3000);
+	AddCineText("You will need to defend yourself when night comes", 3500);
+	AddCineText("Right click to garrison in a gaia tower", 3500);
+	AddCineText("Once inside you will fire missiles at enemies by right clicking them", 5000);
 	AddCineText("Different missiles are relics scattered throughout the map", 4000);
 	AddCineText("Pick them up to use them, click them to find out more information", 5000);
 	AddCineText("Firing missiles costs ammo, you'll need to mine gold to increase ammo", 5000);
@@ -53,6 +53,31 @@ inactive
 	trFadeOutMusic(10);
 	playSound("\xpack\xcinematics\6_a\music.mp3");
 	Helpers = true;
+	for(x = 1 ; < 50){
+		UnitCreateRH(0, TreeType ,x+20,x);
+		UnitCreateRH(0, TreeType ,x-20,x);
+	}
+	for(x = 60 ; < 120){
+		for(z = 60 ; < 64){
+			UnitCreateRH(0, TreeType ,z,x);
+			UnitCreateRH(0, TreeType ,x,z);
+		}
+	}
+	for(x = 1 ; < 20){
+		trPaintTerrain(x,x+10,x+1,x+11,getTerrainType(TreeTerrain),getTerrainSubType(TreeTerrain));
+	}
+	for(x = 1 ; < 20){
+		trPaintTerrain(x+10,x,x+11,x+1,getTerrainType(TreeTerrain),getTerrainSubType(TreeTerrain));
+	}
+	trPaintTerrain(28,28,34,60,getTerrainType(TreeTerrain),getTerrainSubType(TreeTerrain));
+	trPaintTerrain(28,28,60,34,getTerrainType(TreeTerrain),getTerrainSubType(TreeTerrain));
+	replaceTerrainBelowHeightMin("CliffGreekB", Terrain1, 10.0);
+	replaceTerrainBelowHeightMin("RiverGrassyC", Terrain2, 10.0);
+	replaceTerrainBelowHeightMin("MarshF", Terrain3, 10.0);
+	replaceTerrainBelowHeightMin("JungleA", Terrain4, 10.0);
+	replaceTerrainBelowHeightMin("GrassB", Terrain5, 10.0);
+	replaceTerrainBelowHeightMin("GrassDirt25", Terrain1, 10.0);
+	
 }
 
 rule Cut1
@@ -77,6 +102,8 @@ highFrequency
 		trUnitConvert(1);
 		trArmySelect("1,1");
 		trImmediateUnitGarrison(""+xGetInt(dTowers, xUnitID));
+		xUnitSelect(dTowers, xUnitID);
+		trUnitSetAnimationPath(TowerAnim);
 	}
 }
 
@@ -136,8 +163,8 @@ highFrequency
 	if(1*trQuestVarGet("Time5") == 0){
 		xsDisableSelf();
 		trUnitSelectClear();
-		trUnitSelect(""+WonderHP);
-		trImmediateUnitGarrison(""+xGetInt(dPlayerData, xUnitID));
+		trArmySelect("1,1");
+		trUnitDoWorkOnUnit(""+WonderHP);
 	}
 }
 
@@ -179,7 +206,7 @@ highFrequency
 		vector spawn = vector(50,2,50);
 		int temp = 0;
 		xAddDatabaseBlock(dCity, true);
-		paintCircleHeight(xsVectorGetX(spawn),xsVectorGetZ(spawn), 11, "OlympusTile", 8);
+		paintCircleHeight(xsVectorGetX(spawn),xsVectorGetZ(spawn), 11, RoadTerrain, 8);
 		trPaintTerrain(xsVectorGetX(spawn),xsVectorGetZ(spawn),xsVectorGetX(spawn),xsVectorGetZ(spawn),getTerrainType("CityTileWaterPool"),getTerrainSubType("CityTileWaterPool"));
 		spawn = spawn*2;
 		temp = trGetNextUnitScenarioNameNumber();
@@ -221,11 +248,11 @@ highFrequency
 		trUnitSelectByQV("temp2");
 		trUnitChangeProtoUnit("Flowers");
 		spawn = spawn*2;
-		SpawnEnemy("Colossus", xsVectorGetX(spawn),xsVectorGetZ(spawn)+4,true,1, 180);
-		SpawnEnemy("Militia", xsVectorGetX(spawn)+6,xsVectorGetZ(spawn)-6,true,1, 0);
-		SpawnEnemy("Militia", xsVectorGetX(spawn)+6,xsVectorGetZ(spawn)+6,true,1, 180);
-		SpawnEnemy("Militia", xsVectorGetX(spawn)-6,xsVectorGetZ(spawn)+6,true,1, 180);
-		SpawnEnemy("Militia", xsVectorGetX(spawn)-6,xsVectorGetZ(spawn)-6,true,1, 0);
+		SpawnEnemy(Enemy7, xsVectorGetX(spawn),xsVectorGetZ(spawn)+4,true,1, 180);
+		SpawnEnemy(Enemy0, xsVectorGetX(spawn)+6,xsVectorGetZ(spawn)-6,true,1, 0);
+		SpawnEnemy(Enemy1, xsVectorGetX(spawn)+6,xsVectorGetZ(spawn)+6,true,1, 180);
+		SpawnEnemy(Enemy0, xsVectorGetX(spawn)-6,xsVectorGetZ(spawn)+6,true,1, 180);
+		SpawnEnemy(Enemy1, xsVectorGetX(spawn)-6,xsVectorGetZ(spawn)-6,true,1, 0);
 		createCameraTrack(4000);
 		trCameraCut(vector(153.227936,36.560440,103.891312), vector(-0.882865,-0.421772,-0.206536), vector(-0.410684,0.906702,-0.096075), vector(-0.227789,0.000000,0.973710));
 		addCameraTrackWaypoint();

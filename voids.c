@@ -721,6 +721,15 @@ void UnitCreate(int xplayerx = 0, string protounitname = "", int xx = 0, int zz 
 	trMutateSelected(kbGetProtoUnitID(""+protounitname+""));
 }
 
+void UnitCreateRH(int xplayerx = 0, string protounitname = "", int xx = 0, int zz = 0){
+	trQuestVarSetFromRand("temp",1,360);
+	int CreatingU = trGetNextUnitScenarioNameNumber();
+	trArmyDispatch(""+xplayerx+",0", "Dwarf", 1, xx, 0, zz, 1*trQuestVarGet("temp"), true);
+	trUnitSelectClear();
+	trUnitSelect(""+CreatingU);
+	trMutateSelected(kbGetProtoUnitID(""+protounitname+""));
+}
+
 void UnitCreateV(int xplayerx = 0, string protounitname = "", vector creat = vector(0,0,0), int xheadingx = 0){
 	int CreatingU = trGetNextUnitScenarioNameNumber();
 	trArmyDispatch(""+xplayerx+",0", "Dwarf", 1, xsVectorGetX(creat), 0, xsVectorGetZ(creat), xheadingx, true);

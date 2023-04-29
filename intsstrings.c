@@ -28,12 +28,12 @@ AGGRO STILL A PROBLEM
 //---Launch Codes
 bool Visible = true;
 bool AllowEnemies = true;
-bool CineChoice = false;
+bool CineChoice = true;
 int TestRelic = 1;
 bool Helpers = false;
 
 //---Game Data
-int MapSkin = 1;
+int MapSkin = 0;
 //1, greek, 2 is eggy, 3 is norse, 4 is hades
 bool Day = true;
 int Date = 0;
@@ -79,6 +79,7 @@ string Enemy5 = "";
 string Enemy6 = "";
 string Enemy7 = "";
 string Enemy8 = "";
+string TowerAnim = "0,0,0,0,0,0,0";
 
 //---City skin
 string City1Building = "";

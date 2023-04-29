@@ -1116,114 +1116,6 @@ inactive
 	trBlockAllAmbientSounds();
 	trDelayedRuleActivation("WorldCreate1");
 	xsDisableSelf();
-	if(MapSkin == 1){
-		TreeTerrain = "ForestFloorOak";
-		TreeBorderTerrain = "ForestFloorGaia";
-		Terrain1 = "RiverGrassyC";
-		Terrain2 = "CliffGreekB";
-		Terrain3 = "GrassDirt25";
-		Terrain4 = "GrassDirt50";
-		Terrain5 = "GrassDirt75";
-		TreeType = "Oak Tree";
-		RoadTerrain = "GreekRoadA";
-		//---
-		Enemy0 = "Militia";
-		Enemy1 = "Hoplite";
-		Enemy2 = "Toxotes";
-		Enemy3 = "Minotaur";
-		Enemy4 = "Centaur";
-		Enemy5 = "Cyclops";
-		Enemy6 = "Manticore";
-		Enemy7 = "Colossus";
-		Enemy8 = "Medusa";
-		//---
-		Huntable = "Deer";
-		Berry = "Berry Bush";
-		//---
-		City1Building = "Academy";
-		City2Building = "Archery Range";
-	}
-	if(MapSkin == 2){
-		TreeTerrain = "ForestFloorPalm";
-		TreeBorderTerrain = "ForestFloorSavannah";
-		Terrain1 = "SavannahB";
-		Terrain2 = "DirtA";
-		Terrain3 = "SandA";
-		Terrain4 = "SandC";
-		Terrain5 = "ShorelineAegeanC";
-		TreeType = "Palm";
-		RoadTerrain = "EgyptianRoadA";
-		//---
-		Enemy0 = "Spearman";
-		Enemy1 = "Camelry";
-		Enemy2 = "Chariot Archer";
-		Enemy3 = "Anubite";
-		Enemy4 = "Wadjet";
-		Enemy5 = "Sphinx";
-		Enemy6 = "Petsuchos";
-		Enemy7 = "Scarab";
-		Enemy8 = "Mummy";
-		//---
-		Huntable = "Gazelle";
-		Berry = "Dust Devil";
-		//---
-		City1Building = "Barracks";
-		City2Building = "Siege Camp";
-	}
-	if(MapSkin == 3){
-		TreeTerrain = "ForestFloorPineSnow";
-		TreeBorderTerrain = "ShorelineNorwegianC";
-		Terrain1 = "ShorelineAtlanticB";
-		Terrain2 = "SnowGrass25";
-		Terrain3 = "SnowGrass50";
-		Terrain4 = "SnowGrass75";
-		Terrain5 = "GaiaCreepBorderSnow";
-		TreeType = "Pine Snow";
-		RoadTerrain = "NorseRoadA";
-		//---
-		Enemy0 = "Ulfsark";
-		Enemy1 = "Huskarl";
-		Enemy2 = "Throwing Axeman";
-		Enemy3 = "Valkyrie";
-		Enemy4 = "Troll";
-		Enemy5 = "Battle Boar";
-		Enemy6 = "Fenris Wolf";
-		Enemy7 = "Mountain Giant";
-		Enemy8 = "Fire Giant";
-		//---
-		Huntable = "Elk";
-		Berry = "Walrus";
-		//---
-		City1Building = "Longhouse";
-		City2Building = "Longhouse";
-	}
-	if(MapSkin == 4){
-		TreeTerrain = "HadesCliff";
-		TreeBorderTerrain = "HadesBuildable1";
-		Terrain1 = "HadesBuildable2";
-		Terrain2 = "HadesBuildable1";
-		Terrain3 = "HadesBuildable2";
-		Terrain4 = "HadesBuildable1";
-		Terrain5 = "HadesBuildable2";
-		TreeType = "Pine Dead";
-		RoadTerrain = "Hades8";
-		//---
-		Enemy0 = "Minion";
-		Enemy1 = "Trident Soldier";
-		Enemy2 = "Archer Atlantean";
-		Enemy3 = "Automaton SPC";
-		Enemy4 = "Einheriar";
-		Enemy5 = "Cyclops";
-		Enemy6 = "Manticore";
-		Enemy7 = "Behemoth";
-		Enemy8 = "Lampades";
-		//---
-		Huntable = "Pig";
-		Berry = "Skeleton";
-		//---
-		City1Building = "Dwarf Foundry";
-		City2Building = "Dwarven Forge";
-	}
 }
 
 rule WorldCreate1
@@ -1498,6 +1390,7 @@ inactive
 					xUnitSelect(dPlayerData, xUnitID);
 					trImmediateUnitGarrison(""+xGetInt(dTowers, xUnitID));
 					xUnitSelect(dTowers, xUnitID);
+					trUnitSetAnimationPath(TowerAnim);
 					//dialog
 					missileclass = xGetInt(dPlayerData, xCurrentMissile);
 					xSetPointer(dProjectiles, missileclass);
@@ -1632,14 +1525,13 @@ active
 			xFreeDatabaseBlock(dEnemies);
 			break;
 		}
-		xUnitSelect(dEnemies, xUnitID);
-		if(trUnitPercentDamaged() > 0){
+		else if(trUnitPercentDamaged() > 1){
 			if(xGetBool(dEnemies, xAggro) == false){
 				xSetBool(dEnemies, xAggro, true);
 				//UNIT AGGRO
 				dist = 1000000.0;
 				xUnitSelect(dEnemies, xUnitID);
-				trUnitHighlight(3);
+				trUnitHighlight(15);
 				trChatSendToPlayer(0, 1, "<color=1,0,1>Unit aggro " + xGetInt(dEnemies, xUnitID));
 				xUnitSelect(dEnemies, xUnitID);
 				for(p = 1; < cNumberNonGaiaPlayers){
@@ -1655,12 +1547,12 @@ active
 				if(dist < 50){
 					trChatSendToPlayer(0, 1, "<color=0,1,0>"+ xGetInt(dEnemies, xUnitID) + " aggro to P "+targetpointer);
 					xSetPointer(dPlayerData, targetpointer);
-					old = xsGetContextPlayer();
+					//old = xsGetContextPlayer();
 					move = kbGetBlockPosition(""+xGetInt(dPlayerData, xUnitID));
-					xsSetContextPlayer(0);
+					//xsSetContextPlayer(0);
 					xUnitSelect(dEnemies, xUnitID);
-					trUnitMoveFromArea(xsVectorGetX(move),1,xsVectorGetZ(move), -1, true, cNumberNonGaiaPlayers, "All", 10);
-					xsSetContextPlayer(old);
+					trUnitMoveFromArea(xsVectorGetX(move),1.0,xsVectorGetZ(move), -1, true, cNumberNonGaiaPlayers, "All", 10.0);
+					//xsSetContextPlayer(old);
 					//	xUnitSelect(dEnemies, xUnitID);
 					//	trUnitHighlight(100, true);
 					//	debugLog(""+xGetInt(dEnemies, xUnitID));
@@ -1675,6 +1567,8 @@ active
 		xDatabaseNext(dTowers);
 		xUnitSelect(dTowers, xUnitID);
 		if(trUnitAlive() == false){
+			xUnitSelect(dTowers, xUnitID);
+			trUnitChangeProtoUnit("Tower");
 			xFreeDatabaseBlock(dTowers);
 		}
 	}
