@@ -71,7 +71,7 @@ void ProjSetAmmoCost(int num = 1){
 	/*if(num != 10){
 		num = num*1.5;
 	}*/
-	xSetInt(dProjectiles, xProjAmmoCost, num);
+	xSetInt(dProjectiles, xProjAmmoCost, num*(Difficulty*0.5+1));
 }
 
 void ProjSetBaseCosSin(float num = 0.0, float other = 0.0){
@@ -154,11 +154,18 @@ const int PROJ_Purple = 34;
 const int PROJ_Tsunami = 35;
 const int PROJ_Nottud = 36;
 const int PROJ_RaptureDeluxe = 37;
-const int PROJ_Kronos = 38;
 const int PROJ_Ten = 39;
 const int PROJ_ChickenGrenadeTriple = 40;
+const int PROJ_Kronos = 38;
 const int PROJ_LiquidFire = 41;
+const int PROJ_SandStorm = 42;
+const int PROJ_Freezer = 43;
+const int PROJ_Tree = 44;
 
+
+//Purple deluxe for Hades only
+//Sandstorm for eggy
+//
 //4 levels, maybe 5 if there's a reward only
 
 
@@ -1230,6 +1237,81 @@ highFrequency
 	//ProjNoShoot();
 	ProjRelicDecorate("Meteorite",2, "", 1);
 	ProjTowerDecor("Fire Hades");
+	
+	//--BUILD MISSILE --- 42
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(PROJ_SandStorm);
+	ProjSetName("Sandstorm");
+	ProjSetDesc("Fires sandstorms, chance of tornado");
+	ProjSetProto("Heka Shockwave SFX");
+	ProjSetAnim(2);
+	ProjSetSize(1);
+	ProjSetDamage(500);
+	ProjRangeandLOS(28,24);
+	ProjSetAmmoCost(300);
+	ProjSetFireRate(500);
+	ProjSetCount(3);
+	ProjSetAngle(20);
+	ProjSetBaseCosSin(0.939693, 0.342020); //the initial +cos/sin (+20)
+	ProjSetMoveCosSin(0.939693, -0.342020); //the incremental -cos/sin (-20)
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(11);
+	ProjSetSound("sphinxspecialattack.wav");
+	//ProjAllowPassThrough();
+	ProjDeathEffect();
+	//ProjNoShoot();
+	ProjRelicDecorate("Sphinx", 47 , "0,0,0,0,0,0", 0.0);
+	ProjTowerDecor("Shifting Sands Out");
+	
+	//--BUILD MISSILE --- 43
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(PROJ_Freezer);
+	ProjSetName("Freezer");
+	ProjSetDesc("Freezes units for 10 seconds");
+	ProjSetProto("Spear");
+	ProjSetAnim(2);
+	ProjSetSize(1);
+	ProjSetDamage(500);
+	ProjRangeandLOS(40,40);
+	ProjSetAmmoCost(200);
+	ProjSetFireRate(1000);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(12);
+	ProjSetSound("frostwindloop.wav");
+	//ProjAllowPassThrough();
+	//ProjDeathEffect();
+	ProjNoShoot();
+	ProjRelicDecorate("King Folstag", 40 , "0,0,0,0,0,0", 0.0);
+	ProjTowerDecor("Ice Sheet");
+	
+	//--BUILD MISSILE --- 44
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(PROJ_Tree);
+	ProjSetName("Debaser");
+	ProjSetDesc("Plants trees on deceased myth units");
+	ProjSetProto("Troll");
+	ProjSetAnim(18);
+	ProjSetAnimPath("0,0,0,0,0,0");
+	ProjSetSize(0.0);
+	ProjSetDamage(200);
+	ProjRangeandLOS(20,22);
+	ProjSetAmmoCost(25);
+	ProjSetFireRate(900);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("gaiatreesprout" + iModulo(2, (trTime())+1) + ".wav");
+	//ProjAllowPassThrough();
+	ProjDeathEffect();
+	//ProjNoShoot();
+	ProjRelicDecorate("Gaia Forest effect");
+	ProjTowerDecor("Gaia Forest effect");
 	
 	
 	

@@ -73,37 +73,27 @@ int npcDiag(int npc = 0, int dialog = 0) {
 			{
 				case 1:
 				{
-					uiMessageBox("Welcome to Zoo Quest. Here's a quick tutorial before we begin.");
-					dialog = 0;
+					uiMessageBox("Right click to garrison in gaia towers.");
 				}
-			}
-		}
-		case 3:
-		{
-			switch(dialog)
-			{
-				case 1:
+				case 2:
 				{
-					p = trCurrentPlayer();
-					if(1*trQuestVarGet("P"+p+"FirstJump") == 0){
-						uiMessageBox("Press 'Q' to jump - you will always jump forward.");
-					}
-					dialog = 0;
+					uiMessageBox("Pick up relics before doing this to change what towers fire.");
 				}
-			}
-		}
-		case 4:
-		{
-			switch(dialog)
-			{
-				case 1:
+				case 3:
 				{
-					uiMessageBox("Great! Now make it to the end line and we can begin.");
+					uiMessageBox("Right click enemies when in a tower to attack them.");
+				}
+				case 4:
+				{
+					uiMessageBox("Mine gold to increase your ammo.");
+				}
+				case 5:
+				{
+					uiMessageBox("Building a dock shows your current objective and the building list.");
 					dialog = 0;
 				}
 			}
 		}
-		
 	}
 	return(dialog);
 }

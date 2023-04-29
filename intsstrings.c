@@ -21,15 +21,13 @@ Auto = Building HP
 Satyr = Sky passage damage
 Argus = Human speed
 
-Redo cine
-AGGRO STILL A PROBLEM
 */
 
 //---Launch Codes
 bool Visible = false;
 bool AllowEnemies = true;
 bool CineChoice = true;
-int TestRelic = 1;
+int TestRelic = 44;
 bool Helpers = false;
 
 //---Game Data
@@ -70,6 +68,7 @@ string RoadTerrain = "";
 
 string Huntable = "";
 string Berry = "";
+string Bird = "";
 
 //---Enemy skin
 string Enemy0 = "";

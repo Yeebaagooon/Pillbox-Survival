@@ -131,11 +131,11 @@ highFrequency
 		}
 		trUnitSelectClear();
 		//[anim changes special]
-		/*
-		if(xGetInt(dFreeRelics, xSFXExtra) == 2){
+		
+		if(xGetInt(dFreeRelics, xSFXExtra) > 1){
 			xUnitSelect(dFreeRelics, xSFXID);
-			trUnitOverrideAnimation(15,0,true,true,-1);
-		}*/
+			trUnitOverrideAnimation(xGetInt(dFreeRelics, xSFXExtra),0,true,true,-1);
+		}
 		
 		if(time > timelast){
 			if(xGetInt(dFreeRelics, xSFXExtra) == 1){

@@ -42,9 +42,9 @@ void ChooseYes(int p = 0){
 	//xsSetContextPlayer(0);
 	xsDisableSelf();
 	if(trCurrentPlayer() == p){
-		trackInsert();
-		trackAddWaypoint();
-		trackPlay(10,EVENT_REMOVE_CAM_TRACKS);
+		//trackInsert();
+		//trackAddWaypoint();
+		//trackPlay(10,EVENT_REMOVE_CAM_TRACKS);
 		trUnitSelectClear();
 		uiFindType(""+YesChoiceUnitName);
 		uiTransformSelectedUnit(""+YesChoiceUnitName + " Hero");
@@ -56,9 +56,9 @@ void ChooseNo(int p = 0){
 	p = p-12;
 	xsDisableSelf();
 	if(trCurrentPlayer() == p){
-		trackInsert();
-		trackAddWaypoint();
-		trackPlay(10,EVENT_REMOVE_CAM_TRACKS);
+		//trackInsert();
+		//trackAddWaypoint();
+		//trackPlay(10,EVENT_REMOVE_CAM_TRACKS);
 		trUnitSelectClear();
 		uiFindType(""+NoChoiceUnitName);
 		uiTransformSelectedUnit(""+NoChoiceUnitName + " Hero");

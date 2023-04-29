@@ -119,6 +119,7 @@ highFrequency
 	aiSet("NoAI", cNumberNonGaiaPlayers);
 	Difficulty = 1*trGetWorldDifficulty();
 	//Easy = 0, Mod = 1, Hard = 2, Titan = 3
+	playSound("\cinematics\26_in\music.mp3");
 }
 
 rule load2
@@ -173,6 +174,7 @@ highFrequency
 			//---
 			Huntable = "Deer";
 			Berry = "Berry Bush";
+			Bird = "Hawk";
 			//---
 			City1Building = "Academy";
 			City2Building = "Archery Range";
@@ -199,7 +201,8 @@ highFrequency
 			Enemy8 = "Mummy";
 			//---
 			Huntable = "Gazelle";
-			Berry = "Dust Devil";
+			Berry = "Lion";
+			Bird = "Vulture";
 			//---
 			City1Building = "Barracks";
 			City2Building = "Siege Camp";
@@ -225,14 +228,15 @@ highFrequency
 			Enemy7 = "Mountain Giant";
 			Enemy8 = "Fire Giant";
 			//---
-			Huntable = "Elk";
-			Berry = "Walrus";
+			Huntable = "Walrus";
+			Berry = "Elk";
+			Bird = "Eagle";
 			//---
 			City1Building = "Longhouse";
 			City2Building = "Longhouse";
 		}
 		if(MapSkin == 4){
-			TreeTerrain = "HadesCliff";
+			TreeTerrain = "ForestFloorDeadPine";
 			TreeBorderTerrain = "HadesBuildable1";
 			Terrain1 = "HadesBuildable2";
 			Terrain2 = "HadesBuildable1";
@@ -253,7 +257,8 @@ highFrequency
 			Enemy8 = "Lampades";
 			//---
 			Huntable = "Pig";
-			Berry = "Skeleton";
+			Berry = "Goat";
+			Bird = "Harpy";
 			//---
 			City1Building = "Dwarf Foundry";
 			City2Building = "Dwarven Forge";
@@ -271,7 +276,7 @@ highFrequency
 		trOverlayTextColour(255, 125, 0);
 		gadgetUnreal("ShowImageBox");
 		trOverlayText(MapName, 8.0, 574, 28, 1000);
-		trSetUnitIdleProcessing(true);
+		//trSetUnitIdleProcessing(true);
 		xsDisableSelf();
 		gadgetReal("ShowImageBox-BordersTop");
 		gadgetReal("ShowImageBox-BordersBottom");
@@ -283,7 +288,7 @@ highFrequency
 		gadgetReal("ShowImageBox-BordersRightTop");
 		gadgetReal("ShowImageBox-CloseButton");
 		aiSet("NoAI", cNumberNonGaiaPlayers);
-		trSetUnitIdleProcessing(false);
+		//trSetUnitIdleProcessing(false);
 		//startNPCDialog(1);
 		if(CineChoice){
 			xsEnableRule("CineJunction");

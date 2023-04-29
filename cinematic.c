@@ -3,6 +3,7 @@ void CineGo(int unused = 0){
 	xsEnableRule("RemoveCineTimers");
 	xsEnableRule("SetupCine");
 	xsDisableRule("SkipCine");
+	xResetDatabase(dCityBuildings);
 }
 
 rule CineJunction
@@ -10,6 +11,10 @@ highFrequency
 inactive
 {
 	DontDestroyBelow = 1*(trGetNextUnitScenarioNameNumber()-1);
+	trChangeTerrainHeight(90,0,130,1,7);
+	trChangeTerrainHeight(90,1,130,2,6.5);
+	trChangeTerrainHeight(90,2,130,3,6);
+	trChangeTerrainHeight(90,3,130,4,5.5);
 	PlayerChoice(1, "Play cinematic?", "Yes", 1, "No", 2);
 	xsDisableSelf();
 	trSetObscuredUnits(false);
@@ -26,7 +31,18 @@ inactive
 	trUnitSelectClear();
 	trUnitSelect(""+temp);
 	trSetSelectedScale(2,3,2);
-	trRenderSky(true, "SkySunset");
+	if(MapSkin == 1){
+		trRenderSky(true, "SkySunset");
+	}
+	if(MapSkin == 2){
+		trRenderSky(true, "SkyBlue");
+	}
+	if(MapSkin == 3){
+		trRenderSky(true, "SkyWinter");
+	}
+	if(MapSkin == 4){
+		trRenderSky(true, "SkyStormy");
+	}
 	trUnitSelectClear();
 	createCameraTrack(15000);
 	trCameraCut(vector(218.800000,14.370558,104.707848), vector(0.024098,-0.088283,-0.995804), vector(0.002136,0.996095,-0.088258), vector(-0.999707,0.000000,-0.024192));
@@ -37,7 +53,12 @@ inactive
 	//PlayerChoice(1, "Play cinematic:", "Yes", 0, "No", 0);
 	//1 for play, 2 for no
 	trDelayedRuleActivation("TowerUnits");
-	PlayersActive = cNumberNonGaiaPlayers;
+	PlayersActive = 0;
+	for(p = 1; < cNumberNonGaiaPlayers){
+		if(playerIsPlaying(p)){
+			PlayersActive = PlayersActive+1;
+		}
+	}
 	SkipRequired = PlayersActive-1;
 	if(PlayersActive == 1){
 		SkipRequired = PlayersActive;
@@ -48,6 +69,14 @@ inactive
 		PlayerChoice(p, "Skip Cinematic?", "Yes", 3, "No", -1);
 	}
 	xsEnableRule("SkipCine");
+	replaceTerrainBelowHeightMin("CliffGreekB", Terrain1, 10.0);
+	replaceTerrainBelowHeightMin("RiverGrassyC", Terrain2, 10.0);
+	replaceTerrainBelowHeightMin("MarshF", Terrain3, 10.0);
+	replaceTerrainBelowHeightMin("JungleA", Terrain4, 10.0);
+	replaceTerrainBelowHeightMin("GrassB", Terrain5, 10.0);
+	replaceTerrainBelowHeightMin("GrassDirt25", Terrain1, 10.0);
+	CreateUnitInAtlantisBoxNoDB(102,22, 3, getTerrainType(Terrain5), getTerrainSubType(Terrain5), 0, City1Building, 180);
+	CreateUnitInAtlantisBoxNoDB(117,22, 3, getTerrainType(Terrain5), getTerrainSubType(Terrain5), 0, City2Building, 180);
 	xsDisableSelf();
 }
 
@@ -56,6 +85,7 @@ inactive
 highFrequency
 {
 	if(1*trQuestVarGet("SkipVotes") >= SkipRequired){
+		gadgetUnreal("ShowChoiceBox");
 		xsDisableSelf();
 		xsDisableRule("SetupCine");
 		SkipRequired = 47;
@@ -154,12 +184,6 @@ inactive
 	}
 	trPaintTerrain(28,28,34,60,getTerrainType(TreeTerrain),getTerrainSubType(TreeTerrain));
 	trPaintTerrain(28,28,60,34,getTerrainType(TreeTerrain),getTerrainSubType(TreeTerrain));
-	replaceTerrainBelowHeightMin("CliffGreekB", Terrain1, 10.0);
-	replaceTerrainBelowHeightMin("RiverGrassyC", Terrain2, 10.0);
-	replaceTerrainBelowHeightMin("MarshF", Terrain3, 10.0);
-	replaceTerrainBelowHeightMin("JungleA", Terrain4, 10.0);
-	replaceTerrainBelowHeightMin("GrassB", Terrain5, 10.0);
-	replaceTerrainBelowHeightMin("GrassDirt25", Terrain1, 10.0);
 }
 
 rule Cut1
@@ -408,6 +432,7 @@ highFrequency
 	xResetDatabase(dFreeRelics);
 	xResetDatabase(dCity);
 	xResetDatabase(dRocket);
+	xResetDatabase(dCityBuildings);
 	xSetPointer(dPlayerData, 1);
 	xSetInt(dPlayerData, xAmmo, 100);
 	for(a = DontDestroyBelow; < trGetNextUnitScenarioNameNumber()){

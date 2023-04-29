@@ -830,7 +830,7 @@ void CreateStartingRelics(int num = 1){
 					}
 					else if(dist >= 25600){
 						//FORCE LEVEL 4 RELICS
-						trQuestVarSetFromRand("temp", 30,41);
+						trQuestVarSetFromRand("temp", 30,43);
 						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
 						/*trQuestVarSetFromRand("temp2", 1,3);
 						if(1*trQuestVarGet("temp2") == 1){
@@ -1249,17 +1249,23 @@ inactive
 	MapBuild("Creating pillboxes", "ui\ui map size select large");
 	trDelayedRuleActivation("WorldCreate11");
 	xsDisableSelf();
+	for(a = 0; < 6){
+		UnitCreate(0, Bird, 0,0);
+		UnitCreate(0, Bird, 300,0);
+		UnitCreate(0, Bird, 0,300);
+		UnitCreate(0, Bird, 300,300);
+	}
 }
 //--- DO NOT SPLIT THIS STOPS RELIC GUARDS FOR NO ADEQUATELY EXPLORED REASON
 rule WorldCreate11
 highFrequency
 inactive
 {
-	CreateStartingPillBoxes(40);
-	CreateStartingRelics(50);
+	CreateStartingPillBoxes(40-(4*Difficulty));
+	CreateStartingRelics(60-(5*Difficulty));
 	CreatePowerRelics(cNumberNonGaiaPlayers*2);
-	CreateStartingAnimals(30);
-	CreateStartingBerries(30);
+	CreateStartingAnimals(10+(cNumberNonGaiaPlayers*4));
+	CreateStartingBerries(10+(cNumberNonGaiaPlayers*4));
 	CreateTemple();
 	refreshPassability();
 	if(Visible == false){
@@ -1301,6 +1307,7 @@ inactive
 	uiLookAtProto("Villager Atlantean Hero");
 	xsEnableRule("FirstHelper");
 	xsEnableRule("UnlockTemple");
+	xsEnableRule("Helper30s");
 	smooth(4);
 	if(MapSkin == 3){
 		replaceTerrainBelowHeightMin(Terrain5, "IceC", -1);
@@ -1396,7 +1403,6 @@ inactive
 					xUnitSelect(dPlayerData, xUnitID);
 					trImmediateUnitGarrison(""+xGetInt(dTowers, xUnitID));
 					xUnitSelect(dTowers, xUnitID);
-					trUnitSetAnimationPath(TowerAnim);
 					//dialog
 					missileclass = xGetInt(dPlayerData, xCurrentMissile);
 					xSetPointer(dProjectiles, missileclass);
@@ -1520,6 +1526,7 @@ active
 	float tempfloat = 0.0;
 	int target = -1;
 	int old = 0;
+	vector unithome = vector(0,0,0);
 	int targetpointer = 0;
 	string TempleMsg1 = "Oracle: Increase human HP | Auto: Increase building HP | Satyr: ";
 	string TempleMsg2 = "Increase sky passage damage | Argus: Increase human speed";
@@ -1536,9 +1543,9 @@ active
 				xSetBool(dEnemies, xAggro, true);
 				//UNIT AGGRO
 				dist = 1000000.0;
-				xUnitSelect(dEnemies, xUnitID);
-				trUnitHighlight(15);
-				trChatSendToPlayer(0, 1, "<color=1,0,1>Unit aggro " + xGetInt(dEnemies, xUnitID));
+				//xUnitSelect(dEnemies, xUnitID);
+				//trUnitHighlight(15);
+				//trChatSendToPlayer(0, 1, "<color=1,0,1>Unit aggro " + xGetInt(dEnemies, xUnitID));
 				xUnitSelect(dEnemies, xUnitID);
 				for(p = 1; < cNumberNonGaiaPlayers){
 					xSetPointer(dPlayerData, p);
@@ -1551,20 +1558,17 @@ active
 					}
 				}
 				if(dist < 50){
-					trChatSendToPlayer(0, 1, "<color=0,1,0>"+ xGetInt(dEnemies, xUnitID) + " aggro to P "+targetpointer);
 					xSetPointer(dPlayerData, targetpointer);
-					//old = xsGetContextPlayer();
 					move = kbGetBlockPosition(""+xGetInt(dPlayerData, xUnitID));
-					//xsSetContextPlayer(0);
-					xUnitSelect(dEnemies, xUnitID);
-					//trUnitMoveFromArea(xsVectorGetX(move),1.0,xsVectorGetZ(move), -1, true, cNumberNonGaiaPlayers, "All", 10.0);
-					//xsSetContextPlayer(old);
-					//	xUnitSelect(dEnemies, xUnitID);
-					//	trUnitHighlight(100, true);
-					//	debugLog(""+xGetInt(dEnemies, xUnitID));
-				}
-				else{
-					trChatSendToPlayer(0, 1, "<color=1,0,0>"+xGetInt(dEnemies, xUnitID) + " dist too high");
+					trUnitMoveToPoint(xsVectorGetX(move),1.0,xsVectorGetZ(move),-1,true);
+					unithome = kbGetBlockPosition(""+xGetInt(dEnemies, xUnitID));
+					for(a = xGetDatabaseCount(dEnemies); > 0){
+						xDatabaseNext(dEnemies);
+						if(distanceBetweenVectors(unithome, kbGetBlockPosition(""+xGetInt(dEnemies, xUnitID))) < 80){
+							xUnitSelect(dEnemies, xUnitID);
+							trUnitMoveToPoint(xsVectorGetX(move),1.0,xsVectorGetZ(move),-1,true);
+						}
+					}
 				}
 			}
 		}
@@ -1749,13 +1753,29 @@ active
 				}
 			}
 			xUnitSelect(dBomb, xUnitID);
-			if(trUnitAlive() == false){
+			if((trUnitAlive() == false) || (kbGetUnitBaseTypeID(xGetInt(dBomb, xUnitID)) != kbGetProtoUnitID("Phoenix Egg"))){
 				xFreeDatabaseBlock(dBomb);
 			}
 		}
 		
 	}
 	
+}
+
+rule Helper30s
+highFrequency
+inactive
+{
+	if((trTime()-cActivationTime) >= 30){
+		xsDisableSelf();
+		if(Difficulty != 3){
+			uiMessageBox("If you're ever unsure what to do - build a dock");
+		}
+		else{
+			uiMessageBox("In TITAN difficulty there is no auto attack, you need to right click!");
+			trSetUnitIdleProcessing(false);
+		}
+	}
 }
 
 rule TowersFire
@@ -2019,6 +2039,32 @@ active
 									else{
 										xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)+xGetInt(dProjectiles, xProjAmmoCost));
 									}
+								}
+								if(xGetInt(dProjectiles, xProjClass) == PROJ_Freezer){
+									//Freeze
+									trUnitSelectClear();
+									trUnitSelect(""+targetid);
+									trUnitHighlight(10);
+									trUnitSelectClear();
+									//select the burn spy id
+									for(u = xGetDatabaseCount(dEnemies); > 0){
+										xDatabaseNext(dEnemies);
+										if(xGetInt(dEnemies, xUnitID) == targetid){
+											break;
+										}
+									}
+									index = xAddDatabaseBlock(dStunned, true);
+									xSetInt(dStunned, xUnitID, xGetInt(dEnemies, xUnitID));
+									xSetFloat(dStunned, xTimeStunned, trTimeMS()+10000);
+									xSetInt(dStunned, xStunMutate, kbGetUnitBaseTypeID(kbGetBlockID(""+xGetInt(dEnemies, xUnitID))));
+									xSetInt(dStunned, xStunSpyID, xGetInt(dEnemies, xSpyStun));
+									xUnitSelect(dEnemies, xSpyStun);
+									trMutateSelected(kbGetProtoUnitID("Ice Block"));
+									index = xAddDatabaseBlock(dOnFire, true);
+									xSetInt(dOnFire, xUnitID, targetid);
+									xSetFloat(dOnFire, xTimeToBurn, trTimeMS()+10000);
+									xSetFloat(dOnFire, xTotalBurnDamage, xGetInt(dProjectiles, xProjDamage));
+									xSetFloat(dOnFire, xDamagePerTick, xGetFloat(dOnFire, xTotalBurnDamage)/10000);
 								}
 								xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)-xGetInt(dProjectiles, xProjAmmoCost));
 								if(trCurrentPlayer() == shotby){
