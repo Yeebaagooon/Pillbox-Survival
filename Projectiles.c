@@ -629,14 +629,14 @@ highFrequency
 	xSetInt(dProjectiles, xPointer, index);
 	ProjSetClass(PROJ_100Dmg);
 	ProjSetName("MK-18");
-	ProjSetDesc("Standard projectile");
+	ProjSetDesc("Higher damage projectile");
 	ProjSetProto("Spear");
 	ProjSetAnim(2);
 	ProjSetAnimPath("0,0,0,0,0,0");
 	ProjSetSize(0.5);
 	ProjSetDamage(100);
 	ProjRangeandLOS(20,22);
-	ProjSetAmmoCost(100);
+	ProjSetAmmoCost(10);
 	ProjSetFireRate(900);
 	ProjSetCount(1);
 	ProjSetAngle(0);

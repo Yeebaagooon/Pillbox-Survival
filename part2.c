@@ -46,7 +46,7 @@ highFrequency
 		trUnitSelectByQV("RocketUnit");
 		WonderHP = 100-trUnitPercentDamaged();
 		trCounterAbort("rockethealth");
-		trCounterAddTime("rockethealth", -100, -20000, "Rocket Completion: " + WonderHP + "/100", -1);
+		trCounterAddTime("rockethealth", -100, -20000, "</color>Rocket Completion: " + WonderHP + "/100", -1);
 	}
 }
 
@@ -70,6 +70,10 @@ highFrequency
 		TeaTime = trTime()+1000;
 		trSetLighting("default", 6);
 		xsEnableRule("RocketLaunchSequence");
+		for(a = 11; <= 24){
+			trUnitSelectByQV("LaunchPadEC"+a);
+			trMutateSelected(kbGetProtoUnitID("Rocket"));
+		}
 	}
 }
 
@@ -109,16 +113,19 @@ rule Launch
 highFrequency
 inactive
 {
-	vector unit = vector(0,0,0);
-	for(a = xGetDatabaseCount(dRocket) ; > 0){
-		xDatabaseNext(dRocket);
-		unit = kbGetBlockPosition(""+xGetInt(dRocket, xUnitID));
-		xUnitSelect(dRocket, xUnitID);
-		trUnitTeleport(xsVectorGetX(unit), xsVectorGetY(unit)+yc, xsVectorGetZ(unit));
-	}
-	yc = yc+0.01;
-	if(yc > 1){
-		xsDisableSelf();
-		xsEnableRule("EndGameWin");
+	if(trTimeMS() > 1*trQuestVarGet("LaunchTimer")){
+		trQuestVarSet("LaunchTimer", trTimeMS()+10);
+		vector unit = vector(0,0,0);
+		for(a = xGetDatabaseCount(dRocket) ; > 0){
+			xDatabaseNext(dRocket);
+			unit = kbGetBlockPosition(""+xGetInt(dRocket, xUnitID));
+			xUnitSelect(dRocket, xUnitID);
+			trUnitTeleport(xsVectorGetX(unit), xsVectorGetY(unit)+yc, xsVectorGetZ(unit));
+		}
+		yc = yc+0.01;
+		if(yc > 1){
+			xsDisableSelf();
+			xsEnableRule("EndGameWin");
+		}
 	}
 }

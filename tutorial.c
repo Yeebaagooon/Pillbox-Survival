@@ -647,10 +647,10 @@ void SetupCities(){
 			CreateUnitInAtlantisBox(xsVectorGetX(tempV)+4,xsVectorGetZ(tempV)-5, 1,-1, -1, 0, "Mist", 0);
 			CreateUnitInAtlantisBox(xsVectorGetX(tempV)-4,xsVectorGetZ(tempV)-5, 1,-1, -1, 0, "Mist", 0);
 			tempV = tempV*2;
-			SpawnEnemy("Tower Mirror", xsVectorGetX(tempV)+6*2,(xsVectorGetZ(tempV)+5*2),true,5, 0);
-			SpawnEnemy("Tower Mirror", xsVectorGetX(tempV)-6*2,(xsVectorGetZ(tempV)+5*2),true,5, 0);
-			SpawnEnemy("Tower Mirror", xsVectorGetX(tempV)+4*2,(xsVectorGetZ(tempV)-5*2),true,5, 0);
-			SpawnEnemy("Tower Mirror", xsVectorGetX(tempV)-4*2,(xsVectorGetZ(tempV)-5*2),true,5, 0);
+			SpawnEnemy("Catapult", xsVectorGetX(tempV)+6*2,(xsVectorGetZ(tempV)+5*2),true,5, 0);
+			SpawnEnemy("Catapult", xsVectorGetX(tempV)-6*2,(xsVectorGetZ(tempV)+5*2),true,5, 0);
+			SpawnEnemy("Catapult", xsVectorGetX(tempV)+4*2,(xsVectorGetZ(tempV)-5*2),true,5, 0);
+			SpawnEnemy("Catapult", xsVectorGetX(tempV)-4*2,(xsVectorGetZ(tempV)-5*2),true,5, 0);
 		}
 	}
 }
@@ -1016,7 +1016,7 @@ void CreateTemple(){
 				trUnitChangeProtoUnit("Temple Underworld");
 				trUnitSelectClear();
 				trUnitSelect(""+temp);
-				trSetUnitOrientation(MapMid, MapMid);
+				trSetUnitOrientation(rotationMatrix(MapMid, 0, 1.0), vector(0,1,0), true);
 				trUnitSelectClear();
 				trUnitSelect(""+temp);
 				trUnitChangeInArea(0,0,TreeType, "Cinematic Block", 14);
@@ -1621,13 +1621,14 @@ active
 	float tempfloat = 0.0;
 	int target = -1;
 	int old = 0;
+	int targetpointer = 0;
 	string TempleMsg1 = "Oracle: Increase human HP | Auto: Increase building HP | Satyr: ";
 	string TempleMsg2 = "Increase sky passage damage | Argus: Increase human speed";
 	vector move = vector(0,0,0);
 	for(i = xsMin(xGetDatabaseCount(dEnemies), cNumberNonGaiaPlayers); > 0){
 		xDatabaseNext(dEnemies);
 		xUnitSelect(dEnemies, xUnitID);
-		if(trUnitAlive() == false){
+		if((trUnitAlive() == false) || (kbGetUnitBaseTypeID(xGetInt(dEnemies, xUnitID)) == kbGetProtoUnitID("Pig"))){
 			xFreeDatabaseBlock(dEnemies);
 			break;
 		}
@@ -1637,6 +1638,10 @@ active
 				xSetBool(dEnemies, xAggro, true);
 				//UNIT AGGRO
 				dist = 1000000.0;
+				xUnitSelect(dEnemies, xUnitID);
+				trUnitHighlight(3);
+				trChatSendToPlayer(0, 1, "<color=1,0,1>Unit aggro " + xGetInt(dEnemies, xUnitID));
+				xUnitSelect(dEnemies, xUnitID);
 				for(p = 1; < cNumberNonGaiaPlayers){
 					xSetPointer(dPlayerData, p);
 					xUnitSelect(dEnemies, xUnitID);
@@ -1644,20 +1649,27 @@ active
 					if(tempfloat < dist){
 						dist = tempfloat;
 						target = xGetInt(dPlayerData, xUnitID);
+						targetpointer = xGetPointer(dPlayerData);
 					}
 				}
-				old = xsGetContextPlayer();
-				move = kbGetBlockPosition(""+xGetInt(dPlayerData, xUnitID));
-				xsSetContextPlayer(0);
-				xUnitSelect(dEnemies, xUnitID);
-				trUnitMoveFromArea(xsVectorGetX(move),1,xsVectorGetZ(move), -1, true, cNumberNonGaiaPlayers, "All", 10);
-				xsSetContextPlayer(old);
-				xUnitSelect(dEnemies, xUnitID);
-				trUnitHighlight(100, true);
-				debugLog(""+xGetInt(dEnemies, xUnitID));
+				if(dist < 50){
+					trChatSendToPlayer(0, 1, "<color=0,1,0>"+ xGetInt(dEnemies, xUnitID) + " aggro to P "+targetpointer);
+					xSetPointer(dPlayerData, targetpointer);
+					old = xsGetContextPlayer();
+					move = kbGetBlockPosition(""+xGetInt(dPlayerData, xUnitID));
+					xsSetContextPlayer(0);
+					xUnitSelect(dEnemies, xUnitID);
+					trUnitMoveFromArea(xsVectorGetX(move),1,xsVectorGetZ(move), -1, true, cNumberNonGaiaPlayers, "All", 10);
+					xsSetContextPlayer(old);
+					//	xUnitSelect(dEnemies, xUnitID);
+					//	trUnitHighlight(100, true);
+					//	debugLog(""+xGetInt(dEnemies, xUnitID));
+				}
+				else{
+					trChatSendToPlayer(0, 1, "<color=1,0,0>"+xGetInt(dEnemies, xUnitID) + " dist too high");
+				}
 			}
 		}
-		xUnitSelect(dEnemies, xUnitID);
 	}
 	for(i = xsMin(xGetDatabaseCount(dTowers), cNumberNonGaiaPlayers); > 0){
 		xDatabaseNext(dTowers);
@@ -2084,20 +2096,25 @@ active
 											break;
 										}
 									}
+									//no effect if unit already in DB
 									if(indb == false){
 										for(u = xGetDatabaseCount(dEnemies); > 0){
 											xDatabaseNext(dEnemies);
 											if(xGetInt(dEnemies, xUnitID) == targetid){
 												break;
+												
 											}
 										}
 										index = xAddDatabaseBlock(dTen, true);
 										xSetInt(dTen, xTenUnitID, xGetInt(dEnemies, xUnitID));
-										xSetInt(dTen, xTenSpyID, xGetInt(dEnemies, xSpyStatus));
 										xUnitSelect(dEnemies, xSpyStatus);
 										trMutateSelected(kbGetProtoUnitID("Vortex finish linked"));
+										xSetInt(dTen, xTenSpyID, xGetInt(dEnemies, xSpyStatus));
 										xUnitSelect(dEnemies, xSpyStatus);
 										trUnitSetAnimationPath("0,0,1,0,0,0");
+										trUnitSelectClear();
+										trUnitSelect(""+targetid);
+										trUnitHighlight(1);
 									}
 									else{
 										xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)+xGetInt(dProjectiles, xProjAmmoCost));

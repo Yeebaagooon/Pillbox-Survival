@@ -16,39 +16,24 @@ tEMPLE DISABLED
 200k gold available
 700k wood available
 
-Reward choice for brining parts back?
-1
-Vision
-Great jounrey
-Prsperity
-Timber harvest
-Gaia forest
-Great hunt
-Lure
-Shifting sands
-Bolt
-
 Oracle = Human HP
 Auto = Building HP
 Satyr = Sky passage damage
 Argus = Human speed
 
-enemy DATABASE IS BROKEN WITH POWER RELICS
-bomber half dmg
-
-
 Redo cine
+AGGRO STILL A PROBLEM
 */
 
 //---Launch Codes
-bool Visible = false;
+bool Visible = true;
 bool AllowEnemies = true;
-bool CineChoice = true;
+bool CineChoice = false;
 int TestRelic = 1;
-bool Helpers = true;
+bool Helpers = false;
 
 //---Game Data
-int MapSkin = 2;
+int MapSkin = 1;
 //1, greek, 2 is eggy, 3 is norse, 4 is hades
 bool Day = true;
 int Date = 0;

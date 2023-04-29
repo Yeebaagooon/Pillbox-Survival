@@ -1170,7 +1170,7 @@ void paintTrees2(string terrain = "", string tree = ""){
 	for(i = 0; < (getMapSize() / 2)) {
 		for(j = 0; < (getMapSize() / 2)) {
 			if(k == 0 && trGetTerrainType(i, j) == terrainType && trGetTerrainSubType(i, j) == terrainSubType){
-				deployLoc(i * 2  + 1, j * 2 + 1, "Victory Marker", 0);
+				deployLocRandomHeading(i * 2  + 1, j * 2 + 1, "Victory Marker");
 			}
 			k = 1 - k;
 		}

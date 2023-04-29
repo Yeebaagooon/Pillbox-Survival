@@ -170,6 +170,8 @@ highFrequency
 		gadgetReal("ShowImageBox-BordersRightBottom");
 		gadgetReal("ShowImageBox-BordersRightTop");
 		gadgetReal("ShowImageBox-CloseButton");
+		aiSet("NoAI", cNumberNonGaiaPlayers);
+		trSetUnitIdleProcessing(false);
 		//startNPCDialog(1);
 		if(CineChoice){
 			xsEnableRule("CineJunction");

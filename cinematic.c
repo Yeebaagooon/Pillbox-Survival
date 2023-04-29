@@ -298,6 +298,7 @@ highFrequency
 	xResetDatabase(dTowers);
 	xResetDatabase(dFreeRelics);
 	xResetDatabase(dCity);
+	xResetDatabase(dRocket);
 	xSetPointer(dPlayerData, 1);
 	xSetInt(dPlayerData, xAmmo, 100);
 	for(a = DontDestroyBelow; < trGetNextUnitScenarioNameNumber()){
