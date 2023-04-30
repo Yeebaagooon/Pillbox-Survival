@@ -808,17 +808,17 @@ void CreateStartingRelics(int num = 1){
 					num = num-1;
 					if(dist < 6400){
 						//FORCE LEVEL 1 RELICS
-						trQuestVarSetFromRand("temp", 1,11);
+						trQuestVarSetFromRand("temp", 1,13);
 						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
 					}
 					if((dist < 14400) && (dist >= 6400)){
 						//FORCE LEVEL 2 RELICS
-						trQuestVarSetFromRand("temp", 12,23);
+						trQuestVarSetFromRand("temp", 14,25);
 						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
 					}
 					if((dist < 25600) && (dist >= 14400)){
 						//FORCE LEVEL 3 RELICS
-						trQuestVarSetFromRand("temp", 24,31);
+						trQuestVarSetFromRand("temp", 26,33);
 						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
 						/*trQuestVarSetFromRand("temp2", 1,3);
 						if(1*trQuestVarGet("temp2") == 1){
@@ -830,8 +830,13 @@ void CreateStartingRelics(int num = 1){
 					}
 					else if(dist >= 25600){
 						//FORCE LEVEL 4 RELICS
-						trQuestVarSetFromRand("temp", 32,45);
-						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
+						trQuestVarSetFromRand("temp", 34,44);
+						if(1*trQuestVarGet("temp") == 44){
+							DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 43+MapSkin);
+						}
+						else{
+							DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
+						}
 						/*trQuestVarSetFromRand("temp2", 1,3);
 						if(1*trQuestVarGet("temp2") == 1){
 							SpawnEnemy("Circe", xsVectorGetX(spawn), xsVectorGetZ(spawn));
@@ -1051,6 +1056,38 @@ void CreateTemple(){
 				trUnitSelectClear();
 				trUnitSelect(""+temp);
 				trUnitDestroy();
+			}
+		}
+	}
+}
+
+rule Loop40
+highFrequency
+inactive
+{
+	int newowner = 0;
+	int allow = 0;
+	if(trTime() > 1*trQuestVarGet("Loop40")){
+		trQuestVarSet("Loop40", trTime()+40);
+		trUnitSelectByQV("RocketUnit");
+		for(p = 1; < cNumberNonGaiaPlayers){
+			if(trUnitIsOwnedBy(p)){
+				newowner = p;
+				while(allow == 0){
+					newowner = newowner+1;
+					if(newowner >= cNumberNonGaiaPlayers){
+						newowner = 0;
+					}
+					if(newowner == 0){
+						newowner = 1;
+					}
+					if(playerIsPlaying(newowner)){
+						trUnitSelectByQV("RocketUnit");
+						trUnitConvert(newowner);
+						allow = 1;
+					}
+				}
+				break;
 			}
 		}
 	}
@@ -1294,7 +1331,7 @@ inactive
 	trUnblockAllSounds();
 	trUnBlockAllAmbientSounds();
 	trChatHistoryClear();
-	
+	//[TESTING HOST GOD POWERS]
 	trTechGodPower(1, "Vision", 100);
 	trTechGodPower(1, "Sandstorm", 100);
 	trTechGodPower(1, "SPClightning storm", 100);
@@ -1308,6 +1345,8 @@ inactive
 	xsEnableRule("FirstHelper");
 	xsEnableRule("UnlockTemple");
 	xsEnableRule("Helper30s");
+	trQuestVarSet("Loop40", trTime()+40);
+	xsEnableRule("Loop40");
 	smooth(4);
 	if(MapSkin == 3){
 		replaceTerrainBelowHeightMin(Terrain5, "IceC", -1);
@@ -1755,7 +1794,7 @@ active
 				}
 			}
 			xUnitSelect(dBomb, xUnitID);
-			if((trUnitAlive() == false) || (kbGetUnitBaseTypeID(xGetInt(dBomb, xUnitID)) != kbGetProtoUnitID("Phoenix Egg"))){
+			if(trUnitAlive() == false){
 				xFreeDatabaseBlock(dBomb);
 			}
 		}
@@ -1847,6 +1886,8 @@ active
 								//NO PROJ SHOOTER
 								if((xGetInt(dProjectiles, xProjClass) == PROJ_Bolter) || (xGetInt(dProjectiles, xProjClass) == PROJ_BolterClose) || (xGetInt(dProjectiles, xProjClass) == PROJ_BolterDeluxe)){
 									//Bolter
+									trChatSetStatus(false);
+									trDelayedRuleActivation("EnableChat");
 									trUnitSelectClear();
 									trUnitSelect(""+targetid);
 									trTechInvokeGodPower(0, "Bolt", vector(0,0,0), vector(0,0,0));
@@ -1920,6 +1961,8 @@ active
 								}
 								if(xGetInt(dProjectiles, xProjClass) == PROJ_Tremor){
 									//Tremor
+									trChatSetStatus(false);
+									trDelayedRuleActivation("EnableChat");
 									trUnitSelectClear();
 									trUnitSelect(""+targetid);
 									trTechInvokeGodPower(0, "Tremor", kbGetBlockPosition(""+targetid), vector(0,0,0));
@@ -1944,6 +1987,8 @@ active
 										trUnitSelectClear();
 										trUnitSelect(""+targetid);
 										trUnitChangeProtoUnit("Ragnorok SFX");
+										trUnitSelect(""+targetid);
+										trUnitDestroy();
 									}
 									else{
 										AttackAllowed = false;
@@ -1986,12 +2031,16 @@ active
 									//SPC meteor
 									//trUnitSelectClear();
 									//trUnitSelect(""+targetid);
+									trChatSetStatus(false);
+									trDelayedRuleActivation("EnableChat");
 									trTechInvokeGodPower(0, "SPCMeteor", kbGetBlockPosition(""+targetid), vector(0,0,0));
 								}
 								if(xGetInt(dProjectiles, xProjClass) == PROJ_Spider){
 									//Spiders
 									//trUnitSelectClear();
 									//trUnitSelect(""+targetid);
+									trChatSetStatus(false);
+									trDelayedRuleActivation("EnableChat");
 									trTechInvokeGodPower(0, "Spiders", kbGetBlockPosition(""+targetid), vector(0,0,0));
 								}
 								if(xGetInt(dProjectiles, xProjClass) == PROJ_RaptureDeluxe){
@@ -2008,6 +2057,8 @@ active
 									trUnitSelectClear();
 									trUnitSelect(""+targetid);
 									trUnitChangeProtoUnit("Ragnorok SFX");
+									trUnitSelect(""+targetid);
+									trUnitDestroy();
 								}
 								if(xGetInt(dProjectiles, xProjClass) == PROJ_Ten){
 									//10pact

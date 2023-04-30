@@ -285,6 +285,8 @@ highFrequency
 								trDamageUnitsInArea(cNumberNonGaiaPlayers,"All",5,100);
 								xUnitSelect(dEnemies, xUnitID);
 								trDamageUnitPercent(-100);
+								trChatSetStatus(false);
+								trDelayedRuleActivation("EnableChat");
 								xUnitSelect(dEnemies, xUnitID);
 								trTechInvokeGodPower(0, "Tremor", kbGetBlockPosition(""+xGetInt(dEnemies, xUnitID)), vector(0,0,0));
 								xUnitSelect(dEnemies, xUnitID);
@@ -341,6 +343,8 @@ highFrequency
 							//tornado
 							trQuestVarSetFromRand("temp", 1, 30);
 							if(1*trQuestVarGet("temp") == 1){
+								trChatSetStatus(false);
+								trDelayedRuleActivation("EnableChat");
 								trTechInvokeGodPower(0, "Tornado XP05", kbGetBlockPosition(""+xGetInt(dEnemies, xUnitID)), vector(0,0,0));
 								if(trUnitVisToPlayer()){
 									playSound("sandstorm.wav");
@@ -353,6 +357,8 @@ highFrequency
 				}
 				else{
 					if(xGetInt(dProjectiles, xProjSpecial) == 11){
+						trChatSetStatus(false);
+						trDelayedRuleActivation("EnableChat");
 						xUnitSelect(dEnemies, xUnitID);
 						trTechInvokeGodPower(0, "Bolt", vector(0,0,0), vector(0,0,0));
 						break;
@@ -390,6 +396,8 @@ highFrequency
 					xUnitSelect(dMissiles, xUnitID);
 					trUnitChangeProtoUnit("Oak Tree");
 					xUnitSelect(dMissiles, xUnitID);
+					trChatSetStatus(false);
+					trDelayedRuleActivation("EnableChat");
 					trTechInvokeGodPower(0, "Forest Fire", vector(0,0,0), vector(0,0,0));
 					ProjChange = false;
 				}
@@ -681,6 +689,8 @@ int SpawnBomber(string unit = ""){
 	}
 }
 
+
+
 void CityPillbox(int c = 0){
 	vector central = vector(0,0,0);
 	int dist = 24;
@@ -950,4 +960,12 @@ highFrequency
 		}
 		xsDisableSelf();
 	}
+}
+
+rule EnableChat
+inactive
+highFrequency
+{
+	trChatSetStatus(true);
+	xsDisableSelf();
 }

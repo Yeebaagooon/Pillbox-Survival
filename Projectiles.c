@@ -71,7 +71,7 @@ void ProjSetAmmoCost(int num = 1){
 	/*if(num != 10){
 		num = num*1.5;
 	}*/
-	xSetInt(dProjectiles, xProjAmmoCost, num*(Difficulty*0.5+1));
+	xSetInt(dProjectiles, xProjAmmoCost, num*((Difficulty*0.5)+1));
 }
 
 void ProjSetBaseCosSin(float num = 0.0, float other = 0.0){
@@ -126,43 +126,45 @@ const int PROJ_Burner = 8;
 const int PROJ_Justice = 9;
 const int PROJ_Spider = 10;
 const int PROJ_Convert = 11;
+const int PROJ_Fast = 12;
+const int PROJ_Fart = 13;
 //---CLASS 2
-const int PROJ_BolterClose = 12;
-const int PROJ_Rapture = 13;
-const int PROJ_MiniGrenade_C3A10 = 14;
-const int PROJ_Flammenwerfer = 15;
-const int PROJ_FlammenwerferC5A10 = 16;
-const int PROJ_BlueC2A5 = 17;
-const int PROJ_BlueC3A5 = 18;
-const int PROJ_Curse = 19;
-const int PROJ_CurseFast = 20;
-const int PROJ_Homo = 21;
-const int PROJ_100Dmg = 22;
-const int PROJ_Tremor = 23;
+const int PROJ_BolterClose = 14;
+const int PROJ_Rapture = 15;
+const int PROJ_MiniGrenade_C3A10 = 16;
+const int PROJ_Flammenwerfer = 17;
+const int PROJ_FlammenwerferC5A10 = 18;
+const int PROJ_BlueC2A5 = 19;
+const int PROJ_BlueC3A5 = 20;
+const int PROJ_Curse = 21;
+const int PROJ_CurseFast = 22;
+const int PROJ_Homo = 23;
+const int PROJ_100Dmg = 24;
+const int PROJ_Tremor = 25;
 //---CLASS 3
-const int PROJ_ChickenGrenade = 24;
-const int PROJ_Acid = 25;
-const int PROJ_Sniper = 26;
-const int PROJ_RaptureMyth = 27;
-const int PROJ_JusticeMyth = 28;
-const int PROJ_Dimensional = 29;
-const int PROJ_Explosion = 30;
-const int PROJ_ConvertDeluxe = 31;
+const int PROJ_ChickenGrenade = 26;
+const int PROJ_Acid = 27;
+const int PROJ_Sniper = 28;
+const int PROJ_RaptureMyth = 29;
+const int PROJ_JusticeMyth = 30;
+const int PROJ_Dimensional = 31;
+const int PROJ_Explosion = 32;
+const int PROJ_ConvertDeluxe = 33;
 //---CLASS 4
-const int PROJ_SniperExplode = 32;
-const int PROJ_Sunstrike = 33;
-const int PROJ_Tesla = 34;
-const int PROJ_BolterDeluxe = 35;
-const int PROJ_Purple = 36;
-const int PROJ_Tsunami = 37;
-const int PROJ_Nottud = 38;
-const int PROJ_RaptureDeluxe = 39;
-const int PROJ_Ten = 40;
-const int PROJ_ChickenGrenadeTriple = 41;
-const int PROJ_Kronos = 42;
-const int PROJ_LiquidFire = 43;
-const int PROJ_SandStorm = 44;
-const int PROJ_Freezer = 45;
+const int PROJ_SniperExplode = 34;
+const int PROJ_Sunstrike = 35;
+const int PROJ_Tesla = 36;
+const int PROJ_BolterDeluxe = 37;
+const int PROJ_Purple = 38;
+const int PROJ_Tsunami = 39;
+const int PROJ_Nottud = 40;
+const int PROJ_RaptureDeluxe = 41;
+const int PROJ_Ten = 42;
+const int PROJ_ChickenGrenadeTriple = 43;
+const int PROJ_LiquidFire = 44;
+const int PROJ_SandStorm = 45;
+const int PROJ_Freezer = 46;
+const int PROJ_Kronos = 47;
 
 
 //Purple deluxe for Hades only
@@ -911,7 +913,7 @@ highFrequency
 	//ProjAllowPassThrough();
 	//ProjDeathEffect();
 	ProjNoShoot();
-	ProjRelicDecorate("Osiris Box Glow", 0, "0,1,0,0,0,0,0", 1.0);
+	ProjRelicDecorate("Oracle Hero", 52 , "0,0,0,0,0,0", 0.25);
 	ProjTowerDecor("Osiris Box Glow", "0,1,0,0,0,0,0");
 	
 	//--BUILD MISSILE --- 29
@@ -1113,7 +1115,7 @@ highFrequency
 	//ProjAllowPassThrough();
 	//ProjDeathEffect();
 	ProjNoShoot();
-	ProjRelicDecorate("Ragnorok SFX", 1,);
+	ProjRelicDecorate("Rain Small", 0, "0,1,1,0,0,0");
 	ProjTowerDecor("Vortex Landing", "0,1,0,0,0,0");
 	
 	//--BUILD MISSILE --- 37
@@ -1336,6 +1338,54 @@ highFrequency
 	ProjNoShoot();
 	ProjRelicDecorate("Conversion SFX", 1 , "0,0,0,0,0,0", 0.0);
 	ProjTowerDecor("Summoning Tree 2", "", 0.0, 18);
+	
+	//--BUILD MISSILE --- 46
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(PROJ_Fast);
+	ProjSetName("Machine tower");
+	ProjSetDesc("Fast firing weapon");
+	ProjSetProto("Promethean");
+	ProjSetAnim(6);
+	ProjSetSize(0.0);
+	ProjSetDamage(25);
+	ProjRangeandLOS(18,18);
+	ProjSetAmmoCost(3);
+	ProjSetFireRate(300);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("arrow" + iModulo(4, (trTime())+1) + ".wav");
+	//ProjAllowPassThrough();
+	//ProjDeathEffect();
+	//ProjNoShoot();
+	ProjRelicDecorate("Anubite", 3 , "0,0,0,0,0,0", 0.0);
+	ProjTowerDecor("Cinematic Block");
+	
+	//--BUILD MISSILE --- 47
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(PROJ_Fart);
+	ProjSetName("Gas tower");
+	ProjSetDesc("Fires farts");
+	ProjSetProto("Mummy");
+	ProjSetAnim(2);
+	ProjSetSize(0.0);
+	ProjSetDamage(40);
+	ProjRangeandLOS(18,18);
+	ProjSetAmmoCost(4);
+	ProjSetFireRate(1300);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("qilin_grunt" + iModulo(2, (trTime())+1) + ".wav");
+	//ProjAllowPassThrough();
+	//ProjDeathEffect();
+	//ProjNoShoot();
+	ProjRelicDecorate("Pestilence SFX1", 0 , "0,1,0,0,0,0", 0.0);
+	ProjTowerDecor("Pestilence SFX2");
 	
 	
 	
