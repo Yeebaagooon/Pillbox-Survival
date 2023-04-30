@@ -808,17 +808,17 @@ void CreateStartingRelics(int num = 1){
 					num = num-1;
 					if(dist < 6400){
 						//FORCE LEVEL 1 RELICS
-						trQuestVarSetFromRand("temp", 1,10);
+						trQuestVarSetFromRand("temp", 1,11);
 						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
 					}
 					if((dist < 14400) && (dist >= 6400)){
 						//FORCE LEVEL 2 RELICS
-						trQuestVarSetFromRand("temp", 11,21);
+						trQuestVarSetFromRand("temp", 12,23);
 						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
 					}
 					if((dist < 25600) && (dist >= 14400)){
 						//FORCE LEVEL 3 RELICS
-						trQuestVarSetFromRand("temp", 22,29);
+						trQuestVarSetFromRand("temp", 24,31);
 						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
 						/*trQuestVarSetFromRand("temp2", 1,3);
 						if(1*trQuestVarGet("temp2") == 1){
@@ -830,7 +830,7 @@ void CreateStartingRelics(int num = 1){
 					}
 					else if(dist >= 25600){
 						//FORCE LEVEL 4 RELICS
-						trQuestVarSetFromRand("temp", 30,43);
+						trQuestVarSetFromRand("temp", 32,45);
 						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
 						/*trQuestVarSetFromRand("temp2", 1,3);
 						if(1*trQuestVarGet("temp2") == 1){
@@ -1415,6 +1415,8 @@ inactive
 					trUnitSetAnimationPath(xGetString(dProjectiles, xProjTowerProtoAnimPath));
 					xUnitSelect(dTowers, xTowerSFXID);
 					trSetSelectedScale(xGetFloat(dProjectiles, xProjTowerProtoSize),xGetFloat(dProjectiles, xProjTowerProtoSize),xGetFloat(dProjectiles, xProjTowerProtoSize));
+					xUnitSelect(dTowers, xTowerSFXID);
+					trUnitOverrideAnimation(xGetInt(dProjectiles, xProjTowerAnim),0,true,true,-1);
 					modifyProtounitAbsolute("Tower", p, 11, xGetInt(dProjectiles, xProjRange));
 					modifyProtounitAbsolute("Tower", p, 2, xGetInt(dProjectiles, xProjLOS));
 					modifyProtounitAbsolute("Tower", p, 31, xGetInt(dProjectiles, xProjDamage));
@@ -1534,7 +1536,7 @@ active
 	for(i = xsMin(xGetDatabaseCount(dEnemies), cNumberNonGaiaPlayers); > 0){
 		xDatabaseNext(dEnemies);
 		xUnitSelect(dEnemies, xUnitID);
-		if((trUnitAlive() == false) || (kbGetUnitBaseTypeID(xGetInt(dEnemies, xUnitID)) == kbGetProtoUnitID("Pig"))){
+		if((trUnitAlive() == false) || (kbGetUnitBaseTypeID(xGetInt(dEnemies, xUnitID)) == kbGetProtoUnitID("Pig")) || (trUnitIsOwnedBy(cNumberNonGaiaPlayers) == false)){
 			xFreeDatabaseBlock(dEnemies);
 			break;
 		}
@@ -2066,7 +2068,39 @@ active
 									xSetFloat(dOnFire, xTotalBurnDamage, xGetInt(dProjectiles, xProjDamage));
 									xSetFloat(dOnFire, xDamagePerTick, xGetFloat(dOnFire, xTotalBurnDamage)/10000);
 								}
-								xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)-xGetInt(dProjectiles, xProjAmmoCost));
+								if(xGetInt(dProjectiles, xProjClass) == PROJ_Convert){
+									//Convert standard
+									
+									if((trCountUnitsInArea(""+targetid, cNumberNonGaiaPlayers, "HumanSoldier", 0) > 0) || (trCountUnitsInArea(""+targetid, cNumberNonGaiaPlayers, Enemy1, 0) > 0) || (trCountUnitsInArea(""+targetid, cNumberNonGaiaPlayers, Enemy3, 0) > 0)){
+										//Human check
+										
+										trUnitSelectClear();
+										trUnitSelect(""+targetid);
+										trUnitConvert(shotby);
+										UnitCreateV(0, "Regeneration SFX", kbGetBlockPosition(""+targetid));
+									}
+									else{
+										AttackAllowed = false;
+									}
+								}
+								if(xGetInt(dProjectiles, xProjClass) == PROJ_ConvertDeluxe){
+									//Convert deluxe
+									
+									if((trCountUnitsInArea(""+targetid, cNumberNonGaiaPlayers, "HumanSoldier", 0) > 0) || (trCountUnitsInArea(""+targetid, cNumberNonGaiaPlayers, Enemy1, 0) > 0) || (trCountUnitsInArea(""+targetid, cNumberNonGaiaPlayers, Enemy3, 0) > 0) || (trCountUnitsInArea(""+targetid, cNumberNonGaiaPlayers, Enemy4, 0) > 0)){
+										//Human check
+										
+										trUnitSelectClear();
+										trUnitSelect(""+targetid);
+										trUnitConvert(shotby);
+										UnitCreateV(0, "Regeneration SFX", kbGetBlockPosition(""+targetid));
+									}
+									else{
+										AttackAllowed = false;
+									}
+								}
+								if(AttackAllowed){
+									xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)-xGetInt(dProjectiles, xProjAmmoCost));
+								}
 								if(trCurrentPlayer() == shotby){
 									trSetCounterDisplay("<color={PlayerColor("+shotby+")}>Firing " + xGetString(dProjectiles, xProjName) + "| Ammo remaining - " + xGetInt(dPlayerData, xAmmo));
 								}

@@ -97,6 +97,7 @@ int xProjTowerProto = 0;
 int xProjTowerProtoAnimPath = 0;
 int xProjRelicSize = 0;
 int xProjTowerProtoSize = 0;
+int xProjTowerAnim = 0;
 
 //STATUS DB
 int dOnFire = 0;
@@ -174,6 +175,120 @@ rule setup_first_databases
 active
 highFrequency
 {
+	trQuestVarSetFromRand("temp", 1,4,true);
+	MapSkin = 1*trQuestVarGet("temp");
+	if(MapSkin == 1){
+		TreeTerrain = "ForestFloorOak";
+		TreeBorderTerrain = "ForestFloorGaia";
+		Terrain1 = "RiverGrassyC";
+		Terrain2 = "CliffGreekB";
+		Terrain3 = "GrassDirt25";
+		Terrain4 = "GrassDirt50";
+		Terrain5 = "GrassDirt75";
+		TreeType = "Oak Tree";
+		RoadTerrain = "GreekRoadA";
+		//---
+		Enemy0 = "Militia";
+		Enemy1 = "Hoplite";
+		Enemy2 = "Toxotes";
+		Enemy3 = "Minotaur";
+		Enemy4 = "Centaur";
+		Enemy5 = "Cyclops";
+		Enemy6 = "Manticore";
+		Enemy7 = "Colossus";
+		Enemy8 = "Medusa";
+		//---
+		Huntable = "Deer";
+		Berry = "Berry Bush";
+		Bird = "Hawk";
+		//---
+		City1Building = "Academy";
+		City2Building = "Archery Range";
+	}
+	if(MapSkin == 2){
+		TreeTerrain = "ForestFloorPalm";
+		TreeBorderTerrain = "ForestFloorSavannah";
+		Terrain1 = "SavannahB";
+		Terrain2 = "DirtA";
+		Terrain3 = "SandA";
+		Terrain4 = "SandC";
+		Terrain5 = "ShorelineAegeanC";
+		TreeType = "Palm";
+		RoadTerrain = "EgyptianRoadA";
+		//---
+		Enemy0 = "Spearman";
+		Enemy1 = "Camelry";
+		Enemy2 = "Chariot Archer";
+		Enemy3 = "Anubite";
+		Enemy4 = "Wadjet";
+		Enemy5 = "Sphinx";
+		Enemy6 = "Petsuchos";
+		Enemy7 = "Scarab";
+		Enemy8 = "Mummy";
+		//---
+		Huntable = "Gazelle";
+		Berry = "Lion";
+		Bird = "Vulture";
+		//---
+		City1Building = "Barracks";
+		City2Building = "Siege Camp";
+	}
+	if(MapSkin == 3){
+		TreeTerrain = "ForestFloorPineSnow";
+		TreeBorderTerrain = "ShorelineNorwegianC";
+		Terrain1 = "ShorelineAtlanticB";
+		Terrain2 = "SnowGrass25";
+		Terrain3 = "SnowGrass50";
+		Terrain4 = "SnowGrass75";
+		Terrain5 = "GaiaCreepBorderSnow";
+		TreeType = "Pine Snow";
+		RoadTerrain = "NorseRoadA";
+		//---
+		Enemy0 = "Ulfsark";
+		Enemy1 = "Huskarl";
+		Enemy2 = "Throwing Axeman";
+		Enemy3 = "Valkyrie";
+		Enemy4 = "Troll";
+		Enemy5 = "Battle Boar";
+		Enemy6 = "Fenris Wolf";
+		Enemy7 = "Mountain Giant";
+		Enemy8 = "Fire Giant";
+		//---
+		Huntable = "Walrus";
+		Berry = "Elk";
+		Bird = "Eagle";
+		//---
+		City1Building = "Longhouse";
+		City2Building = "Longhouse";
+	}
+	if(MapSkin == 4){
+		TreeTerrain = "ForestFloorDeadPine";
+		TreeBorderTerrain = "HadesBuildable1";
+		Terrain1 = "HadesBuildable2";
+		Terrain2 = "HadesBuildable1";
+		Terrain3 = "HadesBuildable2";
+		Terrain4 = "HadesBuildable1";
+		Terrain5 = "HadesBuildable2";
+		TreeType = "Pine Dead";
+		RoadTerrain = "Hades8";
+		//---
+		Enemy0 = "Minion";
+		Enemy1 = "Trident Soldier";
+		Enemy2 = "Archer Atlantean";
+		Enemy3 = "Automaton SPC";
+		Enemy4 = "Einheriar";
+		Enemy5 = "Cyclops";
+		Enemy6 = "Manticore";
+		Enemy7 = "Behemoth";
+		Enemy8 = "Lampades";
+		//---
+		Huntable = "Pig";
+		Berry = "Goat";
+		Bird = "Harpy";
+		//---
+		City1Building = "Dwarf Foundry";
+		City2Building = "Dwarven Forge";
+	}
 	dPlayerData = xInitDatabase("playerData");
 	xUnitID = xInitAddInt(dPlayerData, "Unit id", -1);
 	xSpyID = xInitAddInt(dPlayerData, "Spy id", -1);
@@ -254,6 +369,7 @@ highFrequency
 	xProjTowerProtoAnimPath = xInitAddString(dProjectiles, "towerdecorpath", "0,0,0,0,0,0");
 	xProjRelicSize = xInitAddFloat(dProjectiles, "relic decor scale", 1.0);
 	xProjTowerProtoSize = xInitAddFloat(dProjectiles, "tower sfx size", 1.0);
+	xProjTowerAnim = xInitAddInt(dProjectiles, "tower anim", 2);
 	
 	dHeldRelics = xInitDatabase("held relics");
 	xUnitID = xInitAddInt(dHeldRelics, "relic id", -1);

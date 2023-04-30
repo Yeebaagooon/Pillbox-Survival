@@ -100,15 +100,16 @@ void ProjRelicDecorate(string proto = "", int special = 0, string path = "0,0,0,
 	xSetString(dProjectiles, xProjRelicSFX, proto);
 	xSetInt(dProjectiles, xProjRelicSpecial, special);
 	//1 = refresh every 2000ms
-	//2 - birth anim
+	//2> - anim
 	xSetString(dProjectiles, xProjRelicAnimPath, path);
 	xSetFloat(dProjectiles, xProjRelicSize, size);
 }
 
-void ProjTowerDecor(string proto = "" ,string path = "0,0,0,0,0,0", float size = 1.0){
+void ProjTowerDecor(string proto = "" ,string path = "0,0,0,0,0,0", float size = 1.0, int anim = 2){
 	xSetString(dProjectiles, xProjTowerProto, proto);
 	xSetString(dProjectiles, xProjTowerProtoAnimPath, path);
 	xSetFloat(dProjectiles, xProjTowerProtoSize, size);
+	xSetInt(dProjectiles, xProjTowerAnim, anim);
 }
 
 //ORDERING FOR PROJECTILES
@@ -124,43 +125,44 @@ const int PROJ_Bolter = 7;
 const int PROJ_Burner = 8;
 const int PROJ_Justice = 9;
 const int PROJ_Spider = 10;
+const int PROJ_Convert = 11;
 //---CLASS 2
-const int PROJ_BolterClose = 11;
-const int PROJ_Rapture = 12;
-const int PROJ_MiniGrenade_C3A10 = 13;
-const int PROJ_Flammenwerfer = 14;
-const int PROJ_FlammenwerferC5A10 = 15;
-const int PROJ_BlueC2A5 = 16;
-const int PROJ_BlueC3A5 = 17;
-const int PROJ_Curse = 18;
-const int PROJ_CurseFast = 19;
-const int PROJ_100Dmg = 20;
-const int PROJ_Tremor = 21;
+const int PROJ_BolterClose = 12;
+const int PROJ_Rapture = 13;
+const int PROJ_MiniGrenade_C3A10 = 14;
+const int PROJ_Flammenwerfer = 15;
+const int PROJ_FlammenwerferC5A10 = 16;
+const int PROJ_BlueC2A5 = 17;
+const int PROJ_BlueC3A5 = 18;
+const int PROJ_Curse = 19;
+const int PROJ_CurseFast = 20;
+const int PROJ_Homo = 21;
+const int PROJ_100Dmg = 22;
+const int PROJ_Tremor = 23;
 //---CLASS 3
-const int PROJ_ChickenGrenade = 22;
-const int PROJ_Acid = 23;
-const int PROJ_Sniper = 24;
-const int PROJ_RaptureMyth = 25;
-const int PROJ_JusticeMyth = 26;
-const int PROJ_Homo = 27;
-const int PROJ_Dimensional = 28;
-const int PROJ_Explosion = 29;
+const int PROJ_ChickenGrenade = 24;
+const int PROJ_Acid = 25;
+const int PROJ_Sniper = 26;
+const int PROJ_RaptureMyth = 27;
+const int PROJ_JusticeMyth = 28;
+const int PROJ_Dimensional = 29;
+const int PROJ_Explosion = 30;
+const int PROJ_ConvertDeluxe = 31;
 //---CLASS 4
-const int PROJ_SniperExplode = 30;
-const int PROJ_Sunstrike = 31;
-const int PROJ_Tesla = 32;
-const int PROJ_BolterDeluxe = 33;
-const int PROJ_Purple = 34;
-const int PROJ_Tsunami = 35;
-const int PROJ_Nottud = 36;
-const int PROJ_RaptureDeluxe = 37;
-const int PROJ_Ten = 39;
-const int PROJ_ChickenGrenadeTriple = 40;
-const int PROJ_Kronos = 38;
-const int PROJ_LiquidFire = 41;
-const int PROJ_SandStorm = 42;
-const int PROJ_Freezer = 43;
-const int PROJ_Tree = 44;
+const int PROJ_SniperExplode = 32;
+const int PROJ_Sunstrike = 33;
+const int PROJ_Tesla = 34;
+const int PROJ_BolterDeluxe = 35;
+const int PROJ_Purple = 36;
+const int PROJ_Tsunami = 37;
+const int PROJ_Nottud = 38;
+const int PROJ_RaptureDeluxe = 39;
+const int PROJ_Ten = 40;
+const int PROJ_ChickenGrenadeTriple = 41;
+const int PROJ_Kronos = 42;
+const int PROJ_LiquidFire = 43;
+const int PROJ_SandStorm = 44;
+const int PROJ_Freezer = 45;
 
 
 //Purple deluxe for Hades only
@@ -635,12 +637,12 @@ highFrequency
 	index = xAddDatabaseBlock(dProjectiles, true);
 	xSetInt(dProjectiles, xPointer, index);
 	ProjSetClass(PROJ_100Dmg);
-	ProjSetName("MK-18");
+	ProjSetName("Zen Shot");
 	ProjSetDesc("Higher damage projectile");
-	ProjSetProto("Spear");
-	ProjSetAnim(2);
+	ProjSetProto("Qilin");
+	ProjSetAnim(18);
 	ProjSetAnimPath("0,0,0,0,0,0");
-	ProjSetSize(0.5);
+	ProjSetSize(0.0);
 	ProjSetDamage(100);
 	ProjRangeandLOS(20,22);
 	ProjSetAmmoCost(10);
@@ -649,13 +651,12 @@ highFrequency
 	ProjSetAngle(0);
 	ProjSetSpeed(30.0);
 	ProjSetSpecial(0);
-	ProjSetSound("arrow" + iModulo(4, (trTime())+1) + ".wav");
+	ProjSetSound("sentinelbirth.wav");
 	//ProjAllowPassThrough();
-	//ProjDeathEffect();
+	ProjDeathEffect();
 	//ProjNoShoot();
-	ProjRelicDecorate("Arkantos Boost SFX", 1);
-	ProjTowerDecor("Cinematic Block");
-	
+	ProjRelicDecorate("Qilin", 3, "", 0.0);
+	ProjTowerDecor("Gaia Forest effect");
 	
 	//--BUILD MISSILE --- 19
 	index = xAddDatabaseBlock(dProjectiles, true);
@@ -706,7 +707,7 @@ highFrequency
 	//ProjAllowPassThrough();
 	ProjDeathEffect();
 	//ProjNoShoot();
-	ProjRelicDecorate("Chicken");
+	ProjRelicDecorate("Chicken", 0 , "1,0,0,0,0,0", 2);
 	ProjTowerDecor("Cinematic Block");
 	
 	//--BUILD MISSILE --- 21
@@ -849,7 +850,7 @@ highFrequency
 	ProjSetSize(0);
 	ProjSetDamage(75);
 	ProjRangeandLOS(20,20);
-	ProjSetAmmoCost(100);
+	ProjSetAmmoCost(9);
 	ProjSetFireRate(1000);
 	ProjSetCount(1);
 	ProjSetAngle(0);
@@ -1212,7 +1213,7 @@ highFrequency
 	//ProjAllowPassThrough();
 	ProjDeathEffect();
 	//ProjNoShoot();
-	ProjRelicDecorate("Chicken", 0 , "0,0,0,0,0,0", 1.5);
+	ProjRelicDecorate("Chicken", 0 , "0,0,0,0,0,0", 3);
 	ProjTowerDecor("Cinematic Block");
 	
 	//--BUILD MISSILE --- 41
@@ -1291,27 +1292,50 @@ highFrequency
 	//--BUILD MISSILE --- 44
 	index = xAddDatabaseBlock(dProjectiles, true);
 	xSetInt(dProjectiles, xPointer, index);
-	ProjSetClass(PROJ_Tree);
-	ProjSetName("Debaser");
-	ProjSetDesc("Plants trees on deceased myth units");
-	ProjSetProto("Troll");
-	ProjSetAnim(18);
-	ProjSetAnimPath("0,0,0,0,0,0");
-	ProjSetSize(0.0);
-	ProjSetDamage(200);
-	ProjRangeandLOS(20,22);
-	ProjSetAmmoCost(25);
-	ProjSetFireRate(900);
+	ProjSetClass(PROJ_Convert);
+	ProjSetName("Conversion Tower");
+	ProjSetDesc("Converts human units and " + Enemy3);
+	ProjSetProto("Spear");
+	ProjSetAnim(2);
+	ProjSetSize(1);
+	ProjSetDamage(0);
+	ProjRangeandLOS(30,30);
+	ProjSetAmmoCost(55);
+	ProjSetFireRate(5000);
 	ProjSetCount(1);
 	ProjSetAngle(0);
 	ProjSetSpeed(30.0);
-	ProjSetSpecial(0);
-	ProjSetSound("gaiatreesprout" + iModulo(2, (trTime())+1) + ".wav");
+	ProjSetSpecial(12);
+	ProjSetSound("converted.wav");
 	//ProjAllowPassThrough();
-	ProjDeathEffect();
-	//ProjNoShoot();
-	ProjRelicDecorate("Gaia Forest effect");
-	ProjTowerDecor("Gaia Forest effect");
+	//ProjDeathEffect();
+	ProjNoShoot();
+	ProjRelicDecorate("Conversion SFX", 1 , "0,0,0,0,0,0", 0.0);
+	ProjTowerDecor("Summoning Tree 2", "", 0.0, 18);
+	
+	//--BUILD MISSILE --- 45
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(PROJ_ConvertDeluxe);
+	ProjSetName("Conversion Tower Deluxe");
+	ProjSetDesc("Converts anything weaker than " + Enemy4);
+	ProjSetProto("Spear");
+	ProjSetAnim(2);
+	ProjSetSize(1);
+	ProjSetDamage(0);
+	ProjRangeandLOS(26,26);
+	ProjSetAmmoCost(90);
+	ProjSetFireRate(3800);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(12);
+	ProjSetSound("converted.wav");
+	//ProjAllowPassThrough();
+	//ProjDeathEffect();
+	ProjNoShoot();
+	ProjRelicDecorate("Conversion SFX", 1 , "0,0,0,0,0,0", 0.0);
+	ProjTowerDecor("Summoning Tree 2", "", 0.0, 18);
 	
 	
 	

@@ -132,7 +132,7 @@ highFrequency
 		trUnitSelectClear();
 		//[anim changes special]
 		
-		if(xGetInt(dFreeRelics, xSFXExtra) > 1){
+		if(xGetInt(dFreeRelics, xSFXExtra) > 3){
 			xUnitSelect(dFreeRelics, xSFXID);
 			trUnitOverrideAnimation(xGetInt(dFreeRelics, xSFXExtra),0,true,true,-1);
 		}
@@ -149,6 +149,16 @@ highFrequency
 			if(xGetInt(dFreeRelics, xSFXExtra) == 2){
 				xUnitSelect(dFreeRelics, xSFXID);
 				trUnitOverrideAnimation(6,0,true,true,-1);
+			}
+			if(xGetInt(dFreeRelics, xSFXExtra) == 3){
+				xSetPointer(dProjectiles, xGetInt(dFreeRelics, xProjPointer));
+				xUnitSelect(dFreeRelics, xSFXID);
+				trUnitChangeProtoUnit("Spy Eye");xUnitSelect(dFreeRelics, xSFXID);
+				trMutateSelected(kbGetProtoUnitID(xGetString(dProjectiles, xProjRelicSFX)));
+				xUnitSelect(dFreeRelics, xSFXID);
+				trSetSelectedScale(0.0,0.0,0.0);
+				xUnitSelect(dFreeRelics, xSFXID);
+				trUnitOverrideAnimation(18,0,true,true,-1);
 			}
 		}
 	}
