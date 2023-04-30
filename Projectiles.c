@@ -165,6 +165,10 @@ const int PROJ_LiquidFire = 44;
 const int PROJ_SandStorm = 45;
 const int PROJ_Freezer = 46;
 const int PROJ_Kronos = 47;
+const int PROJ_Hellfire = 48;
+const int PROJ_FrostBlast = 49;
+const int PROJ_EarthShatter = 50;
+const int PROJ_TimeFreeze = 51;
 
 
 //Purple deluxe for Hades only
@@ -1386,6 +1390,114 @@ highFrequency
 	//ProjNoShoot();
 	ProjRelicDecorate("Pestilence SFX1", 0 , "0,1,0,0,0,0", 0.0);
 	ProjTowerDecor("Pestilence SFX2");
+	
+	//--BUILD MISSILE --- 48
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(PROJ_Hellfire);
+	ProjSetName("Hellfire");
+	ProjSetDesc("Burns all units near the tower");
+	ProjSetProto("Spear");
+	ProjSetAnim(2);
+	ProjSetAnimPath("0,0,0,0,0,0");
+	ProjSetSize(0.4);
+	ProjSetDamage(100);
+	ProjRangeandLOS(14,16);
+	ProjSetAmmoCost(80);
+	ProjSetFireRate(2000);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("inferno.wav");
+	//ProjSetBaseCosSin(0.996195, 0.087156); //the initial +cos/sin (+5)
+	//ProjSetMoveCosSin(0.996195, -0.087156); //the incremental -cos/sin (-5 for +5,0,-5)
+	//ProjAllowPassThrough();
+	//ProjDeathEffect();
+	ProjNoShoot();
+	ProjRelicDecorate("Tartarian Gate", 2, "", 0.0);
+	ProjTowerDecor("Inferno Fire Ground");
+	
+	//--BUILD MISSILE --- 49
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(PROJ_FrostBlast);
+	ProjSetName("Frost Blast");
+	ProjSetDesc("Freezes all units near the tower for 2 seconds");
+	ProjSetProto("Spear");
+	ProjSetAnim(2);
+	ProjSetAnimPath("0,0,0,0,0,0");
+	ProjSetSize(0.4);
+	ProjSetDamage(75);
+	ProjRangeandLOS(19,19);
+	ProjSetAmmoCost(100);
+	ProjSetFireRate(5000);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("frostwindloop.wav");
+	//ProjSetBaseCosSin(0.996195, 0.087156); //the initial +cos/sin (+5)
+	//ProjSetMoveCosSin(0.996195, -0.087156); //the incremental -cos/sin (-5 for +5,0,-5)
+	//ProjAllowPassThrough();
+	//ProjDeathEffect();
+	ProjNoShoot();
+	ProjRelicDecorate("Frost Giant", 0, "", 0.0);
+	ProjTowerDecor("Ice Sheet");
+	
+	//--BUILD MISSILE --- 50
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(PROJ_EarthShatter);
+	ProjSetName("Earth Shatter");
+	ProjSetDesc("Tremors all units near the tower");
+	ProjSetProto("Spear");
+	ProjSetAnim(2);
+	ProjSetAnimPath("0,0,0,0,0,0");
+	ProjSetSize(0.4);
+	ProjSetDamage(50);
+	ProjRangeandLOS(20,20);
+	ProjSetAmmoCost(100);
+	ProjSetFireRate(5000);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("earthquakeexist.wav");
+	//ProjSetBaseCosSin(0.996195, 0.087156); //the initial +cos/sin (+5)
+	//ProjSetMoveCosSin(0.996195, -0.087156); //the incremental -cos/sin (-5 for +5,0,-5)
+	//ProjAllowPassThrough();
+	//ProjDeathEffect();
+	ProjNoShoot();
+	ProjRelicDecorate("Cyclops", 3, "", 0.0);
+	ProjTowerDecor("Tremor");
+	
+	//--BUILD MISSILE --- 50
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(PROJ_TimeFreeze);
+	ProjSetName("Time Freeze");
+	ProjSetDesc("Freezes time in a large area, expensive to maintain");
+	ProjSetProto("Spear");
+	ProjSetAnim(2);
+	ProjSetAnimPath("0,0,0,0,0,0");
+	ProjSetSize(0.4);
+	ProjSetDamage(0);
+	ProjRangeandLOS(28,28);
+	ProjSetAmmoCost(100);
+	ProjSetFireRate(1500);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("timeshift.wav");
+	//ProjSetBaseCosSin(0.996195, 0.087156); //the initial +cos/sin (+5)
+	//ProjSetMoveCosSin(0.996195, -0.087156); //the incremental -cos/sin (-5 for +5,0,-5)
+	//ProjAllowPassThrough();
+	//ProjDeathEffect();
+	ProjNoShoot();
+	ProjRelicDecorate("Osiris SFX", 1, "", 0.0);
+	ProjTowerDecor("Deconstruct Building", "0,1,0,0,0,0");
 	
 	
 	

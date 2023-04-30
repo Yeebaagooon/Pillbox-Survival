@@ -1315,10 +1315,10 @@ inactive
 	vector spawn = vector(0,0,0);
 	//--Test relic
 	DeployRelic(getMapSize()/2+4,getMapSize()/2+10,TestRelic);
-	/*if(aiIsMultiplayer() == false){
+	if(aiIsMultiplayer() == false){
 		SpawnEnemy("Militia", getMapSize()/2-10,getMapSize()/2);
 		SpawnBomber("Huskarl");
-	}*/
+	}
 	trPlayerResetBlackMapForAllPlayers();
 	xsEnableRule("BlackMap");
 	CityPillbox(1);
@@ -2147,6 +2147,94 @@ active
 									}
 									else{
 										AttackAllowed = false;
+									}
+								}
+								if(xGetInt(dProjectiles, xProjClass) == PROJ_Hellfire){
+									//Burn all
+									trUnitSelectClear();
+									startpos = kbGetBlockPosition(""+xGetInt(dTowers, xUnitID));
+									for(u = xGetDatabaseCount(dEnemies); > 0){
+										xDatabaseNext(dEnemies);
+										targetpos = kbGetBlockPosition(""+xGetInt(dEnemies, xUnitID));
+										if(distanceBetweenVectors(startpos, targetpos) <= 196){
+											xAddDatabaseBlock(dOnFire, true);
+											xSetInt(dOnFire, xUnitID, xGetInt(dEnemies, xUnitID));
+											xSetFloat(dOnFire, xTimeToBurn, trTimeMS()+xGetInt(dProjectiles, xProjFireRate));
+											xSetFloat(dOnFire, xTotalBurnDamage, xGetInt(dProjectiles, xProjDamage));
+											xSetFloat(dOnFire, xDamagePerTick, xGetFloat(dOnFire, xTotalBurnDamage)/xGetInt(dProjectiles, xProjFireRate));
+											//select the burn spy id
+											xUnitSelect(dEnemies, xSpyBurn);
+											trMutateSelected(kbGetProtoUnitID("Inferno Unit Flame"));
+											xSetInt(dOnFire, xBurnSpyID, xGetInt(dEnemies, xSpyBurn));
+										}
+									}
+								}
+								if(xGetInt(dProjectiles, xProjClass) == PROJ_FrostBlast){
+									//fREEZE ALL
+									trUnitSelectClear();
+									startpos = kbGetBlockPosition(""+xGetInt(dTowers, xUnitID));
+									for(u = xGetDatabaseCount(dEnemies); > 0){
+										xDatabaseNext(dEnemies);
+										targetpos = kbGetBlockPosition(""+xGetInt(dEnemies, xUnitID));
+										if(distanceBetweenVectors(startpos, targetpos) <= 410){
+											xAddDatabaseBlock(dStunned, true);
+											xSetInt(dStunned, xUnitID, xGetInt(dEnemies, xUnitID));
+											xSetFloat(dStunned, xTimeStunned, trTimeMS()+2000);
+											xSetInt(dStunned, xStunMutate, kbGetUnitBaseTypeID(kbGetBlockID(""+xGetInt(dEnemies, xUnitID))));
+											xSetInt(dStunned, xStunSpyID, xGetInt(dEnemies, xSpyStun));
+											xUnitSelect(dEnemies, xSpyStun);
+											trMutateSelected(kbGetProtoUnitID("Ice Block"));
+											xAddDatabaseBlock(dOnFire, true);
+											xSetInt(dOnFire, xUnitID, xGetInt(dEnemies, xUnitID));
+											xSetFloat(dOnFire, xTimeToBurn, trTimeMS()+2000);
+											xSetFloat(dOnFire, xTotalBurnDamage, xGetInt(dProjectiles, xProjDamage));
+											xSetFloat(dOnFire, xDamagePerTick, xGetFloat(dOnFire, xTotalBurnDamage)/2000);
+											xUnitSelect(dEnemies, xUnitID);
+											trUnitHighlight(2);
+										}
+									}
+								}
+								if(xGetInt(dProjectiles, xProjClass) == PROJ_EarthShatter){
+									//Tremor all
+									trUnitSelectClear();
+									startpos = kbGetBlockPosition(""+xGetInt(dTowers, xUnitID));
+									trChatSetStatus(false);
+									trDelayedRuleActivation("EnableChat");
+									for(u = xGetDatabaseCount(dEnemies); > 0){
+										xDatabaseNext(dEnemies);
+										targetpos = kbGetBlockPosition(""+xGetInt(dEnemies, xUnitID));
+										if(distanceBetweenVectors(startpos, targetpos) <= 411){
+											xUnitSelect(dEnemies, xUnitID);
+											trTechInvokeGodPower(0, "Tremor", kbGetBlockPosition(""+xGetInt(dEnemies, xUnitID)), vector(0,0,0));
+											xUnitSelect(dEnemies, xUnitID);
+											trDamageUnit(xGetInt(dProjectiles, xProjDamage));
+										}
+									}
+								}
+								
+								if(xGetInt(dProjectiles, xProjClass) == PROJ_TimeFreeze){
+									//Timestop
+									trUnitSelectClear();
+									startpos = kbGetBlockPosition(""+xGetInt(dTowers, xUnitID));
+									for(u = xGetDatabaseCount(dEnemies); > 0){
+										xDatabaseNext(dEnemies);
+										targetpos = kbGetBlockPosition(""+xGetInt(dEnemies, xUnitID));
+										if(distanceBetweenVectors(startpos, targetpos) <= 900){
+											xAddDatabaseBlock(dStunned, true);
+											xSetInt(dStunned, xUnitID, xGetInt(dEnemies, xUnitID));
+											xSetFloat(dStunned, xTimeStunned, trTimeMS()+1600);
+											xSetInt(dStunned, xStunMutate, kbGetUnitBaseTypeID(kbGetBlockID(""+xGetInt(dEnemies, xUnitID))));
+											xSetInt(dStunned, xStunSpyID, xGetInt(dEnemies, xSpyStun));
+											xUnitSelect(dEnemies, xSpyStun);
+											trMutateSelected(kbGetProtoUnitID("Shockwave stun effect"));
+										}
+									}
+									for(u = xGetDatabaseCount(dBomb); > 0){
+										xDatabaseNext(dBomb);
+										targetpos = kbGetBlockPosition(""+xGetInt(dBomb, xUnitID));
+										if(distanceBetweenVectors(startpos, targetpos) <= 900){
+											xSetInt(dBomb, xExplodeTime, xGetInt(dBomb, xExplodeTime)+1600);
+										}
 									}
 								}
 								if(AttackAllowed){

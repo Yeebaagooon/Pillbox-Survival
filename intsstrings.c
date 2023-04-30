@@ -26,8 +26,8 @@ Argus = Human speed
 //---Launch Codes
 bool Visible = true;
 bool AllowEnemies = true;
-bool CineChoice = true;
-int TestRelic = 1;
+bool CineChoice = false;
+int TestRelic = 51;
 bool Helpers = false;
 
 //---Game Data
