@@ -1713,6 +1713,16 @@ active
 			}
 		}
 	}
+	if(xGetDatabaseCount(dDestroyMe) > 0){
+		for(i = xsMin(xGetDatabaseCount(dDestroyMe), cNumberNonGaiaPlayers); > 0){
+			xDatabaseNext(dDestroyMe);
+			if(xGetInt(dDestroyMe, xDestroyTime) < trTimeMS()){
+				xUnitSelect(dDestroyMe, xDestroyName);
+				trUnitDestroy();
+				xFreeDatabaseBlock(dDestroyMe);
+			}
+		}
+	}
 	if(xGetDatabaseCount(dBomb) > 0){
 		for(i = xsMin(xGetDatabaseCount(dBomb), cNumberNonGaiaPlayers); > 0){
 			xDatabaseNext(dBomb);
@@ -2211,7 +2221,6 @@ active
 										}
 									}
 								}
-								
 								if(xGetInt(dProjectiles, xProjClass) == PROJ_TimeFreeze){
 									//Timestop
 									trUnitSelectClear();
@@ -2236,6 +2245,37 @@ active
 											xSetInt(dBomb, xExplodeTime, xGetInt(dBomb, xExplodeTime)+1600);
 										}
 									}
+								}
+								if(xGetInt(dProjectiles, xProjClass) == PROJ_Zombie){
+									//skeletons
+									trUnitSelectClear();
+									startpos = kbGetBlockPosition(""+xGetInt(dTowers, xUnitID));
+									for(u = xGetDatabaseCount(dEnemies); > 0){
+										xDatabaseNext(dEnemies);
+										targetpos = kbGetBlockPosition(""+xGetInt(dEnemies, xUnitID));
+										if(distanceBetweenVectors(startpos, targetpos) <= 484){
+											xAddDatabaseBlock(dOnFire, true);
+											xSetInt(dOnFire, xUnitID, UnitCreateV(shotby, "Minion", targetpos));
+											xSetFloat(dOnFire, xTimeToBurn, trTimeMS()+60000);
+											xSetFloat(dOnFire, xTotalBurnDamage, 101);
+											xSetFloat(dOnFire, xDamagePerTick, xGetFloat(dOnFire, xTotalBurnDamage)/60000);
+										}
+									}
+								}
+								if(xGetInt(dProjectiles, xProjClass) == PROJ_Barrage){
+									//barrage
+									trUnitSelectClear();
+									startpos = kbGetBlockPosition(""+targetid);
+									index = trGetNextUnitScenarioNameNumber();
+									trUnitSelectClear();
+									trUnitSelect(""+UnitCreateVRH(shotby, "Barrage", startpos));
+									trUnitOverrideAnimation(18,0,false,true,-1);
+									trUnitSelectClear();
+									trUnitSelect(""+targetid);
+									trDamageUnitsInArea(cNumberNonGaiaPlayers, "All", 4, xGetInt(dProjectiles, xProjDamage));
+									xAddDatabaseBlock(dDestroyMe, true);
+									xSetInt(dDestroyMe, xDestroyName, index);
+									xSetInt(dDestroyMe, xDestroyTime, trTimeMS()+1500);
 								}
 								if(AttackAllowed){
 									xSetInt(dPlayerData, xAmmo, xGetInt(dPlayerData, xAmmo)-xGetInt(dProjectiles, xProjAmmoCost));

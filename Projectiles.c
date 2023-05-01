@@ -165,10 +165,13 @@ const int PROJ_LiquidFire = 44;
 const int PROJ_SandStorm = 45;
 const int PROJ_Freezer = 46;
 const int PROJ_Kronos = 47;
+//---new ones
 const int PROJ_Hellfire = 48;
 const int PROJ_FrostBlast = 49;
 const int PROJ_EarthShatter = 50;
 const int PROJ_TimeFreeze = 51;
+const int PROJ_Zombie = 52;
+const int PROJ_Barrage = 53;
 
 
 //Purple deluxe for Hades only
@@ -721,14 +724,14 @@ highFrequency
 	xSetInt(dProjectiles, xPointer, index);
 	ProjSetClass(PROJ_Acid);
 	ProjSetName("Acidifier");
-	ProjSetDesc("Launches acid attacks, dealing 400 bonus damage");
+	ProjSetDesc("Launches acid attacks, dealing 400 bonus damage to nearby units");
 	ProjSetProto("Poison SFX");
 	ProjSetAnim(2);
 	ProjSetAnimPath("0,0,0,0,0,0");
 	ProjSetSize(2);
 	ProjSetDamage(100);
 	ProjRangeandLOS(18,20);
-	ProjSetAmmoCost(40);
+	ProjSetAmmoCost(70);
 	ProjSetFireRate(2000);
 	ProjSetCount(1);
 	ProjSetAngle(0);
@@ -1436,13 +1439,13 @@ highFrequency
 	ProjSetAngle(0);
 	ProjSetSpeed(30.0);
 	ProjSetSpecial(0);
-	ProjSetSound("frostwindloop.wav");
+	ProjSetSound("frostgiantattack.wav");
 	//ProjSetBaseCosSin(0.996195, 0.087156); //the initial +cos/sin (+5)
 	//ProjSetMoveCosSin(0.996195, -0.087156); //the incremental -cos/sin (-5 for +5,0,-5)
 	//ProjAllowPassThrough();
 	//ProjDeathEffect();
 	ProjNoShoot();
-	ProjRelicDecorate("Frost Giant", 0, "", 0.0);
+	ProjRelicDecorate("Frost Drift", 0, "", 1.0);
 	ProjTowerDecor("Ice Sheet");
 	
 	//--BUILD MISSILE --- 50
@@ -1463,7 +1466,7 @@ highFrequency
 	ProjSetAngle(0);
 	ProjSetSpeed(30.0);
 	ProjSetSpecial(0);
-	ProjSetSound("earthquakeexist.wav");
+	ProjSetSound("implode start.wav");
 	//ProjSetBaseCosSin(0.996195, 0.087156); //the initial +cos/sin (+5)
 	//ProjSetMoveCosSin(0.996195, -0.087156); //the incremental -cos/sin (-5 for +5,0,-5)
 	//ProjAllowPassThrough();
@@ -1498,6 +1501,60 @@ highFrequency
 	ProjNoShoot();
 	ProjRelicDecorate("Osiris SFX", 1, "", 0.0);
 	ProjTowerDecor("Deconstruct Building", "0,1,0,0,0,0");
+	
+	//--BUILD MISSILE --- 51
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(PROJ_Zombie);
+	ProjSetName("Death Monument");
+	ProjSetDesc("Summons the dead to attack any enemies nearby");
+	ProjSetProto("Spear");
+	ProjSetAnim(2);
+	ProjSetAnimPath("0,0,0,0,0,0");
+	ProjSetSize(0.4);
+	ProjSetDamage(9);
+	ProjRangeandLOS(22,22);
+	ProjSetAmmoCost(110);
+	ProjSetFireRate(7500);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("ancestorsbirth.wav");
+	//ProjSetBaseCosSin(0.996195, 0.087156); //the initial +cos/sin (+5)
+	//ProjSetMoveCosSin(0.996195, -0.087156); //the incremental -cos/sin (-5 for +5,0,-5)
+	//ProjAllowPassThrough();
+	//ProjDeathEffect();
+	ProjNoShoot();
+	ProjRelicDecorate("Skeleton", 0, "", 1.0);
+	ProjTowerDecor("Wall Connector", "3,1,0,0,0,0", 1.5);
+	
+	//--BUILD MISSILE --- 52
+	index = xAddDatabaseBlock(dProjectiles, true);
+	xSetInt(dProjectiles, xPointer, index);
+	ProjSetClass(PROJ_Barrage);
+	ProjSetName("Volley tower");
+	ProjSetDesc("Fires arrows down on the target, damaging nearby units");
+	ProjSetProto("Spear");
+	ProjSetAnim(2);
+	ProjSetAnimPath("0,0,0,0,0,0");
+	ProjSetSize(0.4);
+	ProjSetDamage(50);
+	ProjRangeandLOS(28,28);
+	ProjSetAmmoCost(12);
+	ProjSetFireRate(1800);
+	ProjSetCount(1);
+	ProjSetAngle(0);
+	ProjSetSpeed(30.0);
+	ProjSetSpecial(0);
+	ProjSetSound("rainofarrows" + iModulo(3, (trTime())+1) + ".wav");
+	//ProjSetBaseCosSin(0.996195, 0.087156); //the initial +cos/sin (+5)
+	//ProjSetMoveCosSin(0.996195, -0.087156); //the incremental -cos/sin (-5 for +5,0,-5)
+	//ProjAllowPassThrough();
+	//ProjDeathEffect();
+	ProjNoShoot();
+	ProjRelicDecorate("Barrage", 1, "", 1.0);
+	ProjTowerDecor("Cinematic Block");
 	
 	
 	

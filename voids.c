@@ -730,12 +730,23 @@ void UnitCreateRH(int xplayerx = 0, string protounitname = "", int xx = 0, int z
 	trMutateSelected(kbGetProtoUnitID(""+protounitname+""));
 }
 
-void UnitCreateV(int xplayerx = 0, string protounitname = "", vector creat = vector(0,0,0), int xheadingx = 0){
+int UnitCreateV(int xplayerx = 0, string protounitname = "", vector creat = vector(0,0,0), int xheadingx = 0){
 	int CreatingU = trGetNextUnitScenarioNameNumber();
 	trArmyDispatch(""+xplayerx+",0", "Dwarf", 1, xsVectorGetX(creat), 0, xsVectorGetZ(creat), xheadingx, true);
 	trUnitSelectClear();
 	trUnitSelect(""+CreatingU);
 	trMutateSelected(kbGetProtoUnitID(""+protounitname+""));
+	return(CreatingU);
+}
+
+int UnitCreateVRH(int xplayerx = 0, string protounitname = "", vector creat = vector(0,0,0)){
+	int CreatingU = trGetNextUnitScenarioNameNumber();
+	trQuestVarSetFromRand("temp",1,360);
+	trArmyDispatch(""+xplayerx+",0", "Dwarf", 1, xsVectorGetX(creat), 0, xsVectorGetZ(creat), 1*trQuestVarGet("temp"), true);
+	trUnitSelectClear();
+	trUnitSelect(""+CreatingU);
+	trMutateSelected(kbGetProtoUnitID(""+protounitname+""));
+	return(CreatingU);
 }
 
 void FloatingUnit(string protounitname="", int xx = 0, int yy = 0, int zz = 0, int xheadingx = 0, float scalex = 1, float scaley = 1, float scalez = 1){

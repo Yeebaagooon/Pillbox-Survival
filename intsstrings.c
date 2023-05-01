@@ -27,7 +27,7 @@ Argus = Human speed
 bool Visible = true;
 bool AllowEnemies = true;
 bool CineChoice = false;
-int TestRelic = 51;
+int TestRelic = 53;
 bool Helpers = false;
 
 //---Game Data

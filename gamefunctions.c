@@ -131,7 +131,7 @@ highFrequency
 	float dist = 0;
 	int p = 0;
 	int missileclass = 0;
-	vector pos = vector(0,0,0);
+	vector unitpos = vector(0,0,0);
 	vector prev = vector(0,0,0);
 	vector tempV = vector(0,0,0);
 	bool ProjDead = false;
@@ -235,16 +235,23 @@ highFrequency
 						}
 						if(xGetInt(dProjectiles, xProjSpecial) == 6){
 							//Add to Acid DB
-							xUnitSelect(dEnemies, xUnitID);
-							if(trUnitAlive()){
-								xAddDatabaseBlock(dOnFire, true);
-								xSetInt(dOnFire, xUnitID, xGetInt(dEnemies, xUnitID));
-								xSetFloat(dOnFire, xTimeToBurn, trTimeMS()+2000);
-								xSetFloat(dOnFire, xTotalBurnDamage, 400);
-								xSetFloat(dOnFire, xDamagePerTick, xGetFloat(dOnFire, xTotalBurnDamage)/xGetInt(dProjectiles, xProjFireRate));
-								xUnitSelect(dEnemies, xSpyBurn);
-								trMutateSelected(kbGetProtoUnitID("Acid Pool"));
-								xSetInt(dOnFire, xBurnSpyID, xGetInt(dEnemies, xSpyBurn));
+							unitpos = kbGetBlockPosition(""+xGetInt(dEnemies, xUnitID));
+							for(u = xGetDatabaseCount(dEnemies); > 0){
+								xDatabaseNext(dEnemies);
+								tempV = kbGetBlockPosition(""+xGetInt(dEnemies, xUnitID));
+								if(distanceBetweenVectors(tempV, unitpos) < 65){
+									xUnitSelect(dEnemies, xUnitID);
+									if(trUnitAlive()){
+										xAddDatabaseBlock(dOnFire, true);
+										xSetInt(dOnFire, xUnitID, xGetInt(dEnemies, xUnitID));
+										xSetFloat(dOnFire, xTimeToBurn, trTimeMS()+2000);
+										xSetFloat(dOnFire, xTotalBurnDamage, 400);
+										xSetFloat(dOnFire, xDamagePerTick, xGetFloat(dOnFire, xTotalBurnDamage)/xGetInt(dProjectiles, xProjFireRate));
+										xUnitSelect(dEnemies, xSpyBurn);
+										trMutateSelected(kbGetProtoUnitID("Acid Pool"));
+										xSetInt(dOnFire, xBurnSpyID, xGetInt(dEnemies, xSpyBurn));
+									}
+								}
 							}
 							xUnitSelect(dMissiles, xUnitID);
 							trUnitChangeProtoUnit("Lampades Blood");
@@ -365,15 +372,26 @@ highFrequency
 					}
 					if(xGetInt(dProjectiles, xProjSpecial) == 12){
 						//burn
-						xUnitSelect(dEnemies, xUnitID);
-						xAddDatabaseBlock(dOnFire, true);
-						xSetInt(dOnFire, xUnitID, xGetInt(dEnemies, xUnitID));
-						xSetFloat(dOnFire, xTimeToBurn, trTimeMS()+1500);
-						xSetFloat(dOnFire, xTotalBurnDamage, 500);
-						xSetFloat(dOnFire, xDamagePerTick, xGetFloat(dOnFire, xTotalBurnDamage)/xGetFloat(dOnFire, xTimeToBurn));
-						xUnitSelect(dEnemies, xSpyBurn);
-						trMutateSelected(kbGetProtoUnitID("Inferno Unit Flame"));
-						xSetInt(dOnFire, xBurnSpyID, xGetInt(dEnemies, xSpyBurn));
+						
+						unitpos = kbGetBlockPosition(""+xGetInt(dEnemies, xUnitID));
+						for(u = xGetDatabaseCount(dEnemies); > 0){
+							xDatabaseNext(dEnemies);
+							tempV = kbGetBlockPosition(""+xGetInt(dEnemies, xUnitID));
+							if(distanceBetweenVectors(tempV, unitpos) < 20){
+								xUnitSelect(dEnemies, xUnitID);
+								if(trUnitAlive()){
+									xUnitSelect(dEnemies, xUnitID);
+									xAddDatabaseBlock(dOnFire, true);
+									xSetInt(dOnFire, xUnitID, xGetInt(dEnemies, xUnitID));
+									xSetFloat(dOnFire, xTimeToBurn, trTimeMS()+1500);
+									xSetFloat(dOnFire, xTotalBurnDamage, 500);
+									xSetFloat(dOnFire, xDamagePerTick, xGetFloat(dOnFire, xTotalBurnDamage)/xGetFloat(dOnFire, xTimeToBurn));
+									xUnitSelect(dEnemies, xSpyBurn);
+									trMutateSelected(kbGetProtoUnitID("Inferno Unit Flame"));
+									xSetInt(dOnFire, xBurnSpyID, xGetInt(dEnemies, xSpyBurn));
+								}
+							}
+						}
 						ProjChange = false;
 						ProjDead = false;
 						break;
@@ -394,7 +412,7 @@ highFrequency
 				tempV = kbGetBlockPosition(""+xGetInt(dMissiles, xUnitID));
 				if(xsVectorGetY(tempV) > 4){
 					xUnitSelect(dMissiles, xUnitID);
-					trUnitChangeProtoUnit("Oak Tree");
+					trUnitChangeProtoUnit(TreeType);
 					xUnitSelect(dMissiles, xUnitID);
 					trChatSetStatus(false);
 					trDelayedRuleActivation("EnableChat");

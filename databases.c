@@ -459,6 +459,10 @@ highFrequency
 	xUnitID = xInitAddInt(dPowerRelics, "unitid", -1);
 	xPowerRelicSFX = xInitAddInt(dPowerRelics, "sfxid", -1);
 	
+	dDestroyMe = xInitDatabase("destroy");
+	xDestroyName = xInitAddInt(dDestroyMe, "destroyid", -1);
+	xDestroyTime = xInitAddInt(dDestroyMe, "destroytime", 1);
+	
 	
 }
 
