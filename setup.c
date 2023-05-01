@@ -62,6 +62,18 @@ highFrequency
 	}
 	xsDisableRule("BasicVC1");
 	xsDisableRule("BasicVC2");
+	if(trGetWorldDifficulty() == 0){
+		DiffString = "Easy";
+	}
+	if(trGetWorldDifficulty() == 1){
+		DiffString = "Medium";
+	}
+	if(trGetWorldDifficulty() == 2){
+		DiffString = "Hard";
+	}
+	if(trGetWorldDifficulty() == 3){
+		DiffString = "Titan";
+	}
 	//start fade to black
 	//trUIFadeToColor(1,0,0,0,0,true);
 	trShowImageDialog("tower icon 32x32", MapName + " by Yeebaagooon");
@@ -126,7 +138,7 @@ rule load2
 inactive
 highFrequency
 {
-	characterDialog("Loading map..", ""+MapVersion+"", "tower icon 32x32");
+	characterDialog(DiffString + " difficulty", ""+MapVersion+"", "tower icon 32x32");
 	xsEnableRule("load3");
 	xsEnableRule("Stats");
 	xsDisableSelf();
@@ -137,7 +149,7 @@ inactive
 highFrequency
 {
 	if((trTime()-cActivationTime) >= 1){
-		characterDialog("Loading map...", ""+MapVersion+"", "tower icon 32x32");
+		characterDialog(DiffString + " difficulty", ""+MapVersion+"", "tower icon 32x32");
 		for(p = 1; <= cNumberNonGaiaPlayers){
 			trPlayerGrantResources(p, "Food", -10000.0);
 			trPlayerGrantResources(p, "Wood", -10000.0);

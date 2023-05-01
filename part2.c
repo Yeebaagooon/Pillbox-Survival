@@ -82,7 +82,7 @@ highFrequency
 inactive
 {
 	trCounterAbort("clock");
-	trShowWinLose("TEST VERSION DO NOT HOST", "xwin.wav");
+	trShowWinLose(DiffString + " difficulty passed!", "xwin.wav");
 	for(p=1 ; < cNumberNonGaiaPlayers){
 		trSetPlayerWon(p);
 	}

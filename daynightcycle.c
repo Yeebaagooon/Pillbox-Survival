@@ -238,7 +238,7 @@ highFrequency
 						}
 					}
 					if(Part == 2){
-						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)*2){
+						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)*3){
 							SpawnBomber("Hero Norse");
 						}
 					}
@@ -256,7 +256,7 @@ highFrequency
 						}
 					}
 					if(Part == 2){
-						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)*2){
+						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)*3){
 							SpawnBomber("Hero Norse");
 						}
 					}
@@ -264,7 +264,7 @@ highFrequency
 				if(Date >= 10){
 					trQuestVarSetFromRand("temp", 1, 2);
 					if(1*trQuestVarGet("temp") == 1){
-						for(a = 0; < (cNumberNonGaiaPlayers-PlayersDead)*4){
+						for(a = 0; < (cNumberNonGaiaPlayers-PlayersDead)*5){
 							NightAttack("Catapult");
 						}
 					}
@@ -275,7 +275,7 @@ highFrequency
 						}
 					}
 					if(Part == 2){
-						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)*2){
+						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)*3){
 							SpawnBomber("Hero Norse");
 						}
 					}

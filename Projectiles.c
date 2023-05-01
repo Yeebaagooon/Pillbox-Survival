@@ -128,57 +128,51 @@ const int PROJ_Spider = 10;
 const int PROJ_Convert = 11;
 const int PROJ_Fast = 12;
 const int PROJ_Fart = 13;
+const int PROJ_Barrage = 14;
 //---CLASS 2
-const int PROJ_BolterClose = 14;
-const int PROJ_Rapture = 15;
-const int PROJ_MiniGrenade_C3A10 = 16;
-const int PROJ_Flammenwerfer = 17;
-const int PROJ_FlammenwerferC5A10 = 18;
-const int PROJ_BlueC2A5 = 19;
-const int PROJ_BlueC3A5 = 20;
-const int PROJ_Curse = 21;
-const int PROJ_CurseFast = 22;
-const int PROJ_Homo = 23;
-const int PROJ_100Dmg = 24;
-const int PROJ_Tremor = 25;
+const int PROJ_BolterClose = 15;
+const int PROJ_Rapture = 16;
+const int PROJ_MiniGrenade_C3A10 = 17;
+const int PROJ_Flammenwerfer = 18;
+const int PROJ_FlammenwerferC5A10 = 19;
+const int PROJ_BlueC2A5 = 20;
+const int PROJ_BlueC3A5 = 21;
+const int PROJ_Curse = 22;
+const int PROJ_CurseFast = 23;
+const int PROJ_Homo = 24;
+const int PROJ_100Dmg = 25;
+const int PROJ_Tremor = 26;
+const int PROJ_FrostBlast = 27;
 //---CLASS 3
-const int PROJ_ChickenGrenade = 26;
-const int PROJ_Acid = 27;
-const int PROJ_Sniper = 28;
-const int PROJ_RaptureMyth = 29;
-const int PROJ_JusticeMyth = 30;
-const int PROJ_Dimensional = 31;
-const int PROJ_Explosion = 32;
-const int PROJ_ConvertDeluxe = 33;
+const int PROJ_ChickenGrenade = 28;
+const int PROJ_Acid = 29;
+const int PROJ_Sniper = 30;
+const int PROJ_RaptureMyth = 31;
+const int PROJ_JusticeMyth = 32;
+const int PROJ_Dimensional = 33;
+const int PROJ_Explosion = 34;
+const int PROJ_ConvertDeluxe = 35;
+const int PROJ_Hellfire = 36;
+const int PROJ_Zombie = 37;
+const int PROJ_EarthShatter = 38;
 //---CLASS 4
-const int PROJ_SniperExplode = 34;
-const int PROJ_Sunstrike = 35;
-const int PROJ_Tesla = 36;
-const int PROJ_BolterDeluxe = 37;
-const int PROJ_Purple = 38;
-const int PROJ_Tsunami = 39;
-const int PROJ_Nottud = 40;
-const int PROJ_RaptureDeluxe = 41;
-const int PROJ_Ten = 42;
-const int PROJ_ChickenGrenadeTriple = 43;
-const int PROJ_LiquidFire = 44;
-const int PROJ_SandStorm = 45;
-const int PROJ_Freezer = 46;
-const int PROJ_Kronos = 47;
+const int PROJ_SniperExplode = 39;
+const int PROJ_Sunstrike = 40;
+const int PROJ_Tesla = 41;
+const int PROJ_BolterDeluxe = 42;
+const int PROJ_Purple = 43;
+const int PROJ_Tsunami = 44;
+const int PROJ_Nottud = 45;
+const int PROJ_RaptureDeluxe = 46;
+const int PROJ_Ten = 47;
+const int PROJ_ChickenGrenadeTriple = 48;
+const int PROJ_TimeFreeze = 49;
+//--Super Weapons
+const int PROJ_LiquidFire = 50;
+const int PROJ_SandStorm = 51;
+const int PROJ_Freezer = 52;
+const int PROJ_Kronos = 53;
 //---new ones
-const int PROJ_Hellfire = 48;
-const int PROJ_FrostBlast = 49;
-const int PROJ_EarthShatter = 50;
-const int PROJ_TimeFreeze = 51;
-const int PROJ_Zombie = 52;
-const int PROJ_Barrage = 53;
-
-
-//Purple deluxe for Hades only
-//Sandstorm for eggy
-//
-//4 levels, maybe 5 if there's a reward only
-
 
 rule SetupProjTypes
 inactive
@@ -1445,7 +1439,7 @@ highFrequency
 	//ProjAllowPassThrough();
 	//ProjDeathEffect();
 	ProjNoShoot();
-	ProjRelicDecorate("Frost Drift", 0, "", 1.0);
+	ProjRelicDecorate("Ice Block", 0, "", 1.0);
 	ProjTowerDecor("Ice Sheet");
 	
 	//--BUILD MISSILE --- 50
@@ -1553,7 +1547,7 @@ highFrequency
 	//ProjAllowPassThrough();
 	//ProjDeathEffect();
 	ProjNoShoot();
-	ProjRelicDecorate("Barrage", 1, "", 1.0);
+	ProjRelicDecorate("Manticore Barb", 0, "", 2.5);
 	ProjTowerDecor("Cinematic Block");
 	
 	

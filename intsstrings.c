@@ -20,15 +20,14 @@ Oracle = Human HP
 Auto = Building HP
 Satyr = Sky passage damage
 Argus = Human speed
-
 */
 
 //---Launch Codes
-bool Visible = true;
+bool Visible = false;
 bool AllowEnemies = true;
-bool CineChoice = false;
-int TestRelic = 53;
-bool Helpers = false;
+bool CineChoice = true;
+int TestRelic = 14;
+bool Helpers = true;
 
 //---Game Data
 int MapSkin = 0;
@@ -54,6 +53,7 @@ float yc = 0.1;
 bool TempleUnlocked = false;
 int SkipRequired = 0;
 int PlayersActive = 0;
+string DiffString = "";
 
 //SKIN DATA
 string TreeType = "";

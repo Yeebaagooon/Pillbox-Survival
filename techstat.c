@@ -182,6 +182,8 @@ highFrequency
 		modifyProtounitAbsolute("Satyr", p, 6, 0);
 		modifyProtounitAbsolute("Argus", p, 6, 0);
 		modifyProtounitAbsolute("Minion", p, 0, 100);
+		modifyProtounitAbsolute("Barrage", p, 2, 0);
+		modifyProtounitAbsolute("Frost Drift", p, 2, 0);
 	}
 	modifyProtounitAbsolute("Bolt Strike", 0, 27, 0);
 	modifyProtounitAbsolute("Bolt Strike", 0, 28, 0);
@@ -196,6 +198,8 @@ highFrequency
 	modifyProtounitAbsolute("Helepolis", 0, 0, 2000);
 	modifyProtounitAbsolute("Helepolis", 0, 5, 1);
 	modifyProtounitAbsolute("Helepolis", 0, 13, 0);
+	modifyProtounitAbsolute("Barrage", 0, 2, 0);
+	modifyProtounitAbsolute("Frost Drift", 0, 2, 0);
 	modifyProtounitAbsolute("Catapult", cNumberNonGaiaPlayers, 32, 100);
 	modifyProtounitAbsolute("Catapult", cNumberNonGaiaPlayers, 0, 1000);
 	modifyProtounitAbsolute("Catapult", cNumberNonGaiaPlayers, 2, 30);

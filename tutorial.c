@@ -808,42 +808,49 @@ void CreateStartingRelics(int num = 1){
 					num = num-1;
 					if(dist < 6400){
 						//FORCE LEVEL 1 RELICS
-						trQuestVarSetFromRand("temp", 1,13);
+						trQuestVarSetFromRand("temp", 1,14);
 						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
 					}
 					if((dist < 14400) && (dist >= 6400)){
 						//FORCE LEVEL 2 RELICS
-						trQuestVarSetFromRand("temp", 14,25);
+						trQuestVarSetFromRand("temp", 15,27);
 						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
 					}
 					if((dist < 25600) && (dist >= 14400)){
 						//FORCE LEVEL 3 RELICS
-						trQuestVarSetFromRand("temp", 26,33);
+						trQuestVarSetFromRand("temp", 28,38);
 						DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
-						/*trQuestVarSetFromRand("temp2", 1,3);
-						if(1*trQuestVarGet("temp2") == 1){
-							SpawnEnemy("Centaur", xsVectorGetX(spawn), xsVectorGetZ(spawn));
+						if(Difficulty > 1){
+							trQuestVarSetFromRand("temp2", 1,3);
+							if(1*trQuestVarGet("temp2") == 1){
+								SpawnEnemy(Enemy4, xsVectorGetX(spawn), xsVectorGetZ(spawn), true,0);
+							}
+							else if(1*trQuestVarGet("temp2") == 2){
+								SpawnEnemy(Enemy5, xsVectorGetX(spawn), xsVectorGetZ(spawn), true,0);
+							}
 						}
-						else if(1*trQuestVarGet("temp2") == 1){
-							SpawnEnemy("Minotaur", xsVectorGetX(spawn), xsVectorGetZ(spawn));
-						}*/
 					}
 					else if(dist >= 25600){
 						//FORCE LEVEL 4 RELICS
-						trQuestVarSetFromRand("temp", 34,44);
-						if(1*trQuestVarGet("temp") == 44){
-							DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 43+MapSkin);
+						trQuestVarSetFromRand("temp", 39,50);
+						if(1*trQuestVarGet("temp") == 50){
+							DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 49+MapSkin);
 						}
 						else{
 							DeployRelic(xsVectorGetX(spawn), xsVectorGetZ(spawn), 1*trQuestVarGet("temp"));
 						}
-						/*trQuestVarSetFromRand("temp2", 1,3);
-						if(1*trQuestVarGet("temp2") == 1){
-							SpawnEnemy("Circe", xsVectorGetX(spawn), xsVectorGetZ(spawn));
+						if(Difficulty > 1){
+							trQuestVarSetFromRand("temp2", 1,4);
+							if(1*trQuestVarGet("temp2") == 1){
+								SpawnEnemy(Enemy6, xsVectorGetX(spawn), xsVectorGetZ(spawn), true,0);
+							}
+							else if(1*trQuestVarGet("temp2") == 2){
+								SpawnEnemy(Enemy7, xsVectorGetX(spawn), xsVectorGetZ(spawn), true,0);
+							}
+							else if(1*trQuestVarGet("temp2") == 3){
+								SpawnEnemy(Enemy8, xsVectorGetX(spawn), xsVectorGetZ(spawn), true,0);
+							}
 						}
-						else if(1*trQuestVarGet("temp2") == 1){
-							SpawnEnemy("Fire Giant", xsVectorGetX(spawn), xsVectorGetZ(spawn));
-						}*/
 					}
 				}
 			}
@@ -1314,10 +1321,10 @@ inactive
 	NextDay = trTime();
 	vector spawn = vector(0,0,0);
 	//--Test relic
-	DeployRelic(getMapSize()/2+4,getMapSize()/2+10,TestRelic);
 	if(aiIsMultiplayer() == false){
 		SpawnEnemy("Militia", getMapSize()/2-10,getMapSize()/2);
-		SpawnBomber("Huskarl");
+		//SpawnBomber("Huskarl");
+		DeployRelic(getMapSize()/2+4,getMapSize()/2+10,TestRelic);
 	}
 	trPlayerResetBlackMapForAllPlayers();
 	xsEnableRule("BlackMap");
@@ -1442,6 +1449,7 @@ inactive
 					xUnitSelect(dPlayerData, xUnitID);
 					trImmediateUnitGarrison(""+xGetInt(dTowers, xUnitID));
 					xUnitSelect(dTowers, xUnitID);
+					trUnitSetAnimationPath(TowerAnim);
 					//dialog
 					missileclass = xGetInt(dPlayerData, xCurrentMissile);
 					xSetPointer(dProjectiles, missileclass);
@@ -2132,7 +2140,7 @@ active
 								if(xGetInt(dProjectiles, xProjClass) == PROJ_Convert){
 									//Convert standard
 									
-									if((trCountUnitsInArea(""+targetid, cNumberNonGaiaPlayers, "HumanSoldier", 0) > 0) || (trCountUnitsInArea(""+targetid, cNumberNonGaiaPlayers, Enemy1, 0) > 0) || (trCountUnitsInArea(""+targetid, cNumberNonGaiaPlayers, Enemy3, 0) > 0)){
+									if((trCountUnitsInArea(""+targetid, cNumberNonGaiaPlayers, "HumanSoldier", 0) > 0) || (trCountUnitsInArea(""+targetid, cNumberNonGaiaPlayers, Enemy1, 0) > 0) || (trCountUnitsInArea(""+targetid, cNumberNonGaiaPlayers, Enemy3, 0) > 0) || (trCountUnitsInArea(""+targetid, cNumberNonGaiaPlayers, Enemy0, 0) > 0)){
 										//Human check
 										
 										trUnitSelectClear();
@@ -2147,7 +2155,7 @@ active
 								if(xGetInt(dProjectiles, xProjClass) == PROJ_ConvertDeluxe){
 									//Convert deluxe
 									
-									if((trCountUnitsInArea(""+targetid, cNumberNonGaiaPlayers, "HumanSoldier", 0) > 0) || (trCountUnitsInArea(""+targetid, cNumberNonGaiaPlayers, Enemy1, 0) > 0) || (trCountUnitsInArea(""+targetid, cNumberNonGaiaPlayers, Enemy3, 0) > 0) || (trCountUnitsInArea(""+targetid, cNumberNonGaiaPlayers, Enemy4, 0) > 0)){
+									if((trCountUnitsInArea(""+targetid, cNumberNonGaiaPlayers, "HumanSoldier", 0) > 0) || (trCountUnitsInArea(""+targetid, cNumberNonGaiaPlayers, Enemy1, 0) > 0) || (trCountUnitsInArea(""+targetid, cNumberNonGaiaPlayers, Enemy3, 0) > 0) || (trCountUnitsInArea(""+targetid, cNumberNonGaiaPlayers, Enemy4, 0) > 0) || (trCountUnitsInArea(""+targetid, cNumberNonGaiaPlayers, Enemy0, 0) > 0)){
 										//Human check
 										
 										trUnitSelectClear();
@@ -2696,6 +2704,7 @@ highFrequency
 					if(PlayersDead == (cNumberNonGaiaPlayers-1)){
 						xsDisableRule("RocketDead");
 						trShowWinLose("All players have been murdered");
+						EndChats();
 						trEndGame();
 					}
 				}
