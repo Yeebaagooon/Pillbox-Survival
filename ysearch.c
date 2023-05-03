@@ -33,12 +33,12 @@ highFrequency
 					trUnitOverrideAnimation(xGetInt(dSpyRequests, xSpyRequestAnim),0,true,false,-1);
 					trEventFire(xGetInt(dSpyRequests, xSpyRequestEvent));
 					if (aiPlanSetUserVariableInt(1*xsVectorGetX(dest),1*xsVectorGetY(dest),1*xsVectorGetZ(dest),i) == false) {
-						debugLog("spy error N/A: " + 1*xsVectorGetX(dest) + "," + 1*xsVectorGetY(dest) + "," + 1*xsVectorGetZ(dest));
+						//	debugLog("spy error N/A: " + 1*xsVectorGetX(dest) + "," + 1*xsVectorGetY(dest) + "," + 1*xsVectorGetZ(dest));
 					}
 					xFreeDatabaseBlock(dSpyRequests);
 					spyreset = 0;
 				} else {
-					debugLog("Spy Buffer is empty");
+					//	debugLog("Spy Buffer is empty");
 				}
 				break;
 			}
@@ -86,7 +86,7 @@ highFrequency
 	if (xGetDatabaseCount(dSpyRequests) > 0) {
 		spyreset = spyreset + 1;
 		if (spyreset >= 10) {
-			debugLog("Spy reset. Failed requests: " + xGetDatabaseCount(dSpyRequests));
+			//debugLog("Spy reset. Failed requests: " + xGetDatabaseCount(dSpyRequests));
 			xClearDatabase(dSpyRequests);
 			spyreset = 0;
 		}

@@ -94,6 +94,7 @@ highFrequency
 		trLetterBox(true);
 		trUIFadeToColor(31,28,26,1,1,true);
 		trDelayedRuleActivation("WorldCreate");
+		Helpers = false;
 		for(a = DontDestroyBelow; < trGetNextUnitScenarioNameNumber()){
 			trUnitSelectClear();
 			trUnitSelect(""+a);

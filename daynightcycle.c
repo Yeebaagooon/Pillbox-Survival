@@ -237,6 +237,7 @@ highFrequency
 							NightAttack("Hero Greek Hippolyta");
 						}
 					}
+					SpawnBomber("Hero Norse");
 					if(Part == 2){
 						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)*3){
 							SpawnBomber("Hero Norse");
@@ -255,9 +256,10 @@ highFrequency
 							NightAttack("Hero Greek Polyphemus");
 						}
 					}
+					SpawnBomber("Hero Norse");
 					if(Part == 2){
 						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)*3){
-							SpawnBomber("Hero Norse");
+							SpawnBomber("Hero Greek Jason");
 						}
 					}
 				}
@@ -276,7 +278,20 @@ highFrequency
 					}
 					if(Part == 2){
 						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)*3){
-							SpawnBomber("Hero Norse");
+							SpawnBomber("Hero Greek Jason");
+						}
+					}
+				}
+				if(Date >= 12){
+					trQuestVarSetFromRand("temp", 1, 2);
+					if(1*trQuestVarGet("temp") == 1){
+						for(a = 0; < (cNumberNonGaiaPlayers-PlayersDead)*1){
+							NightAttack("Guardian XP");
+						}
+					}
+					if(Part == 2){
+						for(a = 1; <= (cNumberNonGaiaPlayers-PlayersDead)*3){
+							SpawnBomber("Hero Greek Bellerophon");
 						}
 					}
 				}

@@ -863,7 +863,7 @@ highFrequency
 	//ProjAllowPassThrough();
 	ProjDeathEffect();
 	//ProjNoShoot();
-	ProjRelicDecorate("Valkyrie", 0, "", 0.0);
+	ProjRelicDecorate("Valkyrie", 9, "", 0.0);
 	ProjTowerDecor("Valkyrie");
 	
 	//--BUILD MISSILE --- 27

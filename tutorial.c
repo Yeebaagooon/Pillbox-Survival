@@ -1448,8 +1448,8 @@ inactive
 					//garrison inside
 					xUnitSelect(dPlayerData, xUnitID);
 					trImmediateUnitGarrison(""+xGetInt(dTowers, xUnitID));
-					xUnitSelect(dTowers, xUnitID);
-					trUnitSetAnimationPath(TowerAnim);
+					//xUnitSelect(dTowers, xUnitID);
+					//trUnitSetAnimationPath(TowerAnim);
 					//dialog
 					missileclass = xGetInt(dPlayerData, xCurrentMissile);
 					xSetPointer(dProjectiles, missileclass);

@@ -1,17 +1,14 @@
 //---Controls
 //\Yeebaagooon\Agricultural Madness\Test sound.mp3
 int QuickStart = 0;
-string MapVersion = "Test Version";
+string MapVersion = "Version 1";
 string MapName = "Pillbox Survival";
 
 
 //---BUGS
 /*
-playerIsPlaying - currently allows computers to exist ingame
-
 CATAPULT SHOT TAKEN
 CHICKEN BLOOD TAKEN
-tEMPLE DISABLED
 
 200k gold available
 700k wood available
@@ -26,7 +23,7 @@ Argus = Human speed
 bool Visible = false;
 bool AllowEnemies = true;
 bool CineChoice = true;
-int TestRelic = 14;
+int TestRelic = 1;
 bool Helpers = true;
 
 //---Game Data
